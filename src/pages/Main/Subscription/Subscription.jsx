@@ -84,7 +84,8 @@ const Subscription = () => {
             <div className="py-20">
 
                 <div className='flex items-center justify-center gap-12'>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {/* grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 */}
+                    <div className="flex items-start gap-10">
                         {plans.map((plan) => (
                             <div key={plan.id} className={`${plan.isRecommended ? 'bg-[#1E648C]' : 'bg-white'} rounded-xl w-[352px] py-6`}>
                                 <div className={`flex flex-col items-center justify-center  gap-2 pb-5 border-b-2 ${plan.isRecommended ? 'border-b-[#EBF8FF]/20' : 'border-b-[#2781B5]/20'}  min-h-[117px]`}>
