@@ -85,7 +85,11 @@ export const mainTheme = {
       headerBorderRadius: 0,
       borderRadius: 0,
       headerSplitColor: "none",
-
+      // Pagination button styles
+      paginationBg: "#EBF8FF", // Background of pagination buttons
+      paginationBorderColor: "#79CDFF", // Border color of pagination buttons
+      paginationActiveBg: "#174C6B", // Background color of the active button
+      paginationActiveColor: "#FEFEFF", // Text color of the active button
     },
     Modal: {
       // contentBg: "#5271FF",

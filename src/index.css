@@ -397,3 +397,42 @@
 .responsive-input {
   height: 40px;
 }
+
+/* Ant design Custom Pagination Styles */
+.ant-pagination-item {
+  border-color: #79CDFF !important;
+  /* Border color for pagination buttons */
+  background: #EBF8FF !important;
+  /* Background color for pagination buttons */
+}
+
+.ant-pagination-item a {
+  color: #174C6B !important;
+  /* Text color for pagination buttons */
+}
+
+.ant-pagination-item-active {
+  background: #174C6B !important;
+  /* Active button background color */
+  border-color: #174C6B !important;
+  /* Active button border color */
+}
+
+.ant-pagination-item-active a {
+  color: #FEFEFF !important;
+  /* Active button text color */
+}
+
+.ant-pagination-next,
+.ant-pagination-prev {
+  border-color: #79CDFF !important;
+  /* Border color for next/prev buttons */
+  background: #EBF8FF !important;
+  /* Background for next/prev buttons */
+}
+
+.ant-pagination-next a,
+.ant-pagination-prev a {
+  color: #174C6B !important;
+  /* Text color for next/prev buttons */
+}

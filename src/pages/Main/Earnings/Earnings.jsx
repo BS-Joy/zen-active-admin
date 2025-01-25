@@ -78,10 +78,10 @@ const Earnings = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-6 border border-[#174C6B] px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#174C6B]">
+        <div className="flex items-center gap-6 border border-lightBlue px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#174C6B]">
           <div className="">
-            <h3 className="text-[20px]">{"Total Users"}</h3>
-            <h3 className="text-[30px] font-extralight">6500</h3>
+            <h3 className="text-[20px] text-gray font-semibold">{"Total Users"}</h3>
+            <h3 className="text-[30px] font-extralight text-[#2683EB]">6500</h3>
           </div>
         </div>
       </div>
@@ -89,13 +89,13 @@ const Earnings = () => {
         <div className="flex justify-between px-2">
           <h3 className="text-2xl text-black mb-4 pl-2">Earnings</h3>
           <div className="flex items-center gap-4 mb-6">
-            <DatePicker placeholder="Date" className="w-48 border-[#174C6B]" />
-            <Input placeholder="Name" className="w-48 placeholder:text-[#174C6B]" />
-            <Input placeholder="Subscription Name" className="w-48 placeholder:text-[#174C6B]" />
+            <DatePicker placeholder="Date" className="w-48 border-lightBlue" />
+            <Input placeholder="Name" className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }} />
+            <Input placeholder="Subscription Name" className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }} />
             {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
               <IoSearch />
             </Button> */}
-            <button style={{ border: 'none', backgroundColor: '#85cff7', color: '#174C6B', borderRadius: '50%', padding: '6px' }}><IoSearch size={20} /></button>
+            <button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '50%', padding: '6px' }}><IoSearch size={18} /></button>
           </div>
         </div>
 
