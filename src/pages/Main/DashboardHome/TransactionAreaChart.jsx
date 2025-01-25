@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer, Rectangle } from "recharts";
 
 const dataWeekly = [
     { day: "Mon", value: 120 },
@@ -18,6 +18,59 @@ const dataDaily = [
     { day: "6 PM", value: 70 },
     { day: "12 AM", value: 30 },
 ];
+
+const CustomXAxisTick = ({ x, y, payload }) => (
+    <text
+        x={x}
+        y={y + 10}
+        textAnchor="middle"
+        fontSize={14}
+        fill="#4B4B4B"
+        className="cursor-pointer font-semibold hover:fill-[#1E648C]"
+    >
+        {payload.value}
+    </text>
+);
+
+const CustomTooltip = (props) => {
+    const { active, payload } = props;
+    if (active && payload && payload.length) {
+        return (
+            <div
+                style={{
+                    background: "white",
+                    border: "1px solid #ddd",
+                    padding: "5px 10px",
+                }}
+            >
+                <p>{`${payload[0].payload.day} : ${payload[0].value}`}</p>
+            </div>
+        );
+    }
+    return null;
+};
+
+// const CustomCursor = (props) => {
+//     const {
+//         stroke, height, points, className,
+//     } = props;
+//     const { x, y } = points[0];
+//     return (
+//         <Rectangle
+//             x={x - 5} // Cursor x-position
+//             y={y} // Cursor y-position
+//             width={10} // Fixed width of the cursor
+//             height={height} // Match height of the chart
+//             // fill="#1E648C"
+//             fillOpacity={0.2}
+//             stroke={stroke || "#8884d8"} // Default stroke color if not provided
+//             strokeWidth={2} // Optional: Adjust stroke width
+//             rx={5} // Border radius (rounded corners)
+//             ry={5} // Vertical border radius 
+//             points={points}
+//         />
+//     );
+// };
 
 const TransactionAreaChart = () => {
     const [data, setData] = useState(dataWeekly);
@@ -54,8 +107,26 @@ const TransactionAreaChart = () => {
                                 <stop offset="100%" stopColor="#1E648C" stopOpacity={0.1} />
                             </linearGradient>
                         </defs>
-                        <XAxis dataKey="day" tick={{ fontSize: 12, fill: "#888" }} tickLine={false} axisLine={false} />
-                        <Tooltip />
+                        <XAxis
+                            dataKey="day"
+                            tickLine={false}
+                            axisLine={false}
+                            tick={(props) => <CustomXAxisTick {...props} />}
+                        />
+                        <Tooltip
+                            content={<CustomTooltip />}
+                            wrapperStyle={{
+                                strokeWidth: "9px", // Increases the tooltip line thickness
+                                stroke: "#1E648C",
+                            }}
+                            cursor={{
+                                stroke: '#1E648C',
+                                strokeWidth: 10,
+                                strokeOpacity: 0.5,
+                                strokeLinecap: 'round',
+                            }}
+                        // cursor={<CustomCursor />}
+                        />
                         <Area
                             type="monotone"
                             dataKey="value"
