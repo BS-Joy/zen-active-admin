@@ -5,6 +5,7 @@ import DashboardModal from "../../../Components/DashboardModal";
 import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const Earnings = () => {
 
@@ -104,7 +105,22 @@ const Earnings = () => {
         <Table
           columns={columns}
           dataSource={data}
-          pagination={{ position: ["bottomCenter"] }}
+          pagination={{
+            position: ["bottomCenter"],
+            itemRender: (current, type, originalElement) => {
+              if (type === "prev") {
+                return <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue">
+                  <IoIosArrowBack className="" />
+                  Back</button>;
+              }
+              if (type === "next") {
+                return <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue ">Next
+                  <IoIosArrowForward />
+                </button>;
+              }
+              return originalElement;
+            },
+          }}
           className="rounded-lg"
         />
 
