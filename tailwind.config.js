@@ -10,6 +10,9 @@ export default {
         red: "#F70300",
         lightGray: '#B0B0B0',
         lightBlueBg: '#F2F5F7',
+        lightBlue: '#37B5FF',
+        darkBlue: '#174C6B',
+        gray: '#4B4B4B'
       },
     },
   },

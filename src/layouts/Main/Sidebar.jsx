@@ -145,8 +145,8 @@ const Sidebar = () => {
             onClick={handleLogOut}
             className=" w-full font-semibold px-12 py-3 flex items-center justify-center gap-3 text-md outline-none rounded-full text-2xl"
           >
-            <IoLogOutOutline className="text-[#D84040]" />
-            <span className="text-[#D84040] font-light">Logout</span>
+            <IoLogOutOutline className="text-[#E77775]" />
+            <span className="text-[#E77775] font-light">Logout</span>
           </button>
         </div>
       </div>

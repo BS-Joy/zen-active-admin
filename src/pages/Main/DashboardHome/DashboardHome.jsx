@@ -29,10 +29,10 @@ const DashboardHome = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-6 border border-[#174C6B] px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#174C6B]">
+        <div className="flex items-center gap-6 border border-lightBlue px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#174C6B]">
           <div className="">
-            <h3 className="text-[20px]">{"Total Users"}</h3>
-            <h3 className="text-[30px] font-extralight">6500</h3>
+            <h3 className="text-[20px] text-gray font-semibold">{"Total Users"}</h3>
+            <h3 className="text-[30px] font-extralight text-[#2683EB]">6500</h3>
           </div>
         </div>
 
