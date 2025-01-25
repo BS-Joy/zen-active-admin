@@ -88,7 +88,7 @@
 
 /* recent-users-table header backgroundColor */
 .recent-users-table .ant-table-thead>tr>th {
-  background: #345C8C;
+  background: #174C6B;
   text-align: center;
   font-weight: lighter;
   font-size: 18px;
@@ -318,12 +318,12 @@
   max-height: none;
   /* Allow the editor to grow */
   overflow-y: auto;
-  /* background-color: #345C8C; */
+  /* background-color: #174C6B; */
   /* Enable vertical scrolling if necessary */
 }
 
 .custom-quill-editor .ql-toolbar.ql-snow {
-  background-color: #345C8C;
+  background-color: #174C6B;
 
 }
 
@@ -343,7 +343,7 @@
   width: 240px;
   height: 50px;
   border-radius: 8px;
-  background-color: #345c8c !important;
+  background-color: #174C6B !important;
   color: white !important;
   font-size: 16px;
 }
@@ -353,7 +353,7 @@
   height: 50px;
   border-radius: 8px;
   background-color: #ebf8ff !important;
-  color: #345c8c !important;
+  color: #174C6B !important;
   font-size: 16px;
 }
 

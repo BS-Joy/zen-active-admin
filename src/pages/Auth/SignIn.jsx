@@ -126,7 +126,7 @@ const SignIn = () => {
                 type="primary"
                 size="large"
                 htmlType="submit"
-                className="px-8 bg-[#345C8C] text-white hover:bg-[#345C8C]/90 rounded-xl font-semibold h-11 min-w-[400px]"
+                className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-xl font-semibold h-11 min-w-[400px]"
               >
                 Sign In
               </Button>

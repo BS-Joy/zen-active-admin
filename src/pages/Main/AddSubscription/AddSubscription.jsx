@@ -38,7 +38,7 @@ const AddSubscription = () => {
             </div>
             <div className="rounded-lg py-4 border-lightGray border-2 shadow-lg mt-8 bg-white">
                 <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
-                    <h3 className="text-2xl text-[#345C8C] mb-4 border-b-2 border-[#345C8C]/50 pb-3 pl-16">
+                    <h3 className="text-2xl text-[#174C6B] mb-4 border-b-2 border-[#174C6B]/50 pb-3 pl-16">
                         Subscription Package Adding
                     </h3>
                     <div className="w-full px-16">
@@ -102,11 +102,11 @@ const AddSubscription = () => {
                                                         newFeatures[index] = e.target.value;
                                                         setFeatures(newFeatures);
                                                     }}
-                                                    style={{ width: '1320px', height: '40px', border: '1px solid #345C8C' }}
+                                                    style={{ width: '1320px', height: '40px', border: '1px solid #174C6B' }}
                                                 />
                                                 {features.length > 1 && (
                                                     <Button style={{
-                                                        color: '#345C8C',
+                                                        color: '#174C6B',
                                                         borderRadius: '50%',
                                                         padding: '10px',
                                                         height: '40px',
@@ -125,9 +125,9 @@ const AddSubscription = () => {
                                         ))}
                                     </div>
                                     <Button type=""
-                                        // style={{ color: '#345C8C', borderRadius: '50%', padding: '10px', height: '40px', width: '40px' }}
+                                        // style={{ color: '#174C6B', borderRadius: '50%', padding: '10px', height: '40px', width: '40px' }}
                                         style={{
-                                            color: '#345C8C',
+                                            color: '#174C6B',
                                             borderRadius: '50%',
                                             padding: '10px',
                                             height: '40px',

@@ -28,10 +28,10 @@ const VerifyEmail = () => {
 
                     <div className="flex justify-between items-center">
                         <h1>Didn’t receive the code?</h1>
-                        <h1 className="text-[#345C8C] font-bold">Resend</h1>
+                        <h1 className="text-[#174C6B] font-bold">Resend</h1>
                     </div>
                     {/* Send OTP Button */}
-                    <button className="mt-6 w-full bg-[#345C8C] text-white py-2 rounded-lg hover:bg-[#345C8C]/80" onClick={(e) => navigate(`verify-email`)}>
+                    <button className="mt-6 w-full bg-[#174C6B] text-white py-2 rounded-lg hover:bg-[#174C6B]/80" onClick={(e) => navigate(`verify-email`)}>
                         Verify
                     </button>
                 </div>

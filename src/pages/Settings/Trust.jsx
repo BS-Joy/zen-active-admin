@@ -16,7 +16,7 @@ const Trust = () => {
             </div>
             <div className="rounded-lg py-4 border-lightGray border-2 shadow-lg mt-8 bg-white">
                 <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
-                    <h3 className="text-2xl text-[#345C8C] mb-4 border-b-2 border-lightGray/40 pb-3 pl-16">
+                    <h3 className="text-2xl text-[#174C6B] mb-4 border-b-2 border-lightGray/40 pb-3 pl-16">
                         Trust & Safety
                     </h3>
                     <div className="w-full px-16">
@@ -31,7 +31,7 @@ const Trust = () => {
                                 onClick={(e) => navigate(`edit`)}
                                 size="large"
                                 type="primary"
-                                className="px-8 h-12 bg-[#345C8C] text-white hover:bg-black/90 rounded-full font-semibold w-1/4"
+                                className="px-8 h-12 bg-[#174C6B] text-white hover:bg-black/90 rounded-full font-semibold w-1/4"
                             >
                                 Edit
                             </Button>

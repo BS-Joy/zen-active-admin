@@ -32,7 +32,7 @@ const MyProfile = () => {
         <h1 className="">Personal information</h1>
       </div>
       <div className="rounded-lg py-4 border-lightGray border-2 shadow-lg mt-8 bg-[#F4F9FB]">
-        <h3 className="text-2xl text-[#345C8C] mb-4 pl-5 border-b-2 border-lightGray/40 pb-3">
+        <h3 className="text-2xl text-[#174C6B] mb-4 pl-5 border-b-2 border-lightGray/40 pb-3">
           Personal information
         </h3>
         <div>
@@ -46,7 +46,7 @@ const MyProfile = () => {
                   onClick={(e) => navigate(`edit`)}
                   size="large"
                   type="default"
-                  className="px-8 bg-[#345C8C] text-white hover:bg-black/90 rounded-xl font-semibold h-11"
+                  className="px-8 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11"
                 >
                   <FaRegEdit />
                   Edit Profile

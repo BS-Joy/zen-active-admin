@@ -24,7 +24,7 @@ const ForgotPassword = () => {
                             <h1 className="mb-3">Enter your email</h1>
                             <div className="relative flex items-center">
                                 {/* Lock Icon */}
-                                <LuMailOpen className="absolute left-3 text-[#345C8C]" />
+                                <LuMailOpen className="absolute left-3 text-[#174C6B]" />
                                 {/* Input Field */}
                                 <input
                                     type="email"
@@ -37,7 +37,7 @@ const ForgotPassword = () => {
                     </div>
 
                     {/* Send OTP Button */}
-                    <button className="mt-6 w-full bg-[#345C8C] text-white py-2 rounded-lg hover:bg-[#345C8C]/80" onClick={(e) => navigate(`verify-email`)}>
+                    <button className="mt-6 w-full bg-[#174C6B] text-white py-2 rounded-lg hover:bg-[#174C6B]/80" onClick={(e) => navigate(`verify-email`)}>
                         Send OTP
                     </button>
                 </div>

@@ -99,7 +99,7 @@ const EditTermsConditions = () => {
               // onClick={(e) => navigate(`edit`)}
               size="large"
               type="primary"
-              className="px-8 bg-[#345C8C] text-white hover:bg-black/90 rounded-xl font-semibold h-11 min-w-[300px]"
+              className="px-8 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11 min-w-[300px]"
             >
               Update
             </Button>

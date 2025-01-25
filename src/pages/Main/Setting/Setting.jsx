@@ -22,7 +22,7 @@ const Setting = () => {
                 >
                   <span className=" text-xl"> {subName}</span>
                   <div className="text-lg  font-medium ">
-                    <FaAngleRight color="#345C8C" />
+                    <FaAngleRight color="#174C6B" />
                   </div>
                 </NavLink>
               ))}

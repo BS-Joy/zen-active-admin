@@ -57,7 +57,7 @@ const Subscription = () => {
             confirmButtonText: "     Sure    ",
             cancelButtonText: "Cancel",
             showConfirmButton: true,
-            confirmButtonColor: "#345C8C",
+            confirmButtonColor: "#174C6B",
             reverseButtons: true,
             customClass: {
                 confirmButton: "swal-confirm-btn",
@@ -76,7 +76,7 @@ const Subscription = () => {
     };
     return (
         <div>
-            <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#345C8C] border border-[#345C8C] rounded-md active:text-[#345C8C] hover:bg-transparent hover:text-[#345C8C] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-subscription")}>
+            <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-subscription")}>
                 <FaPlus />
                 Add new subscription</button>
             {/* <AddNewButton text={'Add new subscription'} path={'/add-subscription'} /> */}
@@ -118,8 +118,8 @@ const Subscription = () => {
                                         </div>
                                     ))} */}
                                         <div className="flex justify-center items-center gap-3">
-                                            <button className="px-6 py-1.5 min-w-[100px] text-center text-[#345C8C] bg-[#EBF8FF] border border-[#345C8C] rounded-md active:text-[#345C8C] hover:bg-transparent hover:text-[#345C8C] focus:outline-none focus:ring" onClick={handleDelete} >Delete</button>
-                                            <button className="px-6 py-1.5 min-w-[100px] text-center text-white bg-[#345C8C] border border-[#345C8C] rounded-md active:text-[#345C8C] hover:bg-transparent hover:text-[#345C8C] focus:outline-none focus:ring" onClick={() => navigate("/edit-subscription")}>Edit</button>
+                                            <button className="px-6 py-1.5 min-w-[100px] text-center text-[#174C6B] bg-[#EBF8FF] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring" onClick={handleDelete} >Delete</button>
+                                            <button className="px-6 py-1.5 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring" onClick={() => navigate("/edit-subscription")}>Edit</button>
                                         </div>
                                     </div>
                                 </div>

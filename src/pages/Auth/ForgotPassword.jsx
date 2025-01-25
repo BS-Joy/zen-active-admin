@@ -78,7 +78,7 @@ const ForgotPassword = () => {
 
                 size="large"
                 htmlType="submit"
-                className="w-full px-2 bg-[#345C8C]"
+                className="w-full px-2 bg-[#174C6B]"
               >
                 Send OTP
               </Button>

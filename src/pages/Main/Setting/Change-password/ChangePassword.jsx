@@ -28,7 +28,7 @@ const ChangePassword = () => {
                                 <h1 className="mb-3">{label}</h1>
                                 <div key={index} className="relative flex items-center">
                                     {/* Lock Icon */}
-                                    <MdLockOutline className="absolute left-3 text-[#345C8C]" />
+                                    <MdLockOutline className="absolute left-3 text-[#174C6B]" />
                                     {/* Input Field */}
                                     <input
                                         type="password"
@@ -43,12 +43,12 @@ const ChangePassword = () => {
                     </div>
 
                     {/* Forgot Password */}
-                    <p className="mt-4 text-sm text-[#345C8C] ml-auto cursor-pointer hover:underline" onClick={(e) => navigate(`forgot-password`)}>
+                    <p className="mt-4 text-sm text-[#174C6B] ml-auto cursor-pointer hover:underline" onClick={(e) => navigate(`forgot-password`)}>
                         Forgot Password?
                     </p>
 
                     {/* Update Password Button */}
-                    <button className="mt-6 w-full bg-[#345C8C] text-white py-2 rounded-lg hover:bg-[#345C8C]/80">
+                    <button className="mt-6 w-full bg-[#174C6B] text-white py-2 rounded-lg hover:bg-[#174C6B]/80">
                         Update Password
                     </button>
                 </div>

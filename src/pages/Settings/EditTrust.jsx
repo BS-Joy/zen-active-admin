@@ -96,7 +96,7 @@ const EditTrust = () => {
                             onClick={(e) => navigate(`edit`)}
                             size="large"
                             type="primary"
-                            className="px-8 h-12 bg-[#345C8C] text-white hover:bg-black/90 rounded-full font-semibold w-1/4"
+                            className="px-8 h-12 bg-[#174C6B] text-white hover:bg-black/90 rounded-full font-semibold w-1/4"
                         >
                             Update
                         </Button>

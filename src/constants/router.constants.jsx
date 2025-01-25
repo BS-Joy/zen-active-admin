@@ -31,6 +31,14 @@ import Subscription from "../pages/Main/Subscription/Subscription";
 import Notifications from "../pages/Main/Notifications/Notifications";
 import AddSubscription from "../pages/Main/AddSubscription/AddSubscription";
 import EditSubscription from "../pages/Main/EditSubscription/EditSubscription";
+import { BiDish } from "react-icons/bi";
+import { GiMountainClimbing } from "react-icons/gi";
+import Meals from "../pages/Main/Meals/Meals";
+import Challenges from "../pages/Main/Challenges/Challenges";
+import Workouts from "../pages/Main/Workouts/Workouts";
+import { CiDumbbell } from "react-icons/ci";
+import Store from "../pages/Main/Store/Store";
+import { PiHandbagSimple } from "react-icons/pi";
 
 export const dashboardItems = [
   {
@@ -40,13 +48,13 @@ export const dashboardItems = [
     element: <DashboardHome />,
   },
   {
-    name: "Earning",
+    name: "Earnings",
     path: "earnings",
     icon: TbCoin,
     element: <Earnings />,
   },
   {
-    name: "User",
+    name: "Users",
     path: "users",
     icon: FaRegUser,
     element: <Guests />,
@@ -105,6 +113,30 @@ export const dashboardItems = [
     path: "subscription",
     icon: LuCrown,
     element: <Subscription />,
+  },
+  {
+    name: "Meals",
+    path: "meals",
+    icon: BiDish,
+    element: <Meals />,
+  },
+  {
+    name: "Challenges",
+    path: "challenges",
+    icon: GiMountainClimbing,
+    element: <Challenges />,
+  },
+  {
+    name: "Workouts",
+    path: "workouts",
+    icon: CiDumbbell,
+    element: <Workouts />,
+  },
+  {
+    name: "Store",
+    path: "store",
+    icon: PiHandbagSimple,
+    element: <Store />,
   },
   {
     name: "Settings",

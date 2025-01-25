@@ -86,7 +86,7 @@ const VerifyEmail = () => {
                   width: "60px",
                   margin: "20px",
                   // background: "#ECE8F1",
-                  border: "1px solid #345C8C",
+                  border: "1px solid #174C6B",
                   // marginRight: "auto",
                   outline: "none",
                   borderRadius: "12px",
@@ -102,7 +102,7 @@ const VerifyEmail = () => {
                 type="primary"
                 size="large"
                 htmlType="submit"
-                className="w-full px-2 bg-[#345C8C]"
+                className="w-full px-2 bg-[#174C6B]"
               >
                 Verify Email
               </Button>

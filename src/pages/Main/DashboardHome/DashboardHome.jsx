@@ -22,14 +22,14 @@ const DashboardHome = () => {
           </div>
         </div> */}
 
-        <div className="flex items-center gap-6 px-[24px] bg-[#345C8C] border border-black  py-[20px] rounded-lg space-y-3  w-80">
+        <div className="flex items-center gap-6 px-[24px] bg-[#174C6B] border border-black  py-[20px] rounded-lg space-y-3  w-80">
           <div className="">
             <h3 className="text-[20px] text-white">{"Total Earnings"}</h3>
             <h3 className="text-[30px] text-white font-extralight">$254.99</h3>
           </div>
         </div>
 
-        <div className="flex items-center gap-6 border border-[#345C8C] px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#345C8C]">
+        <div className="flex items-center gap-6 border border-[#174C6B] px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#174C6B]">
           <div className="">
             <h3 className="text-[20px]">{"Total Users"}</h3>
             <h3 className="text-[30px] font-extralight">6500</h3>

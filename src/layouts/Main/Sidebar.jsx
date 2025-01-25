@@ -20,7 +20,7 @@ const Sidebar = () => {
       confirmButtonText: "     Sure    ",
       cancelButtonText: "Cancel",
       showConfirmButton: true,
-      confirmButtonColor: "#345C8C",
+      confirmButtonColor: "#174C6B",
       reverseButtons: true,
       customClass: {
         confirmButton: "swal-confirm-btn",
@@ -41,7 +41,7 @@ const Sidebar = () => {
     // console.log(location.pathname.includes("earnings"));
   }, [location.pathname]);
   return (
-    <div className="fixed top-0 left-0 w-[290px] min-h-screen h-full pr-0 bg-[#345C8C]">
+    <div className="fixed top-0 left-0 w-[290px] min-h-screen h-full pr-0 bg-[#174C6B]">
       <div className="h-full flex flex-col justify-between  pt-[50px] border drop-shadow">
         <div className="space-y[24px">
           <div className="px-[38px]">
@@ -126,9 +126,9 @@ const Sidebar = () => {
                         to={path}
                         className={({ isActive }) =>
                           isActive
-                            ? "bg-[#EBF8FF] text-[#345C8C]" +
+                            ? "bg-[#EBF8FF] text-[#174C6B]" +
                             " w-full px-4 py-3 flex items-center justify-start gap-3 text-md transition-all rounded-xl"
-                            : " hover:text-[#345C8C]  hover:bg-[#EBF8FF] text-[#EBF8FF]" +
+                            : " hover:text-[#174C6B]  hover:bg-[#EBF8FF] text-[#EBF8FF]" +
                             " w-full px-4 py-3 flex items-center justify-start gap-3 text-md transition-all rounded-xl"
                         }
                       >
