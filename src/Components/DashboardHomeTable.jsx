@@ -72,7 +72,7 @@ const DashboardHomeTable = () => {
   }
 
   return (
-    <div className="rounded-lg border py-4 border-[#174C6B] mt-8 recent-users-table">
+    <div className="rounded-lg border-2 py-4 border-[#37B5FF] mt-8 recent-users-table">
       <h3 className="text-2xl text-black mb-4 pl-2">Recent Transactions</h3>
       {/* Ant Design Table */}
       <Table

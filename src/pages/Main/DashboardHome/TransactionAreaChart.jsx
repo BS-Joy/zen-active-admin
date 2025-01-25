@@ -31,20 +31,20 @@ const TransactionAreaChart = () => {
 
     return (
         <div className="space-y-3">
-            <div className="w-[414px] border border-blue-500 rounded-lg flex items-center justify-between px-2">
+            <div className="w-[414px] border border-[#37B5FF] rounded-lg flex items-center justify-between px-2">
                 <h1 className="text-xl">Your Transactions</h1>
                 <div className="flex justify-center">
                     <select
                         value={filter}
                         onChange={handleFilterChange}
-                        className="px-4 py-2 bg-transparent border-none rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="px-4 py-2 bg-transparent border-none rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#37B5FF]"
                     >
                         <option value="weekly">Weekly</option>
                         <option value="daily">Daily</option>
                     </select>
                 </div>
             </div>
-            <div className="w-[414px] border border-blue-500 rounded-lg">
+            <div className="w-[414px] border border-[#37B5FF] rounded-lg">
 
                 <ResponsiveContainer width="100%" height={172}>
                     <AreaChart data={data}>
@@ -54,7 +54,7 @@ const TransactionAreaChart = () => {
                                 <stop offset="100%" stopColor="#1E648C" stopOpacity={0.1} />
                             </linearGradient>
                         </defs>
-                        <XAxis dataKey="day" tick={{ fontSize: 12, fill: "#888" }} />
+                        <XAxis dataKey="day" tick={{ fontSize: 12, fill: "#888" }} tickLine={false} axisLine={false} />
                         <Tooltip />
                         <Area
                             type="monotone"
