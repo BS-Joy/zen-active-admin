@@ -39,6 +39,8 @@ import Workouts from "../pages/Main/Workouts/Workouts";
 import { CiDumbbell } from "react-icons/ci";
 import Store from "../pages/Main/Store/Store";
 import { PiHandbagSimple } from "react-icons/pi";
+import AddMeal from "../pages/Main/AddMeal/AddMeal";
+import EditMeal from "../pages/Main/EditMeal/EditMeal";
 
 export const dashboardItems = [
   {
@@ -89,6 +91,14 @@ export const dashboardItems = [
   {
     path: "edit-subscription",
     element: <EditSubscription />,
+  },
+  {
+    path: "add-meal",
+    element: <AddMeal />,
+  },
+  {
+    path: "edit-meal",
+    element: <EditMeal />,
   },
   // {
   //   path: '/reviews',

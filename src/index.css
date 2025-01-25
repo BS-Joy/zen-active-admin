@@ -377,6 +377,13 @@
   gap: 16px;
 }
 
+.responsive-space-section-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+
 @media (max-width: 768px) {
   .responsive-space {
     flex-direction: column;
@@ -393,6 +400,8 @@
   flex: 1;
   min-width: 440px;
 }
+
+.responsive-form-item-section-2 {}
 
 .responsive-input {
   height: 40px;

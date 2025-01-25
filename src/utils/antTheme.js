@@ -67,9 +67,10 @@ export const mainTheme = {
     // },
     Select: {
       controlHeightLG: 56,
-      colorBorder: "#26363F",
+      colorBorder: "#79CDFF",
       borderRadiusLG: "16px",
-      colorTextPlaceholder: "#26363F",
+      colorTextPlaceholder: "#525252",
+
     },
     //   DatePicker: {
     //     activeBg: "rgba(255, 255, 255, 0)",
