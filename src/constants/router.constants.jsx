@@ -45,6 +45,8 @@ import AddChallenge from "../pages/Main/AddChallenge/AddChallenge";
 import EditChallenge from "../pages/Main/EditChallenge/EditChallenge";
 import AddWorkout from "../pages/Main/AddWorkout/AddWorkout";
 import EditWorkout from "../pages/Main/EditWorkout/EditWorkout";
+import AddBadge from "../pages/Main/AddBadge/AddBadge";
+import EditBadge from "../pages/Main/EditBadge/EditBadge";
 
 export const dashboardItems = [
   {
@@ -119,6 +121,14 @@ export const dashboardItems = [
   {
     path: "edit-workout",
     element: <EditWorkout />,
+  },
+  {
+    path: "add-badge",
+    element: <AddBadge />,
+  },
+  {
+    path: "edit-badge",
+    element: <EditBadge />,
   },
   // {
   //   path: '/reviews',
