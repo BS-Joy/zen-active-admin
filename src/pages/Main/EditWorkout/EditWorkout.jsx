@@ -9,7 +9,7 @@ import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
 
 
-const EditChallenge = () => {
+const EditWorkout = () => {
     const [form] = Form.useForm();
     const [features, setFeatures] = useState([""]);
 
@@ -52,12 +52,12 @@ const EditChallenge = () => {
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
                 <FaAngleLeft />
-                <h1 className="font-semibold">Edit Challenge</h1>
+                <h1 className="font-semibold">Edit Workout</h1>
             </div>
             <div className="rounded-lg py-4 border-[#79CDFF] border-2 shadow-lg mt-8 bg-white">
                 <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
                     <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
-                        Editing Challenge
+                        Editing Workout
                     </h3>
                     <div className="w-full px-16">
                         <Form
@@ -184,4 +184,4 @@ const EditChallenge = () => {
     )
 }
 
-export default EditChallenge
+export default EditWorkout

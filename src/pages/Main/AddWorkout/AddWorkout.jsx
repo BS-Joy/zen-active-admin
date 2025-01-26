@@ -9,7 +9,7 @@ import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
 
 
-const EditChallenge = () => {
+const AddWorkout = () => {
     const [form] = Form.useForm();
     const [features, setFeatures] = useState([""]);
 
@@ -52,12 +52,12 @@ const EditChallenge = () => {
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
                 <FaAngleLeft />
-                <h1 className="font-semibold">Edit Challenge</h1>
+                <h1 className="font-semibold">Add Workout</h1>
             </div>
             <div className="rounded-lg py-4 border-[#79CDFF] border-2 shadow-lg mt-8 bg-white">
                 <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
                     <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
-                        Editing Challenge
+                        Adding Workout
                     </h3>
                     <div className="w-full px-16">
                         <Form
@@ -70,12 +70,12 @@ const EditChallenge = () => {
                             <Space direction="vertical" style={{ width: '100%', borderBottom: '1px solid #79CDFF' }}>
                                 <Space size="large" direction="horizontal" className="responsive-space">
                                     <Form.Item
-                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Challenge Name</span>}
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Workout Title</span>}
                                         name="packageName"
                                         className="responsive-form-item"
                                     // rules={[{ required: true, message: 'Please select a package name!' }]}
                                     >
-                                        <Input type="text" placeholder="Enter Challenge Name" style={{
+                                        <Input type="text" placeholder="Enter Workout Title" style={{
                                             height: '40px',
                                             border: '1px solid #79CDFF',
                                             fontSize: '16px',
@@ -125,11 +125,11 @@ const EditChallenge = () => {
                                             }} />
                                         </Form.Item>
                                         <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Reward Points</span>}
+                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Daily Activity</span>}
                                             name="reward points"
                                             className="responsive-form-item-section-2"
                                         >
-                                            <Input type="number" placeholder="Set reward point" style={{
+                                            <Input type="number" placeholder="Set daily activity" style={{
                                                 height: '40px',
                                                 border: '1px solid #79CDFF',
                                                 fontSize: '16px',
@@ -141,11 +141,11 @@ const EditChallenge = () => {
                                             }} />
                                         </Form.Item>
                                         <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Goal</span>}
-                                            name="goal"
+                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Reward Points</span>}
+                                            name="reward points"
                                             className="responsive-form-item-section-2"
                                         >
-                                            <Input type="number" placeholder="Set goal" style={{
+                                            <Input type="number" placeholder="Set reward point" style={{
                                                 height: '40px',
                                                 border: '1px solid #79CDFF',
                                                 fontSize: '16px',
@@ -163,16 +163,11 @@ const EditChallenge = () => {
 
                             {/* Submit Button */}
                             <Form.Item>
-                                <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
-                                    <button
-                                        className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
-                                    >
-                                        <span className="text-[#1E648C] font-semibold">Delete</span>
-                                    </button>
+                                <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center">
                                     <button
                                         className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                                     >
-                                        <span className="text-white font-semibold">Update</span>
+                                        <span className="text-white font-semibold">Create</span>
                                     </button>
                                 </div>
                             </Form.Item>
@@ -184,4 +179,4 @@ const EditChallenge = () => {
     )
 }
 
-export default EditChallenge
+export default AddWorkout

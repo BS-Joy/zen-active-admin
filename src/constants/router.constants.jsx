@@ -43,6 +43,8 @@ import AddMeal from "../pages/Main/AddMeal/AddMeal";
 import EditMeal from "../pages/Main/EditMeal/EditMeal";
 import AddChallenge from "../pages/Main/AddChallenge/AddChallenge";
 import EditChallenge from "../pages/Main/EditChallenge/EditChallenge";
+import AddWorkout from "../pages/Main/AddWorkout/AddWorkout";
+import EditWorkout from "../pages/Main/EditWorkout/EditWorkout";
 
 export const dashboardItems = [
   {
@@ -109,6 +111,14 @@ export const dashboardItems = [
   {
     path: "edit-challenge",
     element: <EditChallenge />,
+  },
+  {
+    path: "add-workout",
+    element: <AddWorkout />,
+  },
+  {
+    path: "edit-workout",
+    element: <EditWorkout />,
   },
   // {
   //   path: '/reviews',
