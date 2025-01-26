@@ -55,13 +55,13 @@ const EditTermsConditions = () => {
         <FaAngleLeft />
         <h1>Terms & Condition </h1>
       </div>
-      <div className="rounded-lg py-4 border-lightGray border-2 shadow-lg mt-8 bg-white">
+      <div className="rounded-lg py-4 border-[#32A5E8] border-2 shadow-lg mt-8 bg-white">
         <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
-          <h3 className="text-2xl text-black mb-4 border-b-2 border-lightGray/40 pb-3 pl-16">
+          <h3 className="text-2xl text-[#32A5E8] mb-4 border-b-2 border-[#32A5E8]/40 pb-3 pl-16">
             Terms & Condition Edit
           </h3>
           <div className="w-full px-16">
-            <div className="h-full border border-gray-400 rounded-md">
+            <div className="h-full border border-[#32A5E8] rounded-md">
               <div className="ql-toolbar-container h-56">
                 {/* <div id="toolbar">
                   <span className="ql-formats">
@@ -84,7 +84,7 @@ const EditTermsConditions = () => {
                 <ReactQuill
                   placeholder="Enter your update terms & conditions..."
                   theme="snow"
-                  value={content}
+                  value={content || ""}
                   onChange={(value) => setContent(value)}
                   modules={modules}
                   formats={formats}
