@@ -445,3 +445,7 @@
   color: #174C6B !important;
   /* Text color for next/prev buttons */
 }
+
+.ant-btn:hover {
+  background-color: #37B5FF !important;
+}

@@ -15,9 +15,9 @@ const TermsConditions = () => {
         <FaAngleLeft />
         <h1>Terms & Condition</h1>
       </div>
-      <div className="rounded-lg py-4 border-[#174C6B]/40 border-2 shadow-lg mt-8 bg-white">
+      <div className="rounded-lg py-4 border-[#37B5FF]/40 border-2 shadow-lg mt-8 bg-white">
         <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
-          <h3 className="text-2xl text-[#174C6B] mb-4 border-b-2 border-[#174C6B]/40 pb-3 pl-16">
+          <h3 className="text-2xl text-[#37B5FF] mb-4 border-b-2 border-[#37B5FF]/40 pb-3 pl-16">
             Terms & Condition
           </h3>
           <div className="w-full px-16">
@@ -98,7 +98,7 @@ const TermsConditions = () => {
                 onClick={(e) => navigate(`edit`)}
                 size="large"
                 type="primary"
-                className="px-8 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11"
+                className="px-16 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11"
               >
                 Edit
               </Button>

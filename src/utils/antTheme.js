@@ -30,7 +30,7 @@ export const mainTheme = {
       // defaultHoverColor: "#FFFFFF",
       // defaultActiveBg: "#65000b",
       // defaultActiveColor: "#FFFFFF",
-      colorLinkHover: "#57BBE6",
+      colorLinkHover: "#37B5FF",
       controlHeightLG: 56,
       borderRadiusLG: 16,
       borderRadius: 8,
