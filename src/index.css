@@ -148,8 +148,8 @@
 }
 
 /* Change the bold button color to white */
-.ql-toolbar.ql-snow .ql-formats .ql-bold {
-  color: white !important;
+.ql-toolbar.ql-snow .ql-stroke {
+  stroke: white !important;
 }
 
 /* Target the SVG inside the bold button */
