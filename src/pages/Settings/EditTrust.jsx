@@ -50,12 +50,12 @@ const EditTrust = () => {
         <>
             <div className="flex items-center gap-2 text-xl">
                 <FaAngleLeft />
-                <h1>Trust & Safety </h1>
+                <h1>About us </h1>
             </div>
             <div className="rounded-lg py-4 border-lightGray border-2 shadow-lg mt-8 bg-white">
                 <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
                     <h3 className="text-2xl text-black mb-4 border-b-2 border-lightGray/40 pb-3 pl-16">
-                        Trust & Safety Edit
+                        About us Edit
                     </h3>
                     <div className="w-full px-16">
                         <div className="h-full border border-gray-400 rounded-md">

@@ -12,12 +12,12 @@ const Trust = () => {
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
                 <FaAngleLeft />
-                <h1 className="">Trust & Safety</h1>
+                <h1 className="">About us</h1>
             </div>
             <div className="rounded-lg py-4 border-lightGray border-2 shadow-lg mt-8 bg-white">
                 <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
                     <h3 className="text-2xl text-[#174C6B] mb-4 border-b-2 border-lightGray/40 pb-3 pl-16">
-                        Trust & Safety
+                        About us
                     </h3>
                     <div className="w-full px-16">
 

@@ -106,12 +106,12 @@
 }
 
 .ant-input {
-  border-color: #888787;
+  border-color: #32A5E8;
   border-radius: 6px;
 }
 
 .ant-input:hover {
-  border-color: black;
+  border-color: #32A5E8;
 }
 
 .ant-input::placeholder {
