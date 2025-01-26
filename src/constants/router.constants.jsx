@@ -41,6 +41,8 @@ import Store from "../pages/Main/Store/Store";
 import { PiHandbagSimple } from "react-icons/pi";
 import AddMeal from "../pages/Main/AddMeal/AddMeal";
 import EditMeal from "../pages/Main/EditMeal/EditMeal";
+import AddChallenge from "../pages/Main/AddChallenge/AddChallenge";
+import EditChallenge from "../pages/Main/EditChallenge/EditChallenge";
 
 export const dashboardItems = [
   {
@@ -99,6 +101,14 @@ export const dashboardItems = [
   {
     path: "edit-meal",
     element: <EditMeal />,
+  },
+  {
+    path: "add-challenge",
+    element: <AddChallenge />,
+  },
+  {
+    path: "edit-challenge",
+    element: <EditChallenge />,
   },
   // {
   //   path: '/reviews',
