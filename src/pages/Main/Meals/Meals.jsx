@@ -9,6 +9,7 @@ import mealImg from "../../../assets/images/meal.png";
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
+import { useGetAllMealQuery } from "../../../redux/features/meal/mealApi";
 
 
 
@@ -16,6 +17,9 @@ const Meals = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
     const navigate = useNavigate();
+    const { data: meals } = useGetAllMealQuery()
+    console.log(meals);
+
 
     const showModal = (data) => {
         setIsModalOpen(true);

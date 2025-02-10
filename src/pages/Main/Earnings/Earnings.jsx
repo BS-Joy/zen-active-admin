@@ -6,11 +6,13 @@ import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useGetRecentTransactionsQuery } from "../../../redux/features/transaction/transactionApi";
+import moment from "moment";
 
 const Earnings = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const { data: recentTransactions } = useGetRecentTransactionsQuery()
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -19,55 +21,70 @@ const Earnings = () => {
 
   const columns = [
     {
-      title: "#SL",
+      title: "#Tr.ID",
       dataIndex: "transIs",
       key: "transIs",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: "User Name",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Email",
-      dataIndex: "Email",
-      key: "Email",
+      title: "Subscription",
+      dataIndex: "subscription",
+      key: "subscription",
     },
     {
-      title: "Phone Number",
-      key: "Phone",
-      dataIndex: "Phone",
+      title: "Amount",
+      key: "amount",
+      dataIndex: "amount",
+    },
+    {
+      title: "Date",
+      key: "date",
+      dataIndex: "date",
     },
     {
       title: "Action",
       key: "Review",
       aligen: 'center',
       render: (_, data) => (
-        <div className="  items-center justify-around textcenter flex " >
+        <div className="  items-center justify-around textcenter flex">
           {/* Review Icon */}
-          <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full cursor-pointer" onClick={() => showModal(data)} />
+          <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
           {/* <Link to={'/reviews'} className="btn bg-black text-white px-3 py-1 text-sm rounded-full">
-                 
-                  View
-                </Link> */}
+             
+              View
+            </Link> */}
         </div>
       ),
     },
   ];
 
-  const data = [];
-  for (let index = 0; index < 20; index++) {
-    data.push({
-      transIs: `${index + 1}`,
-      name: "Henry",
-      Email: "sharif@gmail.com",
-      Phone: "+12746478994",
-      Review: "See Review",
-      date: "16 Apr 2024",
-      _id: index,
-    });
-  }
+  // const data = [];
+  // for (let index = 0; index < 20; index++) {
+  //   data.push({
+  //     transIs: `${index + 1}`,
+  //     name: "Henry",
+  //     Email: "sharif@gmail.com",
+  //     Phone: "+12746478994",
+  //     Review: "See Review",
+  //     date: "16 Apr 2024",
+  //     _id: index,
+  //   });
+  // }
+  // Map API response to table data
+  const data = recentTransactions?.data?.map((transaction, index) => ({
+    key: index,
+    transIs: transaction.purchaseId,
+    name: transaction.userId.name.firstName,
+    subscription: transaction.packageName,
+    amount: `$${transaction.packagePrice}`,
+    date: moment(transaction.purchaseDate).format("DD MMM YYYY"),
+    ...transaction,
+  })) || [];
   return (
     <div>
       {/* Stats */}
@@ -91,11 +108,8 @@ const Earnings = () => {
           <h3 className="text-2xl text-black mb-4 pl-2">Earnings</h3>
           <div className="flex items-center gap-4 mb-6">
             <DatePicker placeholder="Date" className="w-48 border-lightBlue" />
-            <Input placeholder="Name" className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }} />
-            <Input placeholder="Subscription Name" className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }} />
-            {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
-              <IoSearch />
-            </Button> */}
+            <Input placeholder="Search..." className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }} />
+
             <button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '50%', padding: '6px' }}><IoSearch size={18} /></button>
           </div>
         </div>

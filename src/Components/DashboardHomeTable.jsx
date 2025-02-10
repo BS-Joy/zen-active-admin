@@ -76,7 +76,7 @@ const DashboardHomeTable = () => {
   // Map API response to table data
   const data = recentTransactions?.data?.map((transaction, index) => ({
     key: index,
-    transIs: transaction._id,
+    transIs: transaction.purchaseId,
     name: transaction.userId.name.firstName,
     subscription: transaction.packageName,
     amount: `$${transaction.packagePrice}`,
