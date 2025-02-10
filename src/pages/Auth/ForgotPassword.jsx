@@ -4,36 +4,36 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import image from "../../assets/images/forgot.png";
 import PageHeading from "../../Components/PageHeading";
-// import { useForgotPasswordMutation } from "../../redux/features/Auth/authApi";
-// import Swal from "sweetalert2";
+import { useForgotPasswordMutation } from "../../redux/features/auth/authApi";
+import Swal from "sweetalert2";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  // const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const onFinish = async (values) => {
     navigate(`/auth/verify-email`, { state: { email: values.email } });
-    // try {
-    //   const response = await forgotPassword(values);
-    //   // console.log(response);
-    //   if (response?.data?.statusCode == 200) {
-    //     navigate(`/auth/verify-email/${values.email}`);
-    //   } else {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Failed!!",
-    //       text:
-    //         response?.data?.message ||
-    //         response?.error?.data?.message ||
-    //         "Something went wrong. Please try again later.",
-    //     });
-    //   }
-    // } catch (error) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Failed!!",
-    //     text: "Something went wrong. Please try again later.",
-    //   });
-    // }
+    try {
+      const response = await forgotPassword(values);
+      // console.log(response);
+      if (response?.data?.statusCode == 200) {
+        navigate(`/auth/verify-email/${values.email}`);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed!!",
+          text:
+            response?.data?.message ||
+            response?.error?.data?.message ||
+            "Something went wrong. Please try again later.",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed!!",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
   };
   return (
     <div className="min-h-[92vh] w-full grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-1 lg:gap-8">
@@ -45,7 +45,7 @@ const ForgotPassword = () => {
           <div className="flex flex-col items-center lg:items-start">
             <PageHeading backPath={"/auth"} title={"Forgot Password"} disbaledBackBtn={true} />
             <p className="drop-shadow text-hash mt-4 text-center lg:text-start text-[#3A3A3A]">
-              EPlease enter your email address to reset your password.
+              Please enter your email address to reset your password.
             </p>
           </div>
           <Form
