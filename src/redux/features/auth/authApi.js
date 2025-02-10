@@ -34,10 +34,13 @@ const authApi = baseApi.injectEndpoints({
             query: () => '/user/total-user',
         }),
         getAllUser: builder.query({
-            query: (searchTerm) => ({
-                url: `/user?searchTerm=${searchTerm}`,
-                method: 'GET',
-            })
+            query: (searchTerm) => {
+                const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : '';
+                return {
+                    url: `/user${queryParam}`,
+                    method: 'GET',
+                };
+            }
         }),
     })
 })

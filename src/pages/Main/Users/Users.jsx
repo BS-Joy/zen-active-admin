@@ -6,11 +6,14 @@ import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import { useGetAllUserQuery } from "../../../redux/features/auth/authApi";
+import moment from "moment";
+import mealImg from "../../../assets/images/meal.png";
 
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const { data: allUsers } = useGetAllUserQuery()
+  const [searchTerm, setSearchTerm] = useState('');
+  const { data: allUsers } = useGetAllUserQuery(searchTerm || undefined)
   console.log(allUsers);
 
 
@@ -21,30 +24,30 @@ const Users = () => {
 
   const columns = [
     {
-      title: "#Tr.ID",
-      dataIndex: "transIs",
-      key: "transIs",
-      render: (text) => <a>{text}</a>,
+      title: "Image",
+      dataIndex: "userImage",
+      key: "userImage",
+      // render: (text) => <a>{text}</a>,
     },
     {
       title: "User Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "userName",
+      key: "userName",
     },
     {
-      title: "Subscription",
-      dataIndex: "subscription",
-      key: "subscription",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: "Amount",
-      key: "amount",
-      dataIndex: "amount",
+      title: "Primary Goal",
+      key: "primaryGoal",
+      dataIndex: "primaryGoal",
     },
     {
-      title: "Date",
-      key: "date",
-      dataIndex: "date",
+      title: "Points",
+      key: "points",
+      dataIndex: "points",
     },
     {
       title: "Action",
@@ -63,18 +66,37 @@ const Users = () => {
     },
   ];
 
-  const data = [];
-  for (let index = 0; index < 6; index++) {
-    data.push({
-      transIs: `${index + 1}`,
-      name: "Henry",
-      subscription: "Standard",
-      amount: "9.99",
-      Review: "See Review",
-      date: "16 Apr 2024",
-      _id: index,
-    });
-  }
+  // const data = [];
+  // for (let index = 0; index < 6; index++) {
+  //   data.push({
+  //     transIs: `${index + 1}`,
+  //     name: "Henry",
+  //     subscription: "Standard",
+  //     amount: "9.99",
+  //     Review: "See Review",
+  //     date: "16 Apr 2024",
+  //     _id: index,
+  //   });
+  // }
+
+  const data = allUsers?.data?.map((user, index) => ({
+    key: index,
+    userImage:
+      <div className="flex items-center justify-center">
+        <img
+          src={user.image || "https://via.placeholder.com/40"} // Use placeholder if no image
+          alt="User"
+          className="w-10 h-10 rounded-full object-cover"
+        />
+      </div>
+    ,
+    userName: user.name ? `${user.name.firstName} ${user.name.lastName}` : "N/A",
+    email: user.email,
+    primaryGoal: user.primaryGoal || "N/A",
+    points: user.appData?.points || 0,
+    ...user,
+  })) || [];
+
 
   return (
     <div className="rounded-lg border-2 py-4 border-[#174C6B]/80 mt-8 recent-users-table">

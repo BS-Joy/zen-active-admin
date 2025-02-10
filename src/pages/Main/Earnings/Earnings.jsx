@@ -85,6 +85,7 @@ const Earnings = () => {
     date: moment(transaction.purchaseDate).format("DD MMM YYYY"),
     ...transaction,
   })) || [];
+
   return (
     <div>
       {/* Stats */}
