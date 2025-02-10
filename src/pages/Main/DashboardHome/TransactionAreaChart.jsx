@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer, Rectangle } from "recharts";
 import { useGetAllTransactionQuery } from "../../../redux/features/transaction/transactionApi";
 
@@ -74,16 +74,25 @@ const CustomTooltip = (props) => {
 // };
 
 const TransactionAreaChart = () => {
-    const [data, setData] = useState(dataWeekly);
+    const [data, setData] = useState([]);
     const [filter, setFilter] = useState("weekly");
     const { data: transactions } = useGetAllTransactionQuery(filter)
     console.log(transactions);
 
+    useEffect(() => {
+        if (transactions?.data) {
+            const formattedData = transactions.data.map((item) => ({
+                day: new Date(item.date).toLocaleDateString("en-US", { weekday: "short" }),
+                value: item.earnings,
+            }));
+            setData(formattedData);
+        }
+    }, [transactions, filter]);
 
     const handleFilterChange = (event) => {
         const type = event.target.value;
         setFilter(type);
-        setData(type === "weekly" ? dataWeekly : dataDaily);
+        // setData(type === "weekly" ? dataWeekly : dataDaily);
     };
 
     return (
@@ -97,7 +106,7 @@ const TransactionAreaChart = () => {
                         className="px-4 py-2 bg-transparent border-none rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#37B5FF]"
                     >
                         <option value="weekly">Weekly</option>
-                        <option value="daily">Daily</option>
+                        <option value="monthly">Monthly</option>
                     </select>
                 </div>
             </div>
