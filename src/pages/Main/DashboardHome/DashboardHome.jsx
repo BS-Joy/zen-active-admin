@@ -8,7 +8,6 @@ import TransactionAreaChart from "./TransactionAreaChart";
 const DashboardHome = () => {
   const { data: totalEarnings } = useGetTotalEarningsQuery()
   const { data: totalUsers } = useGetTotalUsersQuery()
-  console.log(totalUsers.data.totalUsers);
 
   return (
     <div className="space-y-[24px]">

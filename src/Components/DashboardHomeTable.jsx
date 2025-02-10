@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import exlamIcon from "../assets/images/exclamation-circle.png";
 import DashboardModal from "./DashboardModal";
 import { useState } from "react";
+import { useGetRecentTransactionsQuery } from "../redux/features/transaction/transactionApi";
+import moment from "moment";
 
 const DashboardHomeTable = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const { data: recentTransactions } = useGetRecentTransactionsQuery()
+  console.log(recentTransactions?.data);
+
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -58,18 +62,29 @@ const DashboardHomeTable = () => {
     },
   ];
 
-  const data = [];
-  for (let index = 0; index < 6; index++) {
-    data.push({
-      transIs: `${index + 1}`,
-      name: "Henry",
-      subscription: "Standard",
-      amount: "9.99",
-      Review: "See Review",
-      date: "16 Apr 2024",
-      _id: index,
-    });
-  }
+  // const data = [];
+  // for (let index = 0; index < 6; index++) {
+  //   data.push({
+  //     transIs: `${index + 1}`,
+  //     name: "Henry",
+  //     subscription: "Standard",
+  //     amount: "9.99",
+  //     Review: "See Review",
+  //     date: "16 Apr 2024",
+  //     _id: index,
+  //   });
+  // }
+
+  // Map API response to table data
+  const data = recentTransactions?.data?.map((transaction, index) => ({
+    key: index,
+    transIs: transaction._id,
+    name: transaction.userId.name.firstName,
+    subscription: transaction.packageName,
+    amount: `$${transaction.packagePrice}`,
+    date: moment(transaction.purchaseDate).format("DD MMM YYYY"),
+    ...transaction,
+  })) || [];
 
   return (
     <div className="rounded-lg border-2 py-4 border-[#37B5FF] mt-8 recent-users-table">

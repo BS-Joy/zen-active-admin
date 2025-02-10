@@ -10,8 +10,11 @@ export const transactionApi = baseApi.injectEndpoints({
         }),
         getTotalEarnings: builder.query({
             query: () => '/subscription/total-earn',
-        })
+        }),
+        getRecentTransactions: builder.query({
+            query: () => '/subscription',
+        }),
     })
 })
 
-export const { useGetAllTransactionQuery, useGetTotalEarningsQuery } = transactionApi
+export const { useGetAllTransactionQuery, useGetTotalEarningsQuery, useGetRecentTransactionsQuery } = transactionApi
