@@ -12,7 +12,7 @@ import { FaPlus } from "react-icons/fa6";
 
 
 
-const Challenges = () => {
+const Exercise = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
     const navigate = useNavigate();
@@ -183,4 +183,4 @@ const Challenges = () => {
     )
 }
 
-export default Challenges
+export default Exercise

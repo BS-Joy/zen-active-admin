@@ -34,7 +34,6 @@ import EditSubscription from "../pages/Main/EditSubscription/EditSubscription";
 import { BiDish } from "react-icons/bi";
 import { GiMountainClimbing } from "react-icons/gi";
 import Meals from "../pages/Main/Meals/Meals";
-import Challenges from "../pages/Main/Challenges/Challenges";
 import Workouts from "../pages/Main/Workouts/Workouts";
 import { CiDumbbell } from "react-icons/ci";
 import Store from "../pages/Main/Store/Store";
@@ -47,6 +46,10 @@ import AddWorkout from "../pages/Main/AddWorkout/AddWorkout";
 import EditWorkout from "../pages/Main/EditWorkout/EditWorkout";
 import AddBadge from "../pages/Main/AddBadge/AddBadge";
 import EditBadge from "../pages/Main/EditBadge/EditBadge";
+import { PiPersonSimpleBikeBold } from "react-icons/pi";
+import Exercise from "../pages/Main/Exercise/Exercise";
+import { MdOutlineVideoLibrary } from "react-icons/md";
+import WorkoutVideos from "../pages/Main/WorkoutVideos/WorkoutVideos";
 
 export const dashboardItems = [
   {
@@ -161,16 +164,22 @@ export const dashboardItems = [
     element: <Meals />,
   },
   {
-    name: "Challenges",
-    path: "challenges",
-    icon: GiMountainClimbing,
-    element: <Challenges />,
+    name: "Exercise ",
+    path: "exercise",
+    icon: PiPersonSimpleBikeBold,
+    element: <Exercise />,
   },
   {
     name: "Workouts",
     path: "workouts",
     icon: CiDumbbell,
     element: <Workouts />,
+  },
+  {
+    name: "Workout Videos",
+    path: "workout-videos",
+    icon: MdOutlineVideoLibrary,
+    element: <WorkoutVideos />,
   },
   {
     name: "Store",
