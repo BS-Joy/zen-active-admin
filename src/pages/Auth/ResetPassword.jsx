@@ -5,57 +5,61 @@ import { useNavigate } from "react-router-dom";
 import image from "../../assets/images/reset-pass.png";
 // import ComponentContainer from "../../Components/ComponentContainer";
 import PageHeading from "../../Components/PageHeading";
-// import { useChangePasswordMutation } from "../../redux/features/Auth/authApi";
-// import { useDispatch, useSelector } from "react-redux";
-// import Swal from "sweetalert2";
-// import { setUser } from "../../redux/features/Auth/authSlice";
+import { useChangePasswordMutation } from "../../redux/features/auth/authApi";
+
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../redux/features/auth/authSlice";
+import Swal from "sweetalert2";
+
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // const { token } = useSelector((state) => state.auth);
-  // const [mutation, { isLoading }] = useChangePasswordMutation();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+  const [mutation, { isLoading }] = useChangePasswordMutation();
 
 
   const onFinish = async (values) => {
-    navigate("/auth");
-    // try {
-    //   const response = await mutation({
-    //     password: values.newPassword,
-    //     // token: token,
-    //   });
-    //   if (response?.data?.statusCode == 200) {
-    //     localStorage.setItem("verify-token", null);
-    //     dispatch(
-    //       setUser({
-    //         user: null,
-    //         token: null,
-    //       })
-    //     );
-    //     navigate("/auth");
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: response?.data?.message,
-    //       showConfirmButton: false,
-    //       timer: 1000,
-    //     });
-    //   } else {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "failed!",
-    //       text:
-    //         response?.data?.message ||
-    //         response?.error?.data?.message ||
-    //         "Something went wrong. Please try again later.",
-    //     });
-    //   }
-    // } catch (error) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Failed !!",
-    //     text: "Something went wrong.",
-    //   });
-    // }
+    try {
+      const response = await mutation({
+        new_password: values.new_password,
+        confirm_password: values.confirm_password,
+        // token: token,
+      });
+      console.log(response, 'response');
+
+      if (response?.data?.status == 200) {
+        localStorage.setItem("verify-token", null);
+        dispatch(
+          setUser({
+            user: null,
+            token: null,
+          })
+        );
+        navigate("/auth");
+        Swal.fire({
+          icon: "success",
+          title: response?.data?.message,
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "failed!",
+          text:
+            response?.data?.message ||
+            response?.error?.data?.message ||
+            "Something went wrong. Please try again later.",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed !!",
+        text: "Something went wrong.",
+      });
+    }
   };
   return (
     <div className="min-h-[92vh] w-full grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-1 lg:gap-8">
@@ -81,7 +85,7 @@ const ResetPassword = () => {
           >
             <Form.Item
               // label={<span className="font-medium text-base">New Password</span>}
-              name="newPassword"
+              name="new_password"
               rules={[
                 {
                   required: true,
@@ -93,7 +97,7 @@ const ResetPassword = () => {
             </Form.Item>
             <Form.Item
               // label={<span className="font-medium text-base">Confirm New Password</span>}
-              name="rePassword"
+              name="confirm_password"
               rules={[
                 {
                   required: true,
@@ -101,7 +105,7 @@ const ResetPassword = () => {
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue("newPassword") === value) {
+                    if (!value || getFieldValue("new_password") === value) {
                       return Promise.resolve();
                     }
                     return Promise.reject(
