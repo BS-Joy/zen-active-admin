@@ -5,8 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login.png";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
-
-// import { setUser } from "../../redux/features/Auth/authSlice";
+import { setUser } from "../../redux/features/auth/authSlice";
 // import Swal from "sweetalert2";
 
 const SignIn = () => {
@@ -21,34 +20,34 @@ const SignIn = () => {
     try {
       const response = await login(values);
       console.log(response);
-      // if (response?.data?.statusCode == 200) {
-      //   if (response?.data?.data?.user?.role === "ADMIN") {
-      //     localStorage.setItem("token", response?.data?.data?.token);
-      //     dispatch(
-      //       setUser({
-      //         user: response?.data?.data?.user,
-      //         token: response?.data?.data?.token,
-      //       })
-      //     );
-      //     // navigate(from, { replace: true });
-      //     navigate(location.state ? location.state : "/");
-      //   } else {
-      //     Swal.fire({
-      //       icon: "error",
-      //       title: "Login Failed!!",
-      //       text: "You are not a Valid",
-      //     });
-      //   }
-      // } else {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title:
-      //       response?.data?.message ||
-      //       response?.error?.data?.message ||
-      //       "Login Failed!!",
-      //     text: "Something went wrong. Please try again later.",
-      //   });
-      // }
+      if (response?.data?.status == 200) {
+        if (response?.data?.data?.user?.role === "ADMIN") {
+          localStorage.setItem("token", response?.data?.data?.token);
+          dispatch(
+            setUser({
+              user: response?.data?.data?.user,
+              token: response?.data?.data?.token,
+            })
+          );
+          // navigate(from, { replace: true });
+          navigate(location.state ? location.state : "/");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Login Failed!!",
+            text: "You are not a Valid",
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title:
+            response?.data?.message ||
+            response?.error?.data?.message ||
+            "Login Failed!!",
+          text: "Something went wrong. Please try again later.",
+        });
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
