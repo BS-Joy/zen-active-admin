@@ -15,7 +15,7 @@ const ForgotPassword = () => {
     try {
       const response = await forgotPassword(values);
       // console.log(response);
-      if (response?.data?.statusCode == 200) {
+      if (response?.data?.status == 200) {
         navigate(`/auth/verify-email/${values.email}`);
       } else {
         Swal.fire({

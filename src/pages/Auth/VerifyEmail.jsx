@@ -6,7 +6,8 @@ import image from "../../assets/images/verify.png";
 import PageHeading from "../../Components/PageHeading";
 import OTPInput from "react-otp-input";
 import Swal from "sweetalert2";
-// import { useVerifyEmailMutation } from "../../redux/features/Auth/authApi";
+import { useVerifyEmailMutation } from "../../redux/features/auth/authApi";
+
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -14,7 +15,8 @@ const VerifyEmail = () => {
   const email = location.state?.email;
   const { id } = useParams();
   const [otp, setOtp] = useState("");
-  // const [mutation, { isLoading }] = useVerifyEmailMutation();
+  const [mutation, { isLoading }] = useVerifyEmailMutation();
+
   const onFinish = async (values) => {
     if (isNaN(otp) || otp.length < 4) {
       return Swal.fire({
@@ -24,32 +26,32 @@ const VerifyEmail = () => {
       });
     }
     navigate(`/auth/reset-password`);
-    // try {
-    //   const response = await mutation({
-    //     email: id,
-    //     code: Number(otp),
-    //   });
-    //   // console.log(response);
-    //   if (response?.data?.statusCode == 200) {
-    //     localStorage.setItem("verify-token", response?.data?.data);
-    //     navigate(`/auth/reset-password`);
-    //   } else {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "failed!",
-    //       text:
-    //         response?.data?.message ||
-    //         response?.error?.data?.message ||
-    //         "Something went wrong. Please try again later.",
-    //     });
-    //   }
-    // } catch (error) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     // title: "Login Failed , Try Again...",
-    //     text: "Something went wrong. Please try again later.",
-    //   });
-    // }
+    try {
+      const response = await mutation({
+        email: id,
+        code: Number(otp),
+      });
+      // console.log(response);
+      if (response?.data?.statusCode == 200) {
+        localStorage.setItem("verify-token", response?.data?.data);
+        navigate(`/auth/reset-password`);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "failed!",
+          text:
+            response?.data?.message ||
+            response?.error?.data?.message ||
+            "Something went wrong. Please try again later.",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        // title: "Login Failed , Try Again...",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
   };
   return (
     <div className="min-h-[92vh] w-full grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-1 lg:gap-8">

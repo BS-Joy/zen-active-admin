@@ -16,7 +16,14 @@ const authApi = baseApi.injectEndpoints({
                 body: userInfo,
             })
         }),
+        verifyEmail: builder.mutation({
+            query: (userInfo) => ({
+                url: '/auth/verify-user',
+                method: 'PATCH',
+                body: userInfo,
+            })
+        }),
     })
 })
 
-export const { useLoginMutation, useForgotPasswordMutation } = authApi
+export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation } = authApi
