@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer, Rectangle } from "recharts";
+import { useGetAllTransactionQuery } from "../../../redux/features/transaction/transactionApi";
 
 const dataWeekly = [
     { day: "Mon", value: 120 },
@@ -75,6 +76,9 @@ const CustomTooltip = (props) => {
 const TransactionAreaChart = () => {
     const [data, setData] = useState(dataWeekly);
     const [filter, setFilter] = useState("weekly");
+    const { data: transactions } = useGetAllTransactionQuery(filter)
+    console.log(transactions);
+
 
     const handleFilterChange = (event) => {
         const type = event.target.value;
