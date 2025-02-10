@@ -5,10 +5,14 @@ import DashboardModal from "../../../Components/DashboardModal";
 import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
+import { useGetAllUserQuery } from "../../../redux/features/auth/authApi";
 
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const { data: allUsers } = useGetAllUserQuery()
+  console.log(allUsers);
+
 
   const showModal = (data) => {
     setIsModalOpen(true);

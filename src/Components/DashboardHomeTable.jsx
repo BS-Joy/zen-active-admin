@@ -10,8 +10,6 @@ const DashboardHomeTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const { data: recentTransactions } = useGetRecentTransactionsQuery()
-  console.log(recentTransactions?.data);
-
 
   const showModal = (data) => {
     setIsModalOpen(true);

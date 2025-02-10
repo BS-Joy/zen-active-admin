@@ -32,8 +32,14 @@ const authApi = baseApi.injectEndpoints({
         }),
         getTotalUsers: builder.query({
             query: () => '/user/total-user',
-        })
+        }),
+        getAllUser: builder.query({
+            query: (searchTerm) => ({
+                url: `/user?searchTerm=${searchTerm}`,
+                method: 'GET',
+            })
+        }),
     })
 })
 
-export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation, useGetTotalUsersQuery } = authApi
+export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation, useGetTotalUsersQuery, useGetAllUserQuery } = authApi
