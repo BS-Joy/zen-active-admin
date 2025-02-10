@@ -3,56 +3,59 @@ import Form from "antd/es/form/Form";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login.png";
-// import { useDispatch } from "react-redux";
-// import { usePostLoginMutation } from "../../redux/features/Auth/authApi";
+import { useDispatch } from "react-redux";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+
 // import { setUser } from "../../redux/features/Auth/authSlice";
 // import Swal from "sweetalert2";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // const dispatch = useDispatch();
-  // const [setData, { isLoading }] = usePostLoginMutation();
+  const dispatch = useDispatch();
+  const [login, { isLoading }] = useLoginMutation();
+
   const onFinish = async (values) => {
     navigate(location.state ? location.state : "/");
-    // try {
-    //   const response = await setData(values);
-    //   // console.log(response);
-    //   if (response?.data?.statusCode == 200) {
-    //     if (response?.data?.data?.user?.role === "ADMIN") {
-    //       localStorage.setItem("token", response?.data?.data?.token);
-    //       dispatch(
-    //         setUser({
-    //           user: response?.data?.data?.user,
-    //           token: response?.data?.data?.token,
-    //         })
-    //       );
-    //       // navigate(from, { replace: true });
-    //       navigate(location.state ? location.state : "/");
-    //     } else {
-    //       Swal.fire({
-    //         icon: "error",
-    //         title: "Login Failed!!",
-    //         text: "You are not a Valid",
-    //       });
-    //     }
-    //   } else {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title:
-    //         response?.data?.message ||
-    //         response?.error?.data?.message ||
-    //         "Login Failed!!",
-    //       text: "Something went wrong. Please try again later.",
-    //     });
-    //   }
-    // } catch (error) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Login Failed!!",
-    //     text: "Something went wrong. Please try again later.",
-    //   });
-    // }
+
+    try {
+      const response = await login(values);
+      console.log(response);
+      // if (response?.data?.statusCode == 200) {
+      //   if (response?.data?.data?.user?.role === "ADMIN") {
+      //     localStorage.setItem("token", response?.data?.data?.token);
+      //     dispatch(
+      //       setUser({
+      //         user: response?.data?.data?.user,
+      //         token: response?.data?.data?.token,
+      //       })
+      //     );
+      //     // navigate(from, { replace: true });
+      //     navigate(location.state ? location.state : "/");
+      //   } else {
+      //     Swal.fire({
+      //       icon: "error",
+      //       title: "Login Failed!!",
+      //       text: "You are not a Valid",
+      //     });
+      //   }
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title:
+      //       response?.data?.message ||
+      //       response?.error?.data?.message ||
+      //       "Login Failed!!",
+      //     text: "Something went wrong. Please try again later.",
+      //   });
+      // }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed!!",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
   };
   return (
     <div className="min-h-[92vh] w-full grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-1 lg:gap-8">
@@ -78,19 +81,19 @@ const SignIn = () => {
           >
             <Form.Item
               // label={<span className="font-medium text-base">Email</span>}
-              name="text"
-            // rules={[
-            //   {
-            //     type: "text",
-            //     message: "Please input a valid Email!",
-            //   },
-            //   {
-            //     required: true,
-            //     message: "Please input your Email!",
-            //   },
-            // ]}
+              name="email"
+              rules={[
+                {
+                  type: "email",
+                  message: "Please input a valid Email!",
+                },
+                {
+                  required: true,
+                  message: "Please input your Email!",
+                },
+              ]}
             >
-              <Input size="large" placeholder="User Name" style={{ border: '1px solid #2781B5', borderRadius: '7px' }} />
+              <Input size="large" placeholder="Email" style={{ border: '1px solid #2781B5', borderRadius: '7px' }} />
             </Form.Item>
             <Form.Item
               // label={<span className="font-medium text-base">Password</span>}
