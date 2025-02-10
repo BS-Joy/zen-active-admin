@@ -1,9 +1,14 @@
 import DashboardHomeTable from "../../../Components/DashboardHomeTable";
+import { useGetTotalUsersQuery } from "../../../redux/features/auth/authApi";
+import { useGetTotalEarningsQuery } from "../../../redux/features/transaction/transactionApi";
 import BarChartComponent from "./BarChart";
 import TransactionAreaChart from "./TransactionAreaChart";
 
 
 const DashboardHome = () => {
+  const { data: totalEarnings } = useGetTotalEarningsQuery()
+  const { data: totalUsers } = useGetTotalUsersQuery()
+  console.log(totalUsers.data.totalUsers);
 
   return (
     <div className="space-y-[24px]">
@@ -25,14 +30,14 @@ const DashboardHome = () => {
         <div className="flex items-center gap-6 px-[24px] bg-[#174C6B] border border-black  py-[20px] rounded-lg space-y-3  w-80">
           <div className="">
             <h3 className="text-[20px] text-white">{"Total Earnings"}</h3>
-            <h3 className="text-[30px] text-white font-extralight">$254.99</h3>
+            <h3 className="text-[30px] text-white font-extralight">${totalEarnings?.data?.totalEarn}</h3>
           </div>
         </div>
 
         <div className="flex items-center gap-6 border border-lightBlue px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#174C6B]">
           <div className="">
             <h3 className="text-[20px] text-gray font-semibold">{"Total Users"}</h3>
-            <h3 className="text-[30px] font-extralight text-[#2683EB]">6500</h3>
+            <h3 className="text-[30px] font-extralight text-[#2683EB]">{totalUsers?.data?.totalUsers}</h3>
           </div>
         </div>
 

@@ -30,7 +30,10 @@ const authApi = baseApi.injectEndpoints({
                 body: userInfo,
             })
         }),
+        getTotalUsers: builder.query({
+            query: () => '/user/total-user',
+        })
     })
 })
 
-export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation } = authApi
+export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation, useGetTotalUsersQuery } = authApi

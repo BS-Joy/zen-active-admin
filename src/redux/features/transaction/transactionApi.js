@@ -8,7 +8,10 @@ export const transactionApi = baseApi.injectEndpoints({
                 method: 'GET',
             })
         }),
+        getTotalEarnings: builder.query({
+            query: () => '/subscription/total-earn',
+        })
     })
 })
 
-export const { useGetAllTransactionQuery } = transactionApi
+export const { useGetAllTransactionQuery, useGetTotalEarningsQuery } = transactionApi
