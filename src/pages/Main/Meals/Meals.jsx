@@ -20,6 +20,7 @@ const Meals = () => {
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
     const { data: meals } = useGetAllMealQuery(query)
+    console.log(meals);
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -192,29 +193,43 @@ const Meals = () => {
                         maxWidth="500px"
                     >
                         <div>
-                            <h2 className="text-lg text-center mb-4">User Details</h2>
+                            <h2 className="text-lg text-center mb-4">Meal Details</h2>
                             {/* <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
               <p>#SL</p>
               <p>{modalData.transIs}</p>
             </div> */}
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>User Name</p>
-                                <p>{modalData.name}</p>
+                                <p>Meal Name</p>
+                                <p>{modalData.mealName}</p>
                             </div>
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Email</p>
-                                <p>{modalData.Email}</p>
+                                <p>Meal Type</p>
+                                <p>{modalData.mealTime}</p>
                             </div>
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Mobile Phone</p>
-                                <p>{modalData.Phone}</p>
+                                <p>Diet Category</p>
+                                <p>{modalData.category}</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Date</p>
-                                <p>{modalData.transIs}</p>
+                                <p>Calories</p>
+                                <p>{modalData.nutritionalInfo.calories}</p>
                             </div>
 
+                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+                                <p>Carbs</p>
+                                <p>{modalData.nutritionalInfo.carbs}</p>
+                            </div>
+
+                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+                                <p>Protiens</p>
+                                <p>{modalData.nutritionalInfo.proteins}</p>
+                            </div>
+
+                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+                                <p>Fats</p>
+                                <p>{modalData.nutritionalInfo.fats}</p>
+                            </div>
 
                             <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
                                 <button

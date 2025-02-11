@@ -7,23 +7,41 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
+import { useCreateMealMutation } from "../../../redux/features/meal/mealApi";
 
 
 const AddMeal = () => {
     const [form] = Form.useForm();
     const [features, setFeatures] = useState([""]);
+    const [createMeal, { isLoading }] = useCreateMealMutation();
+    const [file, setFile] = useState(null);
 
-    const addFeature = () => {
-        setFeatures([...features, ""]);
+    // Handle file selection
+    const handleFileChange = ({ file }) => {
+        setFile(file.originFileObj); // Save selected file
     };
 
-    const removeFeature = (index) => {
-        const newFeatures = features.filter((_, i) => i !== index);
-        setFeatures(newFeatures);
-    };
+    const onFinish = async (values) => {
+        if (!file) {
+            message.error("Please upload an image!");
+            return;
+        }
 
-    const onFinish = (values) => {
-        console.log('Form Values:', values);
+        // Create FormData
+        const formData = new FormData();
+        formData.append("image", file); // Append image
+        formData.append("data", JSON.stringify(values)); // Convert text fields to JSON
+
+        try {
+            const response = await createMeal(formData).unwrap();
+            console.log(response, 'response from add meal');
+
+            message.success("Meal created successfully!");
+            form.resetFields(); // Reset form
+            setFile(null); // Clear file
+        } catch (error) {
+            message.error(error.data?.message || "Failed to create meal.");
+        }
     };
     const navigate = useNavigate();
 
@@ -69,9 +87,10 @@ const AddMeal = () => {
                             {/* Section 1 */}
                             <Space direction="vertical" style={{ width: '100%', borderBottom: '1px solid #79CDFF' }}>
                                 <Space size="large" direction="horizontal" className="responsive-space">
+                                    {/* Name */}
                                     <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Meal Name</span>}
-                                        name="packageName"
+                                        name="mealName"
                                         className="responsive-form-item"
                                     // rules={[{ required: true, message: 'Please select a package name!' }]}
                                     >
@@ -86,22 +105,57 @@ const AddMeal = () => {
                                             justifyContent: 'space-between',
                                         }} />
                                     </Form.Item>
+
+                                    {/* Image */}
                                     <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
-                                        name="packageAmount"
+                                        name="image"
                                         className="responsive-form-item"
                                     // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                                     >
-                                        <Upload {...props}>
+                                        <Upload {...props}
+                                            onChange={handleFileChange}
+                                            maxCount={1}
+                                        >
                                             <Button style={{ width: '440px', height: '40px', border: '1px solid #79CDFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <span style={{ color: '#525252', fontSize: '16px', fontWeight: 600 }}>Select an image</span>
                                                 <CiCamera size={25} color="#174C6B" />
                                             </Button>
                                         </Upload>
                                     </Form.Item>
+
+                                    {/* Meal Type */}
                                     <Form.Item
-                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Meal Category</span>}
-                                        name="packageDuration"
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Meal Type</span>}
+                                        name="mealTime"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a duration!' }]}
+                                    >
+                                        <Select placeholder="Select Type"
+                                            style={{
+                                                height: '40px',
+                                                fontWeight: 600,
+                                                border: 'none', // Remove the custom border styling here
+                                                fontSize: '18px',
+                                                color: '#525252',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                            }}
+                                            dropdownStyle={{
+                                                border: '1px solid #79CDFF', // Custom border for dropdown if needed
+                                            }}
+                                        >
+                                            <Option value="breakfast">Breakfast</Option>
+                                            <Option value="lunch">Lunch</Option>
+                                            <Option value="dinner">Dinner</Option>
+                                        </Select>
+                                    </Form.Item>
+
+                                    {/* Meal Type */}
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Diet Category</span>}
+                                        name="category"
                                         className="responsive-form-item"
                                     // rules={[{ required: true, message: 'Please select a duration!' }]}
                                     >
@@ -120,9 +174,10 @@ const AddMeal = () => {
                                                 border: '1px solid #79CDFF', // Custom border for dropdown if needed
                                             }}
                                         >
-                                            <Option value="1_month">1 Month</Option>
-                                            <Option value="3_months">3 Months</Option>
-                                            <Option value="1_year">1 Year</Option>
+                                            <Option value="vegan">Vegan</Option>
+                                            <Option value="vegitarian">Vegitarian</Option>
+                                            <Option value="keto">Keto/Low Carb</Option>
+                                            <Option value="high-protein">High-Protein</Option>
                                         </Select>
                                     </Form.Item>
                                 </Space>
@@ -182,11 +237,11 @@ const AddMeal = () => {
                                             }} />
                                         </Form.Item>
                                         <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Facts</span>}
-                                            name="facts"
+                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Fats</span>}
+                                            name="fats"
                                             className="responsive-form-item-section-2"
                                         >
-                                            <Input placeholder="Add Facts" style={{
+                                            <Input placeholder="Add Fats" style={{
                                                 height: '40px',
                                                 border: '1px solid #79CDFF',
                                                 fontSize: '16px',

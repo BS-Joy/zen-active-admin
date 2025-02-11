@@ -1,6 +1,6 @@
 import { baseApi } from "../../api/baseApi";
 
-export const mealApi = baseApi.injectEndpoints({
+export const mealApi = baseApi.enhanceEndpoints({ addTagTypes: ['Meals'] }).injectEndpoints({
     endpoints: (builder) => ({
         getAllMeal: builder.query({
             query: (searchTerm) => {
@@ -9,10 +9,18 @@ export const mealApi = baseApi.injectEndpoints({
                     url: `/meal${queryParam}`,
                     method: 'GET',
                 };
-            }
+            },
+            providesTags: ['Meals']
         }),
-
+        createMeal: builder.mutation({
+            query: (meal) => ({
+                url: '/meal/create-meal',
+                method: 'POST',
+                body: meal,
+            }),
+            invalidatesTags: ['Meals']
+        }),
     })
 })
 
-export const { useGetAllMealQuery } = mealApi
+export const { useGetAllMealQuery, useCreateMealMutation } = mealApi
