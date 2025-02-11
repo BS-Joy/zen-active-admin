@@ -200,35 +200,35 @@ const Meals = () => {
             </div> */}
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Meal Name</p>
-                                <p>{modalData.mealName}</p>
+                                <p>{modalData?.mealName}</p>
                             </div>
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Meal Type</p>
-                                <p>{modalData.mealTime}</p>
+                                <p>{modalData?.mealTime}</p>
                             </div>
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Diet Category</p>
-                                <p>{modalData.category}</p>
+                                <p>{modalData?.category}</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Calories</p>
-                                <p>{modalData.nutritionalInfo.calories}</p>
+                                <p>{modalData?.nutritionalInfo?.calories}</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Carbs</p>
-                                <p>{modalData.nutritionalInfo.carbs}</p>
+                                <p>{modalData?.nutritionalInfo?.carbs}</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Protiens</p>
-                                <p>{modalData.nutritionalInfo.proteins}</p>
+                                <p>{modalData?.nutritionalInfo?.proteins}</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Fats</p>
-                                <p>{modalData.nutritionalInfo.fats}</p>
+                                <p>{modalData?.nutritionalInfo?.fats}</p>
                             </div>
 
                             <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">

@@ -27,10 +27,21 @@ const AddMeal = () => {
             return;
         }
 
+        // Restructure the form data to include nutritionalInfo
+        const formattedData = {
+            ...values, // Spread other fields
+            nutritionalInfo: {
+                calories: Number(values.calories),
+                carbs: Number(values.carbs),
+                proteins: Number(values.proteins),
+                fats: Number(values.fats),
+            },
+        };
+
         // Create FormData
         const formData = new FormData();
         formData.append("image", file); // Append image
-        formData.append("data", JSON.stringify(values)); // Convert text fields to JSON
+        formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
 
         try {
             const response = await createMeal(formData).unwrap();
@@ -146,9 +157,10 @@ const AddMeal = () => {
                                                 border: '1px solid #79CDFF', // Custom border for dropdown if needed
                                             }}
                                         >
-                                            <Option value="breakfast">Breakfast</Option>
-                                            <Option value="lunch">Lunch</Option>
-                                            <Option value="dinner">Dinner</Option>
+                                            <Option value="Breakfast">Breakfast</Option>
+                                            <Option value="Lunch">Lunch</Option>
+                                            <Option value="Dinner">Dinner</Option>
+                                            <Option value="Snacks">Snacks</Option>
                                         </Select>
                                     </Form.Item>
 
@@ -241,7 +253,7 @@ const AddMeal = () => {
                                             name="fats"
                                             className="responsive-form-item-section-2"
                                         >
-                                            <Input placeholder="Add Fats" style={{
+                                            <Input type="number" placeholder="Add Fats" style={{
                                                 height: '40px',
                                                 border: '1px solid #79CDFF',
                                                 fontSize: '16px',

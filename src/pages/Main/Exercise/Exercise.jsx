@@ -9,13 +9,19 @@ import mealImg from "../../../assets/images/meal.png";
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
+import { useGetAllExerciseQuery } from "../../../redux/features/exercise/exerciseApi";
 
 
 
 const Exercise = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
+    const [searchTerm, setSearchTerm] = useState(""); // State to store search input
+    const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
+    const { data: exercises } = useGetAllExerciseQuery(query)
+    console.log(exercises);
+
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -30,9 +36,9 @@ const Exercise = () => {
             render: (text) => <a>{text}</a>,
         },
         {
-            title: "Challenge Name",
-            dataIndex: "name",
-            key: "name",
+            title: "Exercise Name",
+            dataIndex: "exerciseName",
+            key: "exerciseName",
         },
         {
             title: "Duration",

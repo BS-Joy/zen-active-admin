@@ -9,13 +9,19 @@ import workoutImg from "../../../assets/images/workout-image.png";
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
+import { useGetAllWorkoutQuery } from "../../../redux/features/workout/workoutApi";
 
 
 
 const Workouts = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
+    const [searchTerm, setSearchTerm] = useState(""); // State to store search input
+    const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
+    const { data: workouts } = useGetAllWorkoutQuery(query)
+    console.log(workouts);
+
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -122,7 +128,7 @@ const Workouts = () => {
                         <h3 className="text-2xl text-black mb-4 pl-2">Workout Plans</h3>
                         <div className="flex items-center gap-4 mb-6">
 
-                            <Input placeholder="Search meals by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }} />
+                            <Input placeholder="Search workouts by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }} />
                             {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
                                              <IoSearch />
                                            </Button> */}
