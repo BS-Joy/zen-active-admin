@@ -1,12 +1,12 @@
 import { baseApi } from "../../api/baseApi";
 
-export const mealApi = baseApi.injectEndpoints({
+export const exerciseApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllMeal: builder.query({
+        getAllExercise: builder.query({
             query: (searchTerm) => {
                 const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : '';
                 return {
-                    url: `/meal${queryParam}`,
+                    url: `/exercise${queryParam}`,
                     method: 'GET',
                 };
             }
@@ -15,4 +15,4 @@ export const mealApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useGetAllMealQuery } = mealApi
+export const { useGetAllExerciseQuery } = exerciseApi

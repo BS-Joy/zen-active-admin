@@ -16,30 +16,49 @@ import { useGetAllMealQuery } from "../../../redux/features/meal/mealApi";
 const Meals = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
+    const [searchTerm, setSearchTerm] = useState(""); // State to store search input
+    const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
-    const { data: meals } = useGetAllMealQuery()
-    console.log(meals);
-
+    const { data: meals } = useGetAllMealQuery(query)
 
     const showModal = (data) => {
         setIsModalOpen(true);
         setModalData(data);
     };
 
+    // Handle search input change
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+        console.log(searchTerm);
+
+    };
+
+    // Trigger search when button is clicked
+    const handleSearch = () => {
+        setQuery(searchTerm);
+
+    };
+
+    console.log(query, 'queyr');
     const columns = [
         {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
+            title: "Meal Image",
+            dataIndex: "mealImage",
+            key: "mealImage",
             render: (text) => <a>{text}</a>,
         },
         {
             title: "Name",
-            dataIndex: "name",
-            key: "name",
+            dataIndex: "mealName",
+            key: "mealName",
         },
         {
-            title: "Category",
+            title: "Meal Type",
+            dataIndex: "mealType",
+            key: "mealType",
+        },
+        {
+            title: "Diet Category",
             dataIndex: "category",
             key: "category",
         },
@@ -106,31 +125,26 @@ const Meals = () => {
         },
     ];
 
-    const data = [];
-    for (let index = 0; index < 6; index++) {
-        data.push({
-            // transIs: `${index + 1}`,
-            image: <div className="flex items-center justify-center">
-                <img src={mealImg} alt="" className="w-10 h-10" />
-            </div>,
-            name: "Grilled Chicken Salad",
-            category: <Dropdown menu={{ items }} trigger={['click']}>
-                <a onClick={(e) => e.preventDefault()}>
-                    <Space style={{ color: '#174C6B', backgroundColor: '#C1E8FF', padding: '5px 10px', borderRadius: '5px' }}>
-                        <DownOutlined />
-                        Lunch
-                    </Space>
-                </a>
-            </Dropdown>,
-            calories: "350 kcal",
-            carbs: "12g",
-            protiens: "35g",
-            fats: "8g",
-            Review: "See Review",
-            date: "16 Apr 2024",
-            _id: index,
-        });
-    }
+    const data = meals?.data?.map((meal, index) => ({
+        key: index,
+        mealImage:
+            <div className="flex items-center justify-center">
+                <img
+                    src={meal.image || "https://via.placeholder.com/40"} // Use placeholder if no image
+                    alt="meal"
+                    className="w-10 h-10 rounded-full object-cover"
+                />
+            </div>
+        ,
+        mealName: meal.mealName,
+        mealType: meal.mealTime,
+        category: meal.category,
+        calories: meal.nutritionalInfo.calories,
+        carbs: meal.nutritionalInfo.carbs,
+        protiens: meal.nutritionalInfo.proteins,
+        fats: meal.nutritionalInfo.fats,
+        ...meal,
+    })) || [];
 
 
 
@@ -144,13 +158,23 @@ const Meals = () => {
                     <div className="flex justify-between px-2">
                         <h3 className="text-2xl text-black mb-4 pl-2">Meal List</h3>
                         <div className="flex items-center gap-4 mb-6">
-                            <DatePicker placeholder="Date" className="w-48 border-2 border-[#174C6B]" />
-                            <Input placeholder="Subscription" className="w-48 border-2 border-[#174C6B] placeholder:text-[#174C6B]" style={{ border: '2px solid #174C6B' }} />
-                            <Input placeholder="User Name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '2px solid #174C6B' }} />
+
+                            <Input
+                                placeholder="Search meals by name..."
+                                className="w-48 placeholder:text-[#174C6B]"
+                                style={{ border: '1px solid #79CDFF' }}
+                                value={searchTerm || ''}
+                                onChange={handleSearchChange}
+                            />
                             {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
                      <IoSearch />
                    </Button> */}
-                            <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}><IoSearch size={20} /></button>
+                            <button
+                                style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}
+                                onClick={handleSearch}
+                            >
+                                <IoSearch size={20} />
+                            </button>
                         </div>
                     </div>
                     {/* Ant Design Table */}

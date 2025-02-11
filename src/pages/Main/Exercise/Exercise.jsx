@@ -115,14 +115,14 @@ const Exercise = () => {
         <div>
             <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-challenge")}>
                 <FaPlus />
-                Add Badge</button>
+                Add Exercise</button>
             <div className="py-10">
                 <div className="rounded-lg border-2 py-4 border-[#174C6B]/80 mt-8 recent-users-table">
                     <div className="flex justify-between px-2">
-                        <h3 className="text-2xl font-semibold text-black mb-4 pl-2">Challenges List</h3>
+                        <h3 className="text-2xl font-semibold text-black mb-4 pl-2">Exercises List</h3>
                         <div className="flex items-center gap-4 mb-6">
 
-                            <Input placeholder="Search meals by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }} />
+                            <Input placeholder="Search exercises by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }} />
                             {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
                      <IoSearch />
                    </Button> */}
