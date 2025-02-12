@@ -18,6 +18,8 @@ const EditMyProfile = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { data: me, isLoading, error } = useGetMeQuery()
+  console.log(me);
+
 
   const [editProfile] = useEditProfileMutation()
 
@@ -30,24 +32,36 @@ const EditMyProfile = () => {
     navigate(-1); // This takes the user back to the previous page
   };
   const onFinish = async (values) => {
-
     // Restructure the form data to include nutritionalInfo
     const formattedData = {
       ...values, // Spread other fields
       name: {
-        firstName: values.firstName,
-        lastName: values.lastName
+        firstName: values.firstName || me?.data?.name?.firstName, // Ensure values are not undefined
+        lastName: values.lastName || me?.data?.name?.lastName,
       }
     };
 
+    // Remove firstName and lastName if they are empty
+    if (!formattedData.name.firstName && !formattedData.name.lastName) {
+      delete formattedData.name;
+    }
+
+    // Remove other empty or undefined fields
+    Object.keys(formattedData).forEach(
+      (key) => (formattedData[key] === "" || formattedData[key] === undefined) && delete formattedData[key]
+    );
+
+    console.log(formattedData);
+
+
     // Create FormData
     const formData = new FormData();
-    formData.append("image", file); // Append image
+    if (file) {
+      formData.append("image", file);
+    }
     formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
 
     try {
-      console.log(formData);
-
       const response = await editProfile(formData).unwrap();
       console.log(response, 'response from edit profile');
 
@@ -62,12 +76,14 @@ const EditMyProfile = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
   const profileData = {
     firstName: me?.data?.name?.firstName || '',
     lastName: me?.data?.name?.lastName || '',
     phone: me?.data?.phone || '',
-    profile: dashProfile,
+    profile: me?.data.image || dashProfile,
   };
+
 
   const props = {
     name: 'file',
