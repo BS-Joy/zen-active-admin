@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Upload } from "antd";
 import dashProfile from "../../assets/images/dashboard-profile.png";
 // import "react-phone-number-input/style.css";
 // import PhoneInput from "react-phone-number-input";
@@ -10,12 +10,19 @@ import PageHeading from "../../Components/PageHeading";
 import { PiCameraPlus } from "react-icons/pi";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useEditProfileMutation, useGetMeQuery } from "../../redux/features/auth/authApi";
+import { IoCameraOutline } from "react-icons/io5";
 
 const EditMyProfile = () => {
   const [code, setCode] = useState();
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
   const { data: me, isLoading, error } = useGetMeQuery()
   const [editProfile] = useEditProfileMutation()
+
+  // Handle file selection
+  const handleFileChange = ({ file }) => {
+    setFile(file.originFileObj); // Save selected file
+  };
 
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
@@ -32,7 +39,24 @@ const EditMyProfile = () => {
     phone: me?.data?.phone || '',
     profile: dashProfile,
   };
-  // console.log(code);
+
+  const props = {
+    name: 'file',
+    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
 
   return (
     <>
@@ -60,13 +84,25 @@ const EditMyProfile = () => {
             >
               <div className="col-span-3 space-y-6 ">
                 <div className="min-h-[300px] flex flex-col items-center justify-center p-8 border border-black bg-lightGray/15">
-                  <div className="my-2">
+                  <Form.Item
+                    name='image'
+                    className="my-2 relative">
                     <img
                       src={dashProfile}
                       alt=""
                       className="h-28 w-28 rounded-full border-4 border-black"
                     />
-                  </div>
+                    <Upload {...props}
+                      onChange={handleFileChange}
+                      maxCount={1}
+                    >
+
+                      <div className="absolute bottom-2 right-9 bg-[#174C6B] p-2 rounded-full cursor-pointer">
+                        <IoCameraOutline size={23} color="white" />
+                      </div>
+                    </Upload>
+
+                  </Form.Item>
                   <h5 className="text-lg text-[#222222]">{"Profile"}</h5>
                   <h4 className="text-2xl text-[#222222]">{"Admin"}</h4>
                 </div>
