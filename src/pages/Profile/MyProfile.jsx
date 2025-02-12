@@ -19,7 +19,8 @@ const MyProfile = () => {
 
 
   const profileData = {
-    name: me?.data?.name,
+    firstName: me?.data?.name?.firstName,
+    lastName: me?.data?.name?.lastName,
     email: me?.data?.email,
     phone: me?.data?.phone,
     profile: dashProfile,
@@ -63,7 +64,8 @@ const MyProfile = () => {
                 className="w-full grid grid-cols-12 gap-x-10 px-14 py-8"
                 autoComplete="off"
                 initialValues={{
-                  name: profileData.name,
+                  firstName: profileData.firstName,
+                  lastName: profileData.lastName
                 }}
               >
                 <div className="col-span-3 space-y-6 ">
@@ -83,8 +85,20 @@ const MyProfile = () => {
                 <div className="col-span-9 space-y-[14px] w-full">
                   <Form.Item
                     className="text-lg  font-medium text-black -mb-1"
-                    label="Name"
-                    name="name"
+                    label="First Name"
+                    name="firstName"
+                  >
+                    <Input
+                      readOnly
+                      size="large"
+                      className="h-[53px] rounded-lg"
+                    />
+                  </Form.Item>
+
+                  <Form.Item
+                    className="text-lg  font-medium text-black -mb-1"
+                    label="Last Name"
+                    name="lastName"
                   >
                     <Input
                       readOnly

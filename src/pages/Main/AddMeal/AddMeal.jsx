@@ -177,9 +177,9 @@ const AddMeal = () => {
                                         </Select>
                                     </Form.Item>
 
-                                    {/* Diet category */}
+                                    {/*  category */}
                                     <Form.Item
-                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Diet Category</span>}
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Category</span>}
                                         name="category"
                                         className="responsive-form-item"
                                     // rules={[{ required: true, message: 'Please select a duration!' }]}
