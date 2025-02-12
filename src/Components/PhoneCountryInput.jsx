@@ -4,7 +4,7 @@ import PhoneInput from "react-phone-number-input";
 import { Input, Select } from "antd";
 import { FlagIcon } from 'react-world-flags';
 
-const PhoneCountryInput = ({ disabled }) => {
+const PhoneCountryInput = ({ value, onChange, disabled }) => {
   const [phoneNumber, setPhoneNumber] = useState("+1 4575454545");
   const [countryCode, setCountryCode] = useState("US");
   // console.log(phoneNumber);
@@ -22,8 +22,10 @@ const PhoneCountryInput = ({ disabled }) => {
       //   marginTop: "1px",
       // }}
       defaultCountry="RU"
-      value={phoneNumber?.toString()}
-      onChange={setPhoneNumber}
+      // value={phoneNumber?.toString()}
+      // onChange={setPhoneNumber}
+      value={value} // Accept value from Form.Item
+      onChange={onChange}
     />
     // <Input.Group compact style={{ display: 'flex', alignItems: 'center' }}>
     //   {/* Flag and Country Code */}

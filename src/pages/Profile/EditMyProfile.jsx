@@ -9,10 +9,13 @@ import PhoneCountryInput from "../../Components/PhoneCountryInput";
 import PageHeading from "../../Components/PageHeading";
 import { PiCameraPlus } from "react-icons/pi";
 import { FaAngleLeft } from "react-icons/fa6";
+import { useEditProfileMutation, useGetMeQuery } from "../../redux/features/auth/authApi";
 
 const EditMyProfile = () => {
   const [code, setCode] = useState();
   const navigate = useNavigate();
+  const { data: me, isLoading, error } = useGetMeQuery()
+  const [editProfile] = useEditProfileMutation()
 
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
@@ -24,9 +27,9 @@ const EditMyProfile = () => {
     console.log("Failed:", errorInfo);
   };
   const profileData = {
-    name: "Jane Kooper",
-    email: "enrique@gmail.com",
-    phone: "+880 150597212",
+    name: me?.data?.name || '',
+    email: me?.data?.email || '',
+    phone: me?.data?.phone || '',
     profile: dashProfile,
   };
   // console.log(code);
@@ -73,9 +76,9 @@ const EditMyProfile = () => {
                   className="text-lg  font-medium text-black -mb-1"
                   label="Name"
                   name="name"
+                  rules={[{ required: true, message: "Please enter your name!" }]}
                 >
                   <Input
-                    readOnly
                     size="large"
                     className="h-[53px] rounded-lg"
                   />
@@ -84,9 +87,12 @@ const EditMyProfile = () => {
                   className="text-lg  font-medium text-black"
                   label="Email"
                   name="email"
+                  rules={[
+                    { required: true, message: "Please enter your email!" },
+                    { type: "email", message: "Enter a valid email!" },
+                  ]}
                 >
                   <Input
-                    readOnly
                     size="large"
                     className="h-[53px] rounded-lg"
                   />
@@ -95,6 +101,8 @@ const EditMyProfile = () => {
                   className="text-lg text-[#222222] font-medium"
                   label="Phone Number"
                   name="phone"
+                  rules={[{ required: true, message: "Please enter your phone number!" }]}
+                  getValueFromEvent={(value) => value} // Extracts the value from the child component
                 >
                   <PhoneCountryInput />
                 </Form.Item>
@@ -103,6 +111,7 @@ const EditMyProfile = () => {
                     // onClick={(e) => navigate(`edit`)}
                     size="large"
                     type="primary"
+                    htmlType="submit"
                     className="px-8 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11"
                   >
                     Save Changes
