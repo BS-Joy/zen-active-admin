@@ -1,10 +1,11 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import Quill from "quill";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
+import { useEditPrivacyMutation, useGetPrivacyQuery } from "../../redux/features/setting/settingApi";
 
 // Import 'size' style attributor
 const Size = Quill.import("attributors/style/size");
@@ -44,11 +45,41 @@ const formats = [
 const EditPrivacyPolicy = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
+  const { data: privacy, isLoading: isFetchingPrivacy } = useGetPrivacyQuery();
+  const [editPrivacy, { isLoading }] = useEditPrivacyMutation();
+
+  const handleBackButtonClick = () => {
+    navigate(-1); // This takes the user back to the previous page
+  };
+
+  // Set existing terms in the editor when data is fetched
+  useEffect(() => {
+    if (privacy?.data?.privacy) {
+      setContent(privacy.data.privacy);
+    }
+  }, [privacy]); // Run when `terms` changes
+
+
+  const handleUpdate = async () => {
+    if (!content.trim()) {
+      message.error("Privacy policy cannot be empty!");
+      return;
+    }
+
+    try {
+      await editPrivacy({ privacy: content }).unwrap(); // Call the mutation
+      message.success("Privacy policy updated successfully!");
+    } catch (error) {
+      message.error("Failed to update Privacy policy.");
+    }
+  };
+
+
   const placeholder = "Enter your update privacy policy...";
   console.log(content);
   return (
     <>
-      <div className="flex items-center gap-2 text-xl">
+      <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
         <FaAngleLeft />
         <h1>Privacy & Policy</h1>
       </div>
@@ -93,12 +124,13 @@ const EditPrivacyPolicy = () => {
           </div>
           <div className="flex justify-end pt-8 pr-16">
             <Button
-              onClick={(e) => navigate(`edit`)}
               size="large"
               type="primary"
+              onClick={handleUpdate}
+              loading={isLoading}
               className="px-8 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11 min-w-[300px]"
             >
-              Update
+              {isLoading ? "Updating..." : "Update"}
             </Button>
           </div>
         </div>

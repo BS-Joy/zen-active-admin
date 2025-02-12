@@ -15,6 +15,6 @@ export const baseApi = createApi({
         },
         credentials: 'include',
     }),
-    tagTypes: ['Meals', 'Terms'],
+    tagTypes: ['Meals', 'Terms', 'Privacy'],
     endpoints: () => ({})
 })
