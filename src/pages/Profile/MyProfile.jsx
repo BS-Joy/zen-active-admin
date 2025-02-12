@@ -8,16 +8,20 @@ import PageHeading from "../../Components/PageHeading";
 import PasswordChangeModalForm from "../../Components/User/PasswordChangeModalForm";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
+import { useGetMeQuery } from "../../redux/features/auth/authApi";
 
 
 const MyProfile = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: me, isLoading, error } = useGetMeQuery()
+  console.log(me?.data);
+
 
   const profileData = {
-    name: "Jane Kooper",
-    email: "enrique@gmail.com",
-    phone: "+880 1550597212",
+    name: me?.data?.name,
+    email: me?.data?.email,
+    phone: me?.data?.phone,
     profile: dashProfile,
   };
 
@@ -67,7 +71,7 @@ const MyProfile = () => {
                   <div className="min-h-[300px] flex flex-col items-center justify-center p-8 border border-black bg-lightGray/15">
                     <div className="my-2">
                       <img
-                        src={dashProfile}
+                        src={me?.data?.image}
                         alt=""
                         className="h-28 w-28 rounded-full border-4 border-black"
                       />

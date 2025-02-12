@@ -26,7 +26,7 @@ const Exercise = () => {
     const showModal = (data) => {
         setIsModalOpen(true);
         setModalData(data);
-    };
+    }; 
 
     const columns = [
         {
