@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import PageHeading from "../../Components/PageHeading";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import Quill from "quill";
-import { useEditTermsMutation } from "../../redux/features/setting/settingApi";
+import { useEditTermsMutation, useGetTermQuery } from "../../redux/features/setting/settingApi";
 
 // Import 'size' style attributor
 const Size = Quill.import("attributors/style/size");
@@ -45,7 +45,15 @@ const formats = [
 const EditTermsConditions = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
+  const { data: terms, isLoading: isFetchingTerms } = useGetTermQuery();
   const [editTerms, { isLoading }] = useEditTermsMutation();
+
+  // Set existing terms in the editor when data is fetched
+  useEffect(() => {
+    if (terms?.data?.terms) {
+      setContent(terms.data.terms);
+    }
+  }, [terms]); // Run when `terms` changes
 
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
@@ -100,7 +108,7 @@ const EditTermsConditions = () => {
                 <ReactQuill
                   placeholder="Enter your update terms & conditions..."
                   theme="snow"
-                  value={content || ""}
+                  value={content}
                   onChange={(value) => setContent(value)}
                   modules={modules}
                   formats={formats}
