@@ -42,6 +42,7 @@ const AddMeal = () => {
         const formData = new FormData();
         formData.append("image", file); // Append image
         formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
+        console.log(formData);
 
         try {
             const response = await createMeal(formData).unwrap();

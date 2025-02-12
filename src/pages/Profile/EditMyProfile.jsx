@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Upload } from "antd";
+import { Button, Form, Input, message, Upload } from "antd";
 import dashProfile from "../../assets/images/dashboard-profile.png";
 // import "react-phone-number-input/style.css";
 // import PhoneInput from "react-phone-number-input";
@@ -15,8 +15,10 @@ import { IoCameraOutline } from "react-icons/io5";
 const EditMyProfile = () => {
   const [code, setCode] = useState();
   const [file, setFile] = useState(null);
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const { data: me, isLoading, error } = useGetMeQuery()
+
   const [editProfile] = useEditProfileMutation()
 
   // Handle file selection
@@ -27,15 +29,42 @@ const EditMyProfile = () => {
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
   };
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+
+    // Restructure the form data to include nutritionalInfo
+    const formattedData = {
+      ...values, // Spread other fields
+      name: {
+        firstName: values.firstName,
+        lastName: values.lastName
+      }
+    };
+
+    // Create FormData
+    const formData = new FormData();
+    formData.append("image", file); // Append image
+    formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
+
+    try {
+      console.log(formData);
+
+      const response = await editProfile(formData).unwrap();
+      console.log(response, 'response from edit profile');
+
+      message.success("Profile edited successfully!");
+      form.resetFields(); // Reset form
+      setFile(null); // Clear file
+    } catch (error) {
+      message.error(error.data?.message || "Failed to edit profile.");
+    }
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
   const profileData = {
-    name: me?.data?.name || '',
-    email: me?.data?.email || '',
+    firstName: me?.data?.name?.firstName || '',
+    lastName: me?.data?.name?.lastName || '',
     phone: me?.data?.phone || '',
     profile: dashProfile,
   };
@@ -78,8 +107,8 @@ const EditMyProfile = () => {
               onFinishFailed={onFinishFailed}
               autoComplete="off"
               initialValues={{
-                name: profileData.name,
-                email: profileData.email,
+                firstName: profileData.firstName,
+                lastName: profileData.lastName,
               }}
             >
               <div className="col-span-3 space-y-6 ">
@@ -110,9 +139,9 @@ const EditMyProfile = () => {
               <div className="col-span-9 space-y-[14px] w-full">
                 <Form.Item
                   className="text-lg  font-medium text-black -mb-1"
-                  label="Name"
-                  name="name"
-                  rules={[{ required: true, message: "Please enter your name!" }]}
+                  label="First Name"
+                  name="firstName"
+                // rules={[{ required: true, message: "Please enter your first name!" }]}
                 >
                   <Input
                     size="large"
@@ -120,13 +149,10 @@ const EditMyProfile = () => {
                   />
                 </Form.Item>
                 <Form.Item
-                  className="text-lg  font-medium text-black"
-                  label="Email"
-                  name="email"
-                  rules={[
-                    { required: true, message: "Please enter your email!" },
-                    { type: "email", message: "Enter a valid email!" },
-                  ]}
+                  className="text-lg  font-medium text-black -mb-1"
+                  label="Last Name"
+                  name="lastName"
+                // rules={[{ required: true, message: "Please enter your last name!" }]}
                 >
                   <Input
                     size="large"
@@ -137,7 +163,7 @@ const EditMyProfile = () => {
                   className="text-lg text-[#222222] font-medium"
                   label="Phone Number"
                   name="phone"
-                  rules={[{ required: true, message: "Please enter your phone number!" }]}
+                  // rules={[{ required: true, message: "Please enter your phone number!" }]}
                   getValueFromEvent={(value) => value} // Extracts the value from the child component
                 >
                   <PhoneCountryInput />

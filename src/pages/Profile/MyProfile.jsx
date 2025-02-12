@@ -64,7 +64,6 @@ const MyProfile = () => {
                 autoComplete="off"
                 initialValues={{
                   name: profileData.name,
-                  email: profileData.email,
                 }}
               >
                 <div className="col-span-3 space-y-6 ">
@@ -86,17 +85,6 @@ const MyProfile = () => {
                     className="text-lg  font-medium text-black -mb-1"
                     label="Name"
                     name="name"
-                  >
-                    <Input
-                      readOnly
-                      size="large"
-                      className="h-[53px] rounded-lg"
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    className="text-lg  font-medium text-black"
-                    label="Email"
-                    name="email"
                   >
                     <Input
                       readOnly
