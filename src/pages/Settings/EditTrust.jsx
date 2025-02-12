@@ -1,11 +1,12 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import PageHeading from "../../Components/PageHeading";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import Quill from "quill";
+import { useEditAboutMutation, useGetAboutQuery } from "../../redux/features/setting/settingApi";
 
 // Import 'size' style attributor
 const Size = Quill.import("attributors/style/size");
@@ -44,11 +45,38 @@ const formats = [
 const EditTrust = () => {
     const navigate = useNavigate();
     const [content, setContent] = useState("");
-    console.log(content);
+    const { data: about, isLoading: isFetchingAbout } = useGetAboutQuery();
+    const [editAbout, { isLoading }] = useEditAboutMutation();
+
+    const handleBackButtonClick = () => {
+        navigate(-1); // This takes the user back to the previous page
+    };
+
+    // Set existing terms in the editor when data is fetched
+    useEffect(() => {
+        if (about?.data?.about) {
+            setContent(about.data.about);
+        }
+    }, [about]); // Run when `terms` changes
+
+
+    const handleUpdate = async () => {
+        if (!content.trim()) {
+            message.error("About cannot be empty!");
+            return;
+        }
+
+        try {
+            await editAbout({ about: content }).unwrap(); // Call the mutation
+            message.success("About updated successfully!");
+        } catch (error) {
+            message.error("Failed to update About.");
+        }
+    };
 
     return (
         <>
-            <div className="flex items-center gap-2 text-xl">
+            <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
                 <FaAngleLeft />
                 <h1>About us </h1>
             </div>
@@ -93,12 +121,13 @@ const EditTrust = () => {
                     </div>
                     <div className="flex justify-end pt-8 pr-16">
                         <Button
-                            onClick={(e) => navigate(`edit`)}
                             size="large"
                             type="primary"
+                            onClick={handleUpdate}
+                            loading={isLoading}
                             className="px-8 h-12 bg-[#174C6B] text-white hover:bg-black/90 rounded-full font-semibold w-1/4"
                         >
-                            Update
+                            {isLoading ? "Updating..." : "Update"}
                         </Button>
                     </div>
                 </div>

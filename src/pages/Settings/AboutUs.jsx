@@ -2,8 +2,10 @@ import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import PageHeading from "../../Components/PageHeading";
 
+
 const AboutUs = () => {
   const navigate = useNavigate();
+
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
   };

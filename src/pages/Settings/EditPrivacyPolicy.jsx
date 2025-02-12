@@ -74,9 +74,6 @@ const EditPrivacyPolicy = () => {
     }
   };
 
-
-  const placeholder = "Enter your update privacy policy...";
-  console.log(content);
   return (
     <>
       <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>

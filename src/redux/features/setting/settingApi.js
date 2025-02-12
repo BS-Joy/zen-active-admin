@@ -1,6 +1,6 @@
 import { baseApi } from "../../api/baseApi";
 
-export const settingApi = baseApi.enhanceEndpoints({ addTagTypes: ['Terms', 'Privacy'] }).injectEndpoints({
+export const settingApi = baseApi.enhanceEndpoints({ addTagTypes: ['Terms', 'Privacy', 'About'] }).injectEndpoints({
     endpoints: (builder) => ({
         getTerm: builder.query({
             query: () => '/privacy&terms/terms',
@@ -26,7 +26,19 @@ export const settingApi = baseApi.enhanceEndpoints({ addTagTypes: ['Terms', 'Pri
             }),
             invalidatesTags: ['Privacy']
         }),
+        getAbout: builder.query({
+            query: () => '/privacy&terms/about-us',
+            providesTags: ['About']
+        }),
+        editAbout: builder.mutation({
+            query: (about) => ({
+                url: `/privacy&terms/about-us`,
+                method: 'POST',
+                body: about
+            }),
+            invalidatesTags: ['About']
+        }),
     })
 })
 
-export const { useGetTermQuery, useEditTermsMutation, useGetPrivacyQuery, useEditPrivacyMutation } = settingApi
+export const { useGetTermQuery, useEditTermsMutation, useGetPrivacyQuery, useEditPrivacyMutation, useGetAboutQuery, useEditAboutMutation } = settingApi
