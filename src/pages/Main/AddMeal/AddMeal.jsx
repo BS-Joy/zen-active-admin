@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
-import { Form, Input, Button, Select, Space } from 'antd';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { Form, Input, Button, Select, Space, Radio } from 'antd';
 const { Option } = Select;
 import { FaAngleLeft } from "react-icons/fa6";
-import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
 import { useCreateMealMutation } from "../../../redux/features/meal/mealApi";
@@ -19,6 +17,19 @@ const AddMeal = () => {
     // Handle file selection
     const handleFileChange = ({ file }) => {
         setFile(file.originFileObj); // Save selected file
+    };
+
+    // Logic for multi select input
+    const options = [
+        { value: "Vegan", label: "Vegan" },
+        { value: "Vegetarian", label: "Vegetarian" },
+        { value: "No Preference", label: "No Preference" },
+        { value: "Keto/Low Carb", label: "Keto/Low Carb" },
+        { value: "Gluten-Free", label: "Gluten-Free" },
+    ];
+
+    const handleMultiSelectChange = (value) => {
+        console.log(`Selected: ${value}`);
     };
 
     const onFinish = async (values) => {
@@ -55,6 +66,7 @@ const AddMeal = () => {
             message.error(error.data?.message || "Failed to create meal.");
         }
     };
+
     const navigate = useNavigate();
 
     const handleBackButtonClick = () => {
@@ -165,7 +177,7 @@ const AddMeal = () => {
                                         </Select>
                                     </Form.Item>
 
-                                    {/* Meal Type */}
+                                    {/* Diet category */}
                                     <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Diet Category</span>}
                                         name="category"
@@ -192,6 +204,45 @@ const AddMeal = () => {
                                             <Option value="keto">Keto/Low Carb</Option>
                                             <Option value="high-protein">High-Protein</Option>
                                         </Select>
+                                    </Form.Item>
+
+                                    {/* Suitable for  */}
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Suitable For:</span>}
+                                        name="suitableFor"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a duration!' }]}
+                                    >
+                                        <Select
+                                            mode="multiple"
+                                            size={'middle'}
+                                            placeholder="Please select"
+                                            defaultValue={['Vegetarian']}
+                                            onChange={handleMultiSelectChange}
+                                            style={{
+                                                width: '100%',
+                                            }}
+                                            options={options}
+                                        />
+                                    </Form.Item>
+
+                                    {/* Amount */}
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Amount</span>}
+                                        name="amount"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a duration!' }]}
+                                    >
+                                        <Input type="number" placeholder="Add Amount" style={{
+                                            height: '40px',
+                                            border: '1px solid #79CDFF',
+                                            fontSize: '16px',
+                                            fontWeight: 600,
+                                            color: '#525252',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                        }} />
                                     </Form.Item>
                                 </Space>
                             </Space>
