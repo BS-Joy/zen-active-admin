@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import PageHeading from "../../Components/PageHeading";
 import ReactQuill from "react-quill";
@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import Quill from "quill";
+import { useEditTermsMutation } from "../../redux/features/setting/settingApi";
 
 // Import 'size' style attributor
 const Size = Quill.import("attributors/style/size");
@@ -44,9 +45,24 @@ const formats = [
 const EditTermsConditions = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
+  const [editTerms, { isLoading }] = useEditTermsMutation();
 
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
+  };
+
+  const handleUpdate = async () => {
+    if (!content.trim()) {
+      message.error("Terms & Conditions cannot be empty!");
+      return;
+    }
+
+    try {
+      await editTerms({ terms: content }).unwrap(); // Call the mutation
+      message.success("Terms & Conditions updated successfully!");
+    } catch (error) {
+      message.error("Failed to update Terms & Conditions.");
+    }
   };
 
   return (
@@ -96,12 +112,13 @@ const EditTermsConditions = () => {
           </div>
           <div className="flex justify-end pt-8 pr-16">
             <Button
-              // onClick={(e) => navigate(`edit`)}
               size="large"
               type="primary"
+              onClick={handleUpdate}
+              loading={isLoading}
               className="px-8 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11 min-w-[300px]"
             >
-              Update
+              {isLoading ? "Updating..." : "Update"}
             </Button>
           </div>
         </div>

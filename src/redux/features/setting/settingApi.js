@@ -5,8 +5,14 @@ export const settingApi = baseApi.injectEndpoints({
         getTerm: builder.query({
             query: () => '/privacy&terms/terms',
         }),
-
+        editTerms: builder.mutation({
+            query: (term) => ({
+                url: `/privacy&terms/terms`,
+                method: 'POST',
+                body: term
+            }),
+        }),
     })
 })
 
-export const { useGetTermQuery } = settingApi
+export const { useGetTermQuery, useEditTermsMutation } = settingApi
