@@ -20,7 +20,6 @@ const Meals = () => {
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
     const { data: meals } = useGetAllMealQuery(query)
-    console.log(meals);
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -40,7 +39,6 @@ const Meals = () => {
 
     };
 
-    console.log(query, 'queyr');
     const columns = [
         {
             title: "Meal Image",

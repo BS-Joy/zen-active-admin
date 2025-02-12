@@ -9,18 +9,33 @@ import badgeImg from "../../../assets/images/badge.png";
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
+import { useGetBadgesQuery } from "../../../redux/features/badge/badgeApi";
 
 
 
 const Store = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
+    const [searchTerm, setSearchTerm] = useState(""); // State to store search input
+    const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
+    const { data: badges } = useGetBadgesQuery(query)
 
     const showModal = (data) => {
         setIsModalOpen(true);
         setModalData(data);
     };
+
+    // Handle search input change
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    // Trigger search when button is clicked
+    const handleSearch = () => {
+        setQuery(searchTerm);
+    };
+
 
     const columns = [
         {
@@ -31,13 +46,13 @@ const Store = () => {
         },
         {
             title: "Badge Name",
-            dataIndex: "name",
-            key: "name",
+            dataIndex: "badgeName",
+            key: "badgeName",
         },
         {
             title: "Points to Achieve",
-            dataIndex: "pointsToAchieve",
-            key: "pointsToAchieve",
+            dataIndex: "points",
+            key: "points",
         },
         {
             title: "Action",
@@ -82,22 +97,21 @@ const Store = () => {
         },
     ];
 
-    const data = [];
-    for (let index = 0; index < 6; index++) {
-        data.push({
-            // transIs: `${index + 1}`,
-            image: <div className="flex items-center justify-center">
-                <img src={badgeImg} alt="badge" className="w-10 h-10" />
-            </div>,
-            name: "Golden Strider",
-            pointsToAchieve: "200 points",
-            Review: "See Review",
-            date: "16 Apr 2024",
-            _id: index,
-        });
-    }
-
-
+    const data = badges?.data?.map((badge, index) => ({
+        key: index,
+        badgeImage:
+            <div className="flex items-center justify-center">
+                <img
+                    src={badge.image || "https://via.placeholder.com/40"} // Use placeholder if no image
+                    alt="badge"
+                    className="w-10 h-10 rounded-full object-cover"
+                />
+            </div>
+        ,
+        badgeName: badge.name,
+        points: badge.points,
+        ...badge,
+    })) || [];
 
     return (
         <div>
