@@ -10,33 +10,43 @@ import { useCreateWorkoutVideoMutation } from "../../../redux/features/workoutVi
 
 
 const AddWorkoutVideo = () => {
-    const [file, setFile] = useState(null);
+    const [videoFile, setVideoFile] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
     const [form] = Form.useForm();
     const [createWorkoutVideo] = useCreateWorkoutVideoMutation()
 
-    // Handle file selection
-    const handleFileChange = ({ file }) => {
-        setFile(file.originFileObj); // Save selected file
+    // Handle Video Upload
+    const handleVideoChange = ({ file }) => {
+        setVideoFile(file.originFileObj);
+    };
+
+    // Handle Image Upload
+    const handleImageChange = ({ file }) => {
+        setImageFile(file.originFileObj);
     };
 
     const onFinish = async (values) => {
+        console.log(values);
 
         // Create FormData
         const formData = new FormData();
-        if (file) {
-            formData.append("image", file);
+        if (imageFile) {
+            formData.append("image", imageFile);
+        }
+        if (videoFile) {
+            formData.append("media", videoFile);
         }
         formData.append("data", JSON.stringify(values)); // Convert text fields to JSON
 
         try {
-            const response = await createBadge(formData).unwrap();
-            console.log(response, 'response from create badge');
+            const response = await createWorkoutVideo(formData).unwrap();
+            console.log(response, 'response from add video');
 
-            message.success("Badge created successfully!");
+            message.success("Video added successfully!");
             form.resetFields(); // Reset form
             setFile(null); // Clear file
         } catch (error) {
-            message.error(error.data?.message || "Failed to create badge.");
+            message.error(error.data?.message || "Failed to add video.");
         }
     };
     const navigate = useNavigate();
@@ -45,24 +55,49 @@ const AddWorkoutVideo = () => {
         navigate(-1); // This takes the user back to the previous page
     };
 
-    const props = {
-        name: 'file',
+    const videoUploadProps = {
+        name: 'video',
         action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
         headers: {
             authorization: 'authorization-text',
         },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
+        beforeUpload: (file) => {
+            const isVideo = file.type.startsWith('video/');
+            if (!isVideo) {
+                message.error('You can only upload video files!');
             }
+            return isVideo;
+        },
+        onChange(info) {
             if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
+                message.success(`${info.file.name} video uploaded successfully`);
             } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
+                message.error(`${info.file.name} video upload failed.`);
             }
         },
     };
 
+    const imageUploadProps = {
+        name: 'image',
+        action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+        headers: {
+            authorization: 'authorization-text',
+        },
+        beforeUpload: (file) => {
+            const isImage = file.type.startsWith('image/');
+            if (!isImage) {
+                message.error('You can only upload image files!');
+            }
+            return isImage;
+        },
+        onChange(info) {
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} image uploaded successfully`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} image upload failed.`);
+            }
+        },
+    };
     return (
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
@@ -95,10 +130,7 @@ const AddWorkoutVideo = () => {
                                             className="responsive-form-item"
                                         // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                                         >
-                                            <Upload {...props}
-                                                onChange={handleFileChange}
-                                                maxCount={1}
-                                            >
+                                            <Upload {...videoUploadProps} onChange={handleVideoChange} maxCount={1}>
                                                 <Button style={{ width: '440px', height: '40px', border: '1px solid #79CDFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ color: '#525252', fontSize: '16px', fontWeight: 600 }}>Select a video</span>
                                                     <IoVideocamOutline size={20} color="#174C6B" />
@@ -113,10 +145,7 @@ const AddWorkoutVideo = () => {
                                             className="responsive-form-item"
                                         // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                                         >
-                                            <Upload {...props}
-                                                onChange={handleFileChange}
-                                                maxCount={1}
-                                            >
+                                            <Upload {...imageUploadProps} onChange={handleImageChange} maxCount={1}>
                                                 <Button style={{ width: '440px', height: '40px', border: '1px solid #79CDFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ color: '#525252', fontSize: '16px', fontWeight: 600 }}>Select an image</span>
                                                     <CiCamera size={25} color="#174C6B" />
@@ -127,10 +156,10 @@ const AddWorkoutVideo = () => {
                                         {/* Title */}
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Video Title</span>}
-                                            name="title"
+                                            name="name"
                                             className="responsive-form-item-section-2"
                                         >
-                                            <Input type="number" placeholder="Enter Points" style={{
+                                            <Input type="text" placeholder="Enter video title" style={{
                                                 height: '40px',
                                                 border: '1px solid #79CDFF',
                                                 fontSize: '16px',
