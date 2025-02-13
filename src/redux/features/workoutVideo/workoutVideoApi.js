@@ -12,13 +12,13 @@ export const workoutVideoApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workout
             },
             providesTags: ["WorkoutVideos"]
         }),
-        // getSingleBadge: builder.query({
-        //     query: (badgeId) => ({
-        //         url: `/badge/${badgeId}`,
-        //         method: 'GET',
-        //     }),
-        //     providesTags: ["Badges"]
-        // }),
+        getSingleWorkoutVideo: builder.query({
+            query: (workoutId) => ({
+                url: `/workout-video/${workoutId}`,
+                method: 'GET',
+            }),
+            providesTags: ["WorkoutVideos"]
+        }),
         createWorkoutVideo: builder.mutation({
             query: (workoutVideo) => ({
                 url: '/workout-video',
@@ -27,22 +27,22 @@ export const workoutVideoApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workout
             }),
             invalidatesTags: ["WorkoutVideos"]
         }),
-        // editBadge: builder.mutation({
-        //     query: ({ badgeId, formData }) => ({
-        //         url: `/badge/${badgeId}`,
-        //         method: 'PATCH',
-        //         body: formData
-        //     }),
-        //     invalidatesTags: ["Badges"]
-        // }),
-        // deleteBadge: builder.mutation({
-        //     query: (badgeId) => ({
-        //         url: `/badge/${badgeId}`,
-        //         method: 'DELETE',
-        //     }),
-        //     invalidatesTags: ["Badges"]
-        // }),
+        editWorkoutVideo: builder.mutation({
+            query: ({ workoutId, formData }) => ({
+                url: `/workout-video/${workoutId}`,
+                method: 'PATCH',
+                body: formData
+            }),
+            invalidatesTags: ["WorkoutVideos"]
+        }),
+        deleteWorkoutVideo: builder.mutation({
+            query: (workoutId) => ({
+                url: `/workout-video/${workoutId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ["WorkoutVideos"]
+        }),
     })
 })
 
-export const { useGetWorkoutVideosQuery, useCreateWorkoutVideoMutation } = workoutVideoApi
+export const { useGetWorkoutVideosQuery, useCreateWorkoutVideoMutation, useGetSingleWorkoutVideoQuery, useEditWorkoutVideoMutation, useDeleteWorkoutVideoMutation } = workoutVideoApi

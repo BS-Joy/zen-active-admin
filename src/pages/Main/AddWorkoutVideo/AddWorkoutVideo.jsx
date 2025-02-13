@@ -26,8 +26,6 @@ const AddWorkoutVideo = () => {
     };
 
     const onFinish = async (values) => {
-        console.log(values);
-
         // Create FormData
         const formData = new FormData();
         if (imageFile) {
@@ -184,7 +182,7 @@ const AddWorkoutVideo = () => {
                                     <button
                                         className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                                     >
-                                        <span className="text-white font-semibold">Create</span>
+                                        <span className="text-white font-semibold">Upload</span>
                                     </button>
                                 </div>
                             </Form.Item>

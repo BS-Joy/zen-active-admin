@@ -132,7 +132,7 @@ export const dashboardItems = [
     element: <AddWorkoutVideo />,
   },
   {
-    path: "edit-workout-video",
+    path: "edit-workout-video/:workoutId",
     element: <EditWorkoutVideo />,
   },
   {
