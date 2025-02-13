@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Select, Space } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 const { Option } = Select;
@@ -7,20 +7,22 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
-
+import { useGetSingleBadgeQuery } from "../../../redux/features/badge/badgeApi";
 
 const EditBadge = () => {
     const [form] = Form.useForm();
-    const [features, setFeatures] = useState([""]);
+    const { badgeId } = useParams()
 
-    const addFeature = () => {
-        setFeatures([...features, ""]);
-    };
+    const { data: badge, error, isLoading } = useGetSingleBadgeQuery(badgeId)
 
-    const removeFeature = (index) => {
-        const newFeatures = features.filter((_, i) => i !== index);
-        setFeatures(newFeatures);
-    };
+    useEffect(() => {
+        if (badge?.data) {
+            form.setFieldsValue({
+                name: badge.data.name,
+                points: badge.data.points
+            });
+        }
+    }, [badge, form]);
 
     const onFinish = (values) => {
         console.log('Form Values:', values);
@@ -74,20 +76,22 @@ const EditBadge = () => {
                                     <Space size="large" direction="horizontal" className="responsive-space-section-2">
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Badge Name</span>}
-                                            name="packageName"
+                                            name="name"
                                             className="responsive-form-item"
                                         // rules={[{ required: true, message: 'Please select a package name!' }]}
                                         >
-                                            <Input type="text" placeholder="Enter Badge Name" style={{
-                                                height: '40px',
-                                                border: '1px solid #79CDFF',
-                                                fontSize: '16px',
-                                                fontWeight: 600,
-                                                color: '#525252',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'space-between',
-                                            }} />
+                                            <Input type="text"
+                                                //  placeholder="Enter Badge Name"
+                                                style={{
+                                                    height: '40px',
+                                                    border: '1px solid #79CDFF',
+                                                    fontSize: '16px',
+                                                    fontWeight: 600,
+                                                    color: '#525252',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                }} />
                                         </Form.Item>
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
@@ -104,7 +108,7 @@ const EditBadge = () => {
                                         </Form.Item>
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Points To Achieve</span>}
-                                            name="points to achieve"
+                                            name="points"
                                             className="responsive-form-item-section-2"
                                         >
                                             <Input type="number" placeholder="Enter Points" style={{

@@ -130,7 +130,7 @@ export const dashboardItems = [
     element: <AddBadge />,
   },
   {
-    path: "edit-badge",
+    path: "edit-badge/:badgeId",
     element: <EditBadge />,
   },
   // {

@@ -45,7 +45,7 @@ const Store = () => {
             render: (image) => (
                 <div className="flex items-center justify-center">
                     <img
-                        src={image ? `${import.meta.env.VITE_BASE_URL}${image}` : "https://via.placeholder.com/40"} // Append base URL
+                        src={image ? `${import.meta.env.VITE_BASE_URL}${image}` : "https://via.placeholder.com/40"}
                         alt="badge"
                         className="w- h-10 rounded-full object-contain"
                     />
@@ -70,7 +70,7 @@ const Store = () => {
                 <div className="  items-center justify-around textcenter flex">
                     {/* Review Icon */}
                     {/* <img src={exlamIcon} alt="" className="btn px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} /> */}
-                    <Link to={'/edit-badge'} className="">
+                    <Link to={`/edit-badge/${data._id}`} className="">
 
                         <MdEdit />
                     </Link>
@@ -112,9 +112,6 @@ const Store = () => {
         points: badge.points,
         ...badge,
     })) || [];
-
-    console.log(`${import.meta.env.VITE_BASE_URL}${data[0]?.image}`);
-
 
     return (
         <div>
