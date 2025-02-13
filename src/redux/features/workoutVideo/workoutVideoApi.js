@@ -19,14 +19,14 @@ export const workoutVideoApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workout
         //     }),
         //     providesTags: ["Badges"]
         // }),
-        // createBadge: builder.mutation({
-        //     query: (badge) => ({
-        //         url: '/badge/create-badge',
-        //         method: 'POST',
-        //         body: badge,
-        //     }),
-        //     invalidatesTags: ["Badges"]
-        // }),
+        createWorkoutVideo: builder.mutation({
+            query: (workoutVideo) => ({
+                url: '/workout-video',
+                method: 'POST',
+                body: workoutVideo,
+            }),
+            invalidatesTags: ["WorkoutVideos"]
+        }),
         // editBadge: builder.mutation({
         //     query: ({ badgeId, formData }) => ({
         //         url: `/badge/${badgeId}`,
@@ -45,4 +45,4 @@ export const workoutVideoApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workout
     })
 })
 
-export const { useGetWorkoutVideosQuery } = workoutVideoApi
+export const { useGetWorkoutVideosQuery, useCreateWorkoutVideoMutation } = workoutVideoApi

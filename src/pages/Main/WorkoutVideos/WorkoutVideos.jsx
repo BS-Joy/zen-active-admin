@@ -21,8 +21,6 @@ const WorkoutVideos = () => {
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
     const { data: workoutVideos } = useGetWorkoutVideosQuery(query)
-    console.log(workoutVideos);
-
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -112,7 +110,7 @@ const WorkoutVideos = () => {
 
     return (
         <div>
-            <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-badge")}>
+            <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-workout-video")}>
                 <FaPlus />
                 Add Video</button>
             <div className="py-10">

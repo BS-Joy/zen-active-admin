@@ -51,6 +51,7 @@ import Exercise from "../pages/Main/Exercise/Exercise";
 import { MdOutlineVideoLibrary } from "react-icons/md";
 import WorkoutVideos from "../pages/Main/WorkoutVideos/WorkoutVideos";
 import EditWorkoutVideo from "../pages/Main/EditWorkoutVideo/EditWorkoutVideo";
+import AddWorkoutVideo from "../pages/Main/AddWorkoutVideo/AddWorkoutVideo";
 
 export const dashboardItems = [
   {
@@ -125,6 +126,10 @@ export const dashboardItems = [
   {
     path: "edit-workout",
     element: <EditWorkout />,
+  },
+  {
+    path: "add-workout-video",
+    element: <AddWorkoutVideo />,
   },
   {
     path: "edit-workout-video",
