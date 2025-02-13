@@ -62,16 +62,16 @@ const EditWorkoutVideo = () => {
         }
     };
 
-    // const handleDelete = async () => {
-    //     try {
-    //         // Call your delete API
-    //         await deleteBadge(badgeId).unwrap();
-    //         message.success("Badge deleted successfully!");
-    //         navigate(-1); // Navigate back after deletion
-    //     } catch (error) {
-    //         message.error(error.data?.message || "Failed to delete badge.");
-    //     }
-    // };
+    const handleDelete = async () => {
+        try {
+            // Call your delete API
+            await deleteWorkoutVideo(workoutId).unwrap();
+            message.success("Video deleted successfully!");
+            navigate(-1); // Navigate back after deletion
+        } catch (error) {
+            message.error(error.data?.message || "Failed to delete video.");
+        }
+    };
 
 
     const handleBackButtonClick = () => {
