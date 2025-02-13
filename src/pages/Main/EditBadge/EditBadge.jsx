@@ -7,7 +7,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
-import { useEditBadgeMutation, useGetSingleBadgeQuery } from "../../../redux/features/badge/badgeApi";
+import { useDeleteBadgeMutation, useEditBadgeMutation, useGetSingleBadgeQuery } from "../../../redux/features/badge/badgeApi";
 
 const EditBadge = () => {
     const [form] = Form.useForm();
@@ -15,6 +15,7 @@ const EditBadge = () => {
     const { badgeId } = useParams()
     const { data: badge, refetch } = useGetSingleBadgeQuery(badgeId)
     const [editBadge] = useEditBadgeMutation()
+    const [deleteBadge] = useDeleteBadgeMutation()
 
     // Handle file selection
     const handleFileChange = ({ file }) => {
@@ -65,6 +66,18 @@ const EditBadge = () => {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            // Call your delete API
+            await deleteBadge(badgeId).unwrap();
+            message.success("Badge deleted successfully!");
+            navigate(-1); // Navigate back after deletion
+        } catch (error) {
+            message.error(error.data?.message || "Failed to delete badge.");
+        }
+    };
+
+
     const navigate = useNavigate();
 
     const handleBackButtonClick = () => {
@@ -110,6 +123,7 @@ const EditBadge = () => {
                             <div className="grid grid-cols-2 gap-8 mt-8">
                                 <div>
                                     <Space size="large" direction="horizontal" className="responsive-space-section-2">
+                                        {/* Name */}
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Badge Name</span>}
                                             name="name"
@@ -129,6 +143,8 @@ const EditBadge = () => {
                                                     justifyContent: 'space-between',
                                                 }} />
                                         </Form.Item>
+
+                                        {/* Image */}
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
                                             name="image"
@@ -145,6 +161,8 @@ const EditBadge = () => {
                                                 </Button>
                                             </Upload>
                                         </Form.Item>
+
+                                        {/* Phone */}
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Points To Achieve</span>}
                                             name="points"
@@ -169,7 +187,9 @@ const EditBadge = () => {
                             <Form.Item>
                                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
                                     <button
-                                        className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
+                                        type="button"
+                                        className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
+                                        onClick={() => handleDelete()}
                                     >
                                         <span className="text-[#1E648C] font-semibold">Delete</span>
                                     </button>

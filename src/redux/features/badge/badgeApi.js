@@ -35,7 +35,14 @@ export const badgeApi = baseApi.enhanceEndpoints({ addTagTypes: ["Badges"] }).in
             }),
             invalidatesTags: ["Badges"]
         }),
+        deleteBadge: builder.mutation({
+            query: (badgeId) => ({
+                url: `/badge/${badgeId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ["Badges"]
+        }),
     })
 })
 
-export const { useGetBadgesQuery, useCreateBadgeMutation, useGetSingleBadgeQuery, useEditBadgeMutation } = badgeApi
+export const { useGetBadgesQuery, useCreateBadgeMutation, useGetSingleBadgeQuery, useEditBadgeMutation, useDeleteBadgeMutation } = badgeApi
