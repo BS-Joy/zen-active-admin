@@ -11,6 +11,7 @@ import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
 import { useGetBadgesQuery } from "../../../redux/features/badge/badgeApi";
 import { MdEdit } from "react-icons/md";
+import { useGetWorkoutVideosQuery } from "../../../redux/features/workoutVideo/workoutVideoApi";
 
 
 const WorkoutVideos = () => {
@@ -19,7 +20,9 @@ const WorkoutVideos = () => {
     const [searchTerm, setSearchTerm] = useState(""); // State to store search input
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
-    const { data: badges } = useGetBadgesQuery(query)
+    const { data: workoutVideos } = useGetWorkoutVideosQuery(query)
+    console.log(workoutVideos);
+
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -39,9 +42,9 @@ const WorkoutVideos = () => {
 
     const columns = [
         {
-            title: "Image",
-            dataIndex: "image",  // This should match the original key in the data object
-            key: "image",
+            title: "Thumbnail",
+            dataIndex: "thumbnail",  // This should match the original key in the data object
+            key: "thumbnail",
             render: (image) => (
                 <div className="flex items-center justify-center">
                     <img
@@ -53,14 +56,9 @@ const WorkoutVideos = () => {
             ),
         },
         {
-            title: "Badge Name",
-            dataIndex: "badgeName",
-            key: "badgeName",
-        },
-        {
-            title: "Points to Achieve",
-            dataIndex: "points",
-            key: "points",
+            title: "Title",
+            dataIndex: "title",
+            key: "title",
         },
         {
             title: "Action",
@@ -70,7 +68,7 @@ const WorkoutVideos = () => {
                 <div className="  items-center justify-around textcenter flex">
                     {/* Review Icon */}
                     {/* <img src={exlamIcon} alt="" className="btn px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} /> */}
-                    <Link to={`/edit-badge/${data._id}`} className="">
+                    <Link to={`/edit-workout-video/${data._id}`} className="">
 
                         <MdEdit />
                     </Link>
@@ -105,12 +103,11 @@ const WorkoutVideos = () => {
         },
     ];
 
-    const data = badges?.data?.map((badge, index) => ({
+    const data = workoutVideos?.data?.map((workoutVideo, index) => ({
         key: index,
-        image: badge.image,
-        badgeName: badge.name,
-        points: badge.points,
-        ...badge,
+        thumbnail: workoutVideo.image,
+        title: workoutVideo.name,
+        ...workoutVideo,
     })) || [];
 
     return (
