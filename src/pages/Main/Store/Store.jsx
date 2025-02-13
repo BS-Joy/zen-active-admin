@@ -10,7 +10,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
 import { useGetBadgesQuery } from "../../../redux/features/badge/badgeApi";
-
+import { MdEdit } from "react-icons/md";
 
 
 const Store = () => {
@@ -69,11 +69,11 @@ const Store = () => {
             render: (_, data) => (
                 <div className="  items-center justify-around textcenter flex">
                     {/* Review Icon */}
-                    <img src={exlamIcon} alt="" className="btn px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
-                    {/* <Link to={'/reviews'} className="btn bg-black text-white px-3 py-1 text-sm rounded-full">
-                 
-                  View
-                </Link> */}
+                    {/* <img src={exlamIcon} alt="" className="btn px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} /> */}
+                    <Link to={'/edit-badge'} className="">
+
+                        <MdEdit />
+                    </Link>
                 </div>
             ),
         },
