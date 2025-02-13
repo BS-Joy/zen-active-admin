@@ -27,15 +27,15 @@ export const badgeApi = baseApi.enhanceEndpoints({ addTagTypes: ["Badges"] }).in
             }),
             invalidatesTags: ["Badges"]
         }),
-        // editTerms: builder.mutation({
-        //     query: (term) => ({
-        //         url: `/privacy&terms/terms`,
-        //         method: 'POST',
-        //         body: term
-        //     }),
-        //     invalidatesTags: ['Terms']
-        // }),
+        editBadge: builder.mutation({
+            query: ({ badgeId, formData }) => ({
+                url: `/badge/${badgeId}`,
+                method: 'PATCH',
+                body: formData
+            }),
+            invalidatesTags: ["Badges"]
+        }),
     })
 })
 
-export const { useGetBadgesQuery, useCreateBadgeMutation, useGetSingleBadgeQuery } = badgeApi
+export const { useGetBadgesQuery, useCreateBadgeMutation, useGetSingleBadgeQuery, useEditBadgeMutation } = badgeApi

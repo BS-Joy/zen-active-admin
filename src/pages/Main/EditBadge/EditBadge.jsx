@@ -7,13 +7,19 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
-import { useGetSingleBadgeQuery } from "../../../redux/features/badge/badgeApi";
+import { useEditBadgeMutation, useGetSingleBadgeQuery } from "../../../redux/features/badge/badgeApi";
 
 const EditBadge = () => {
     const [form] = Form.useForm();
+    const [file, setFile] = useState(null);
     const { badgeId } = useParams()
+    const { data: badge, refetch } = useGetSingleBadgeQuery(badgeId)
+    const [editBadge] = useEditBadgeMutation()
 
-    const { data: badge, error, isLoading } = useGetSingleBadgeQuery(badgeId)
+    // Handle file selection
+    const handleFileChange = ({ file }) => {
+        setFile(file.originFileObj); // Save selected file
+    };
 
     useEffect(() => {
         if (badge?.data) {
@@ -24,9 +30,41 @@ const EditBadge = () => {
         }
     }, [badge, form]);
 
-    const onFinish = (values) => {
-        console.log('Form Values:', values);
+    const onFinish = async (values) => {
+        const formattedData = {
+            ...values,
+            points: Number(values.points), // Ensure points is a number
+        };
+
+        Object.keys(formattedData).forEach(
+            (key) => (formattedData[key] === "" || formattedData[key] === undefined) && delete formattedData[key]
+        );
+
+        const formData = new FormData();
+        if (file) {
+            formData.append("image", file);
+        }
+
+        formData.append("data", JSON.stringify(formattedData));
+
+        try {
+            const response = await editBadge({ badgeId, formData }).unwrap();
+            console.log("Response from edit badge:", response);
+
+            message.success("Badge edited successfully!");
+            await refetch(); // Ensure updated data is fetched
+
+            form.setFieldsValue({
+                name: response.data.name,
+                points: response.data.points,
+            });
+
+            setFile(null);
+        } catch (error) {
+            message.error(error.data?.message || "Failed to edit badge.");
+        }
     };
+
     const navigate = useNavigate();
 
     const handleBackButtonClick = () => {
@@ -50,6 +88,7 @@ const EditBadge = () => {
             }
         },
     };
+
     return (
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
@@ -68,9 +107,6 @@ const EditBadge = () => {
                             onFinish={onFinish}
                         // style={{ maxWidth: 600, margin: '0 auto' }}
                         >
-                            {/* Section 1 */}
-                            {/* <Space direction="vertical" style={{ width: '100%' }}> */}
-                            {/* <Space size="large" direction="horizontal" className="responsive-space"> */}
                             <div className="grid grid-cols-2 gap-8 mt-8">
                                 <div>
                                     <Space size="large" direction="horizontal" className="responsive-space-section-2">
@@ -95,11 +131,14 @@ const EditBadge = () => {
                                         </Form.Item>
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
-                                            name="packageAmount"
+                                            name="image"
                                             className="responsive-form-item"
                                         // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                                         >
-                                            <Upload {...props}>
+                                            <Upload {...props}
+                                                onChange={handleFileChange}
+                                                maxCount={1}
+                                            >
                                                 <Button style={{ width: '440px', height: '40px', border: '1px solid #79CDFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ color: '#525252', fontSize: '16px', fontWeight: 600 }}>Select an image</span>
                                                     <CiCamera size={25} color="#174C6B" />
@@ -126,10 +165,6 @@ const EditBadge = () => {
                                 </div>
                             </div>
 
-                            {/* </Space> */}
-                            {/* </Space> */}
-
-
                             {/* Submit Button */}
                             <Form.Item>
                                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
@@ -139,6 +174,7 @@ const EditBadge = () => {
                                         <span className="text-[#1E648C] font-semibold">Delete</span>
                                     </button>
                                     <button
+                                        type="submit"
                                         className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                                     >
                                         <span className="text-white font-semibold">Update</span>

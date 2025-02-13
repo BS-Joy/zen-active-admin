@@ -65,7 +65,8 @@ const MyProfile = () => {
                 autoComplete="off"
                 initialValues={{
                   firstName: profileData.firstName,
-                  lastName: profileData.lastName
+                  lastName: profileData.lastName,
+                  phone: profileData.phone
                 }}
               >
                 <div className="col-span-3 space-y-6 ">
