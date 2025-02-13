@@ -7,23 +7,42 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
+import { useCreateBadgeMutation } from "../../../redux/features/badge/badgeApi";
 
 
 const AddBadge = () => {
+    const [file, setFile] = useState(null);
     const [form] = Form.useForm();
-    const [features, setFeatures] = useState([""]);
+    const [createBadge] = useCreateBadgeMutation()
 
-    const addFeature = () => {
-        setFeatures([...features, ""]);
+    // Handle file selection
+    const handleFileChange = ({ file }) => {
+        setFile(file.originFileObj); // Save selected file
     };
 
-    const removeFeature = (index) => {
-        const newFeatures = features.filter((_, i) => i !== index);
-        setFeatures(newFeatures);
-    };
+    const onFinish = async (values) => {
+        const formattedData = {
+            ...values,
+            points: Number(values.points)
+        }
 
-    const onFinish = (values) => {
-        console.log('Form Values:', values);
+        // Create FormData
+        const formData = new FormData();
+        if (file) {
+            formData.append("image", file);
+        }
+        formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
+
+        try {
+            const response = await createBadge(formData).unwrap();
+            console.log(response, 'response from create badge');
+
+            message.success("Badge created successfully!");
+            form.resetFields(); // Reset form
+            setFile(null); // Clear file
+        } catch (error) {
+            message.error(error.data?.message || "Failed to create badge.");
+        }
     };
     const navigate = useNavigate();
 
@@ -48,6 +67,7 @@ const AddBadge = () => {
             }
         },
     };
+
     return (
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
@@ -74,7 +94,7 @@ const AddBadge = () => {
                                     <Space size="large" direction="horizontal" className="responsive-space-section-2">
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Badge Name</span>}
-                                            name="packageName"
+                                            name="name"
                                             className="responsive-form-item"
                                         // rules={[{ required: true, message: 'Please select a package name!' }]}
                                         >
@@ -91,11 +111,14 @@ const AddBadge = () => {
                                         </Form.Item>
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
-                                            name="packageAmount"
+                                            name="image"
                                             className="responsive-form-item"
                                         // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                                         >
-                                            <Upload {...props}>
+                                            <Upload {...props}
+                                                onChange={handleFileChange}
+                                                maxCount={1}
+                                            >
                                                 <Button style={{ width: '440px', height: '40px', border: '1px solid #79CDFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span style={{ color: '#525252', fontSize: '16px', fontWeight: 600 }}>Select an image</span>
                                                     <CiCamera size={25} color="#174C6B" />
@@ -104,7 +127,7 @@ const AddBadge = () => {
                                         </Form.Item>
                                         <Form.Item
                                             label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Points To Achieve</span>}
-                                            name="points to achieve"
+                                            name="points"
                                             className="responsive-form-item-section-2"
                                         >
                                             <Input type="number" placeholder="Enter Points" style={{

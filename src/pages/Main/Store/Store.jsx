@@ -40,9 +40,17 @@ const Store = () => {
     const columns = [
         {
             title: "Image",
-            dataIndex: "image",
+            dataIndex: "image",  // This should match the original key in the data object
             key: "image",
-            render: (text) => <a>{text}</a>,
+            render: (image) => (
+                <div className="flex items-center justify-center">
+                    <img
+                        src={image ? `${import.meta.env.VITE_BASE_URL}${image}` : "https://via.placeholder.com/40"} // Append base URL
+                        alt="badge"
+                        className="w- h-10 rounded-full object-contain"
+                    />
+                </div>
+            ),
         },
         {
             title: "Badge Name",
@@ -99,19 +107,14 @@ const Store = () => {
 
     const data = badges?.data?.map((badge, index) => ({
         key: index,
-        badgeImage:
-            <div className="flex items-center justify-center">
-                <img
-                    src={badge.image || "https://via.placeholder.com/40"} // Use placeholder if no image
-                    alt="badge"
-                    className="w-10 h-10 rounded-full object-cover"
-                />
-            </div>
-        ,
+        image: badge.image,
         badgeName: badge.name,
         points: badge.points,
         ...badge,
     })) || [];
+
+    console.log(`${import.meta.env.VITE_BASE_URL}${data[0]?.image}`);
+
 
     return (
         <div>
@@ -124,11 +127,15 @@ const Store = () => {
                         <h3 className="text-2xl font-semibold text-black mb-4 pl-2">Badges List</h3>
                         <div className="flex items-center gap-4 mb-6">
 
-                            <Input placeholder="Search badges by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }} />
+                            <Input placeholder="Search badges by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }}
+                                value={searchTerm || ''}
+                                onChange={handleSearchChange}
+                            />
                             {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
                      <IoSearch />
                    </Button> */}
-                            <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}><IoSearch size={20} /></button>
+                            <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}
+                                onClick={handleSearch}><IoSearch size={20} /></button>
                         </div>
                     </div>
                     {/* Ant Design Table */}
