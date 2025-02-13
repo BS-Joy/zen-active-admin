@@ -119,7 +119,7 @@ const Store = () => {
                 <FaPlus />
                 Add Badge</button>
             <div className="py-10">
-                <div className="rounded-lg border-2 py-4 border-[#174C6B]/80 mt-8 recent-users-table">
+                <div className="rounded-lg border-2 py-4 border-[#37B5FF]/80 mt-8 recent-users-table">
                     <div className="flex justify-between px-2">
                         <h3 className="text-2xl font-semibold text-black mb-4 pl-2">Badges List</h3>
                         <div className="flex items-center gap-4 mb-6">
