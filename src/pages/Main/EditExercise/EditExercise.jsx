@@ -9,7 +9,7 @@ import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
 
 
-const EditChallenge = () => {
+const EditExercise = () => {
     const [form] = Form.useForm();
     const [features, setFeatures] = useState([""]);
 
@@ -184,4 +184,4 @@ const EditChallenge = () => {
     )
 }
 
-export default EditChallenge
+export default EditExercise

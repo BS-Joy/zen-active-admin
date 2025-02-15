@@ -38,7 +38,7 @@ import Store from "../pages/Main/Store/Store";
 import { PiHandbagSimple } from "react-icons/pi";
 import AddMeal from "../pages/Main/AddMeal/AddMeal";
 import EditMeal from "../pages/Main/EditMeal/EditMeal";
-import EditChallenge from "../pages/Main/EditChallenge/EditChallenge";
+import EditChallenge from "../pages/Main/EditExercise/EditExercise";
 import AddWorkout from "../pages/Main/AddWorkout/AddWorkout";
 import EditWorkout from "../pages/Main/EditWorkout/EditWorkout";
 import AddBadge from "../pages/Main/AddBadge/AddBadge";
@@ -51,6 +51,7 @@ import EditWorkoutVideo from "../pages/Main/EditWorkoutVideo/EditWorkoutVideo";
 import AddWorkoutVideo from "../pages/Main/AddWorkoutVideo/AddWorkoutVideo";
 import WorkoutPlans from "../pages/Main/WorkoutPlans/WorkoutPlans";
 import AddExercise from "../pages/Main/AddExercise/AddExercise";
+import EditExercise from "../pages/Main/EditExercise/EditExercise";
 
 export const dashboardItems = [
   {
@@ -115,8 +116,8 @@ export const dashboardItems = [
     element: <AddExercise />,
   },
   {
-    path: "edit-challenge",
-    element: <EditChallenge />,
+    path: "edit-exercise/:exerciseId",
+    element: <EditExercise />,
   },
   {
     path: "add-workout",
