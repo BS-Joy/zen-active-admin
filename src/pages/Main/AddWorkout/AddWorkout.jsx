@@ -7,25 +7,65 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
+import { useCreateWorkoutMutation, useGetAllWorkoutQuery } from "../../../redux/features/workout/workoutApi";
 
 
 const AddWorkout = () => {
+    const [file, setFile] = useState(null);
     const [form] = Form.useForm();
-    const [features, setFeatures] = useState([""]);
-
-    const addFeature = () => {
-        setFeatures([...features, ""]);
-    };
-
-    const removeFeature = (index) => {
-        const newFeatures = features.filter((_, i) => i !== index);
-        setFeatures(newFeatures);
-    };
-
-    const onFinish = (values) => {
-        console.log('Form Values:', values);
-    };
     const navigate = useNavigate();
+    const { data: workouts } = useGetAllWorkoutQuery(null)
+    const [createWorkout] = useCreateWorkoutMutation()
+
+    // Handle file selection
+    const handleFileChange = ({ file }) => {
+        setFile(file.originFileObj); // Save selected file
+    };
+
+    // Logic for multi select input
+    const options = workouts?.data?.reduce((acc, workout) => {
+        workout.exercises.forEach((exercise) => {
+            if (!acc.some((item) => item.value === exercise._id)) {
+                acc.push({ value: exercise._id, label: exercise.name });
+            }
+        });
+        return acc;
+    }, []) || [];
+
+
+    const handleMultiSelectChange = (value) => {
+        console.log(`Selected: ${value}`);
+    };
+
+    const onFinish = async (values) => {
+        console.log(values);
+
+        const formattedData = {
+            ...values,
+            points: Number(values.points)
+        }
+
+        console.log(formattedData);
+
+
+        // Create FormData
+        const formData = new FormData();
+        if (file) {
+            formData.append("image", file);
+        }
+        formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
+
+        try {
+            const response = await createWorkout(formData).unwrap();
+            console.log(response, 'response from create workout');
+
+            message.success("Workout created successfully!");
+            form.resetFields(); // Reset form
+            setFile(null); // Clear file
+        } catch (error) {
+            message.error(error.data?.message || "Failed to create workout.");
+        }
+    };
 
     const handleBackButtonClick = () => {
         navigate(-1); // This takes the user back to the previous page
@@ -67,15 +107,16 @@ const AddWorkout = () => {
                         // style={{ maxWidth: 600, margin: '0 auto' }}
                         >
                             {/* Section 1 */}
-                            <Space direction="vertical" style={{ width: '100%', borderBottom: '1px solid #79CDFF' }}>
+                            <Space direction="vertical" style={{ width: '100%' }}>
                                 <Space size="large" direction="horizontal" className="responsive-space">
+                                    {/* Name */}
                                     <Form.Item
-                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Workout Title</span>}
-                                        name="packageName"
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Workout Name</span>}
+                                        name="name"
                                         className="responsive-form-item"
                                     // rules={[{ required: true, message: 'Please select a package name!' }]}
                                     >
-                                        <Input type="text" placeholder="Enter Workout Title" style={{
+                                        <Input type="text" placeholder="Enter Workout Name" style={{
                                             height: '40px',
                                             border: '1px solid #79CDFF',
                                             fontSize: '16px',
@@ -86,13 +127,37 @@ const AddWorkout = () => {
                                             justifyContent: 'space-between',
                                         }} />
                                     </Form.Item>
+
+                                    {/* Description */}
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Workout Description</span>}
+                                        name="description"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                                    >
+                                        <Input type="text" placeholder="Enter Workout Description" style={{
+                                            height: '40px',
+                                            border: '1px solid #79CDFF',
+                                            fontSize: '16px',
+                                            fontWeight: 600,
+                                            color: '#525252',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                        }} />
+                                    </Form.Item>
+
+                                    {/* Image */}
                                     <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
-                                        name="packageAmount"
+                                        name="image"
                                         className="responsive-form-item"
                                     // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                                     >
-                                        <Upload {...props}>
+                                        <Upload {...props}
+                                            onChange={handleFileChange}
+                                            maxCount={1}
+                                        >
                                             <Button style={{ width: '440px', height: '40px', border: '1px solid #79CDFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <span style={{ color: '#525252', fontSize: '16px', fontWeight: 600 }}>Select an image</span>
                                                 <CiCamera size={25} color="#174C6B" />
@@ -100,66 +165,49 @@ const AddWorkout = () => {
                                         </Upload>
                                     </Form.Item>
 
+                                    {/* Points */}
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Points</span>}
+                                        name="points"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                                    >
+                                        <Input type="number" placeholder="Enter Points" style={{
+                                            height: '40px',
+                                            border: '1px solid #79CDFF',
+                                            fontSize: '16px',
+                                            fontWeight: 600,
+                                            color: '#525252',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                        }} />
+                                    </Form.Item>
+
+
+                                    {/* Exercises */}
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Select Exercise</span>}
+                                        name="exercises"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a duration!' }]}
+                                    >
+                                        <Select
+                                            mode="multiple"
+                                            size={'middle'}
+                                            placeholder="Select Exercise"
+                                            // defaultValue={['Vegetarian']}
+                                            onChange={handleMultiSelectChange}
+                                            style={{
+                                                width: '100%',
+                                            }}
+                                            options={options}
+                                        />
+                                    </Form.Item>
+
                                 </Space>
                             </Space>
 
-                            {/* Section 2 */}
-                            <div className="grid grid-cols-2 gap-8 mt-8">
-                                <div>
-                                    <h1 className="text-[18px] font-semibold pb-3">Information</h1>
-                                    <Space size="large" direction="horizontal" className="responsive-space-section-2">
-                                        <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Duration</span>}
-                                            name="duration"
-                                            className="responsive-form-item-section-2"
-                                        >
-                                            <Input type="number" placeholder="Set duration" style={{
-                                                height: '40px',
-                                                border: '1px solid #79CDFF',
-                                                fontSize: '16px',
-                                                fontWeight: 600,
-                                                color: '#525252',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'space-between',
-                                            }} />
-                                        </Form.Item>
-                                        <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Daily Activity</span>}
-                                            name="reward points"
-                                            className="responsive-form-item-section-2"
-                                        >
-                                            <Input type="number" placeholder="Set daily activity" style={{
-                                                height: '40px',
-                                                border: '1px solid #79CDFF',
-                                                fontSize: '16px',
-                                                fontWeight: 600,
-                                                color: '#525252',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'space-between',
-                                            }} />
-                                        </Form.Item>
-                                        <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Reward Points</span>}
-                                            name="reward points"
-                                            className="responsive-form-item-section-2"
-                                        >
-                                            <Input type="number" placeholder="Set reward point" style={{
-                                                height: '40px',
-                                                border: '1px solid #79CDFF',
-                                                fontSize: '16px',
-                                                fontWeight: 600,
-                                                color: '#525252',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'space-between',
-                                            }} />
-                                        </Form.Item>
-
-                                    </Space>
-                                </div>
-                            </div>
 
                             {/* Submit Button */}
                             <Form.Item>
