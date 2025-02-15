@@ -7,7 +7,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
-import { useGetSingleWorkoutQuery } from "../../../redux/features/workout/workoutApi";
+import { useDeleteWorkoutMutation, useEditWorkoutMutation, useGetSingleWorkoutQuery } from "../../../redux/features/workout/workoutApi";
 
 
 const EditWorkout = () => {
@@ -18,9 +18,8 @@ const EditWorkout = () => {
 
     const { data: workout, refetch } = useGetSingleWorkoutQuery(workoutId)
     console.log(workout);
-
-    // const [editWorkoutVideo] = useEditWorkoutVideoMutation()
-    // const [deleteWorkoutVideo] = useDeleteWorkoutVideoMutation()
+    const [editWorkout] = useEditWorkoutMutation()
+    const [deleteWorkout] = useDeleteWorkoutMutation()
 
     // Handle Video Upload
     const handleFileChange = ({ file }) => {
@@ -38,8 +37,33 @@ const EditWorkout = () => {
         console.log(`Selected: ${value}`);
     };
 
-    const onFinish = (values) => {
-        console.log('Form Values:', values);
+    const onFinish = async (values) => {
+        // Create FormData
+        const formData = new FormData();
+        if (file) {
+            formData.append("image", file);
+        }
+        formData.append("data", JSON.stringify(values)); // Convert text fields to JSON
+
+        try {
+            const response = await editWorkout({ workoutId, formData }).unwrap();
+            message.success("workout edited successfully!");
+            form.resetFields(); // Reset form
+            setFile(null); // Clear file
+        } catch (error) {
+            message.error(error.data?.message || "Failed to edit workout.");
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            // Call your delete API
+            await deleteWorkout(workoutId).unwrap();
+            message.success("workout deleted successfully!");
+            navigate(-1); // Navigate back after deletion
+        } catch (error) {
+            message.error(error.data?.message || "Failed to delete workout.");
+        }
     };
 
     useEffect(() => {
@@ -198,11 +222,14 @@ const EditWorkout = () => {
                             <Form.Item>
                                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
                                     <button
+                                        type="button"
                                         className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
+                                        onClick={() => handleDelete()}
                                     >
                                         <span className="text-[#1E648C] font-semibold">Delete</span>
                                     </button>
                                     <button
+                                        type="submit"
                                         className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                                     >
                                         <span className="text-white font-semibold">Update</span>

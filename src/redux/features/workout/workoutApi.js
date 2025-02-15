@@ -27,7 +27,22 @@ export const workoutApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workouts"] }
             }),
             invalidatesTags: ["Workouts"]
         }),
+        editWorkout: builder.mutation({
+            query: ({ workoutId, formData }) => ({
+                url: `/workout/${workoutId}`,
+                method: 'PATCH',
+                body: formData
+            }),
+            invalidatesTags: ["Workouts"]
+        }),
+        deleteWorkout: builder.mutation({
+            query: (workoutId) => ({
+                url: `/workout/${workoutId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ["Workouts"]
+        }),
     })
 })
 
-export const { useGetAllWorkoutQuery, useCreateWorkoutMutation, useGetSingleWorkoutQuery } = workoutApi
+export const { useGetAllWorkoutQuery, useCreateWorkoutMutation, useGetSingleWorkoutQuery, useEditWorkoutMutation, useDeleteWorkoutMutation } = workoutApi
