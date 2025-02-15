@@ -12,6 +12,13 @@ export const exerciseApi = baseApi.enhanceEndpoints({ addTagTypes: ["Exercises"]
             },
             providesTags: ["Exercises"]
         }),
+        getSingleExercise: builder.query({
+            query: (exerciseId) => ({
+                url: `/exercise/${exerciseId}`,
+                method: 'GET',
+            }),
+            providesTags: ["Exercises"]
+        }),
         createExercise: builder.mutation({
             query: (exercise) => ({
                 url: '/exercise',
@@ -20,7 +27,22 @@ export const exerciseApi = baseApi.enhanceEndpoints({ addTagTypes: ["Exercises"]
             }),
             invalidatesTags: ["Exercises"]
         }),
+        editExercise: builder.mutation({
+            query: ({ exerciseId, formData }) => ({
+                url: `/exercise/${exerciseId}`,
+                method: 'PATCH',
+                body: formData
+            }),
+            invalidatesTags: ["Exercises"]
+        }),
+        deleteExercise: builder.mutation({
+            query: (exerciseId) => ({
+                url: `/exercise/${exerciseId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ["Exercises"]
+        }),
     })
 })
 
-export const { useGetAllExerciseQuery, useCreateExerciseMutation } = exerciseApi
+export const { useGetAllExerciseQuery, useCreateExerciseMutation, useGetSingleExerciseQuery, useEditExerciseMutation, useDeleteExerciseMutation } = exerciseApi
