@@ -13,8 +13,8 @@ import { IoVideocamOutline } from "react-icons/io5";
 const EditWorkoutVideo = () => {
     const [form] = Form.useForm();
     const [videoFile, setVideoFile] = useState(null);
-    const navigate = useNavigate();
     const [imageFile, setImageFile] = useState(null);
+    const navigate = useNavigate();
     const { workoutId } = useParams()
 
     const { data: workoutVideo, refetch } = useGetSingleWorkoutVideoQuery(workoutId)
@@ -52,8 +52,6 @@ const EditWorkoutVideo = () => {
 
         try {
             const response = await editWorkoutVideo({ workoutId, formData }).unwrap();
-            console.log(response, 'response from edit video');
-
             message.success("Video edited successfully!");
             form.resetFields(); // Reset form
             setFile(null); // Clear file
