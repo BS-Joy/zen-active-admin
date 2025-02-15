@@ -33,27 +33,36 @@ const Workouts = () => {
             title: "Image",
             dataIndex: "image",
             key: "image",
-            render: (text) => <a>{text}</a>,
+            render: (image) => (
+                <div className="flex items-center justify-center">
+                    <img
+                        src={image ? `${import.meta.env.VITE_BASE_URL}${image}` : "https://via.placeholder.com/40"}
+                        alt="badge"
+                        className="w- h-10 rounded-full object-contain"
+                    />
+                </div>
+            ),
         },
         {
-            title: "Title",
-            dataIndex: "title",
-            key: "title",
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
         },
         {
-            title: "Duration",
-            dataIndex: "duration",
-            key: "duration",
+            title: "Descripition",
+            dataIndex: "description",
+            key: "description",
         },
         {
-            title: "Daily Activity",
-            key: "dailyActivity",
-            dataIndex: "dailyActivity",
+            title: "Points",
+            key: "points",
+            dataIndex: "points",
         },
         {
-            title: "Reward Points",
-            key: "rewardPoints",
-            dataIndex: "rewardPoints",
+            title: "Exercises",
+            key: "exercises",
+            dataIndex: "exercises",
+            render: (exercises) => exercises?.map(exercise => exercise.name).join(", ") || "N/A",
         },
         {
             title: "Action",
@@ -98,22 +107,15 @@ const Workouts = () => {
         },
     ];
 
-    const data = [];
-    for (let index = 0; index < 6; index++) {
-        data.push({
-            // transIs: `${index + 1}`,
-            image: <div className="flex items-center justify-center">
-                <img src={workoutImg} alt="" className="w-10 h-10" />
-            </div>,
-            title: "Full body plan",
-            duration: '1 week',
-            dailyActivity: "30 min",
-            rewardPoints: "50 points",
-            Review: "See Review",
-            date: "16 Apr 2024",
-            _id: index,
-        });
-    }
+    const data = workouts?.data?.map((workout, index) => ({
+        key: index,
+        image: workout.image,
+        name: workout.name,
+        description: workout.description,
+        points: workout.points,
+        exercises: workout.exercises,
+        ...workout,
+    })) || [];
 
 
 
@@ -121,11 +123,11 @@ const Workouts = () => {
         <div>
             <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-workout")}>
                 <FaPlus />
-                Add Badge</button>
+                Add Workout</button>
             <div className="py-10">
                 <div className="rounded-lg border-2 py-4 border-[#174C6B]/80 mt-8 recent-users-table">
                     <div className="flex justify-between px-2">
-                        <h3 className="text-2xl text-black mb-4 pl-2">Workout Plans</h3>
+                        <h3 className="text-2xl text-black mb-4 pl-2">Workouts</h3>
                         <div className="flex items-center gap-4 mb-6">
 
                             <Input placeholder="Search workouts by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }} />
@@ -147,42 +149,71 @@ const Workouts = () => {
                     <DashboardModal
                         isModalOpen={isModalOpen}
                         setIsModalOpen={setIsModalOpen}
-                        maxWidth="500px"
+                        maxWidth="700px"
                     >
                         <div>
-                            <h2 className="text-lg text-center mb-4">User Details</h2>
-                            {/* <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-              <p>#SL</p>
-              <p>{modalData.transIs}</p>
-            </div> */}
-                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>User Name</p>
-                                <p>{modalData.name}</p>
-                            </div>
-                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Email</p>
-                                <p>{modalData.Email}</p>
-                            </div>
-                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Mobile Phone</p>
-                                <p>{modalData.Phone}</p>
-                            </div>
+                            <h2 className="text-lg text-center mb-4">Workout Exercise Details</h2>
 
-                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Date</p>
-                                <p>{modalData.transIs}</p>
-                            </div>
+                            {/* Ant Design Table for Exercises */}
+                            <Table
+                                columns={[
+                                    {
+                                        title: "Exercise Name",
+                                        dataIndex: "name",
+                                        key: "name",
+                                    },
+                                    {
+                                        title: "Description",
+                                        dataIndex: "description",
+                                        key: "description",
+                                    },
+                                    {
+                                        title: "Sets",
+                                        dataIndex: "sets",
+                                        key: "sets",
+                                    },
+                                    {
+                                        title: "Reps",
+                                        dataIndex: "reps",
+                                        key: "reps",
+                                    },
+                                    {
+                                        title: "Rest Time (s)",
+                                        dataIndex: "restTime",
+                                        key: "restTime",
+                                    },
+                                    {
+                                        title: "Points",
+                                        dataIndex: "points",
+                                        key: "points",
+                                    },
+                                ]}
+                                dataSource={modalData?.exercises?.map((exercise, index) => ({
+                                    key: index,
+                                    name: exercise.name,
+                                    description: exercise.description,
+                                    sets: exercise.sets,
+                                    reps: exercise.reps,
+                                    restTime: exercise.restTime,
+                                    points: exercise.points,
+                                }))}
+                                pagination={false} // Disable pagination since it's a small modal
+                                bordered
+                                className="rounded-lg"
+                            />
 
-
+                            {/* Close Button */}
                             <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
                                 <button
                                     className="w-[300px] bg-[#174C6B] text-white px-10 h-[50px] flex items-center justify-center gap-3 text-lg outline-none rounded-xl"
+                                    onClick={() => setIsModalOpen(false)}
                                 >
                                     <span className="text-white font-light">Okay</span>
                                 </button>
                             </div>
                         </div>
                     </DashboardModal>
+
                 </div>
             </div>
         </div>

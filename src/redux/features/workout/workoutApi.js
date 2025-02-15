@@ -6,7 +6,7 @@ export const workoutApi = baseApi.injectEndpoints({
             query: (searchTerm) => {
                 const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : '';
                 return {
-                    url: `/workout-plan${queryParam}`,
+                    url: `/workout${queryParam}`,
                     method: 'GET',
                 };
             }
