@@ -125,7 +125,7 @@ export const dashboardItems = [
     element: <AddWorkout />,
   },
   {
-    path: "edit-workout",
+    path: "edit-workout/:workoutId",
     element: <EditWorkout />,
   },
   {

@@ -10,6 +10,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
 import { useGetAllWorkoutQuery } from "../../../redux/features/workout/workoutApi";
+import { MdEdit } from "react-icons/md";
 
 
 
@@ -80,10 +81,10 @@ const Workouts = () => {
                 <div className="  items-center justify-around textcenter flex">
                     {/* Review Icon */}
                     <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
-                    {/* <Link to={'/reviews'} className="btn bg-black text-white px-3 py-1 text-sm rounded-full">
-                 
-                  View
-                </Link> */}
+                    <Link to={`/edit-workout/${data._id}`} className="">
+
+                        <MdEdit />
+                    </Link>
                 </div>
             ),
         },

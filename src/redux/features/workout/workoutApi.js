@@ -12,6 +12,13 @@ export const workoutApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workouts"] }
             },
             providesTags: ["Workouts"]
         }),
+        getSingleWorkout: builder.query({
+            query: (workoutId) => ({
+                url: `/workout/${workoutId}`,
+                method: 'GET',
+            }),
+            providesTags: ["Workouts"]
+        }),
         createWorkout: builder.mutation({
             query: (workout) => ({
                 url: '/workout/create-workout',
@@ -23,4 +30,4 @@ export const workoutApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workouts"] }
     })
 })
 
-export const { useGetAllWorkoutQuery, useCreateWorkoutMutation } = workoutApi
+export const { useGetAllWorkoutQuery, useCreateWorkoutMutation, useGetSingleWorkoutQuery } = workoutApi
