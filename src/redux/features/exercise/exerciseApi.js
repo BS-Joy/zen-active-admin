@@ -1,6 +1,6 @@
 import { baseApi } from "../../api/baseApi";
 
-export const exerciseApi = baseApi.injectEndpoints({
+export const exerciseApi = baseApi.enhanceEndpoints({ addTagTypes: ["Exercises"] }).injectEndpoints({
     endpoints: (builder) => ({
         getAllExercise: builder.query({
             query: (searchTerm) => {
@@ -9,10 +9,18 @@ export const exerciseApi = baseApi.injectEndpoints({
                     url: `/exercise${queryParam}`,
                     method: 'GET',
                 };
-            }
+            },
+            providesTags: ["Exercises"]
         }),
-
+        createExercise: builder.mutation({
+            query: (exercise) => ({
+                url: '/exercise',
+                method: 'POST',
+                body: exercise,
+            }),
+            invalidatesTags: ["Exercises"]
+        }),
     })
 })
 
-export const { useGetAllExerciseQuery } = exerciseApi
+export const { useGetAllExerciseQuery, useCreateExerciseMutation } = exerciseApi

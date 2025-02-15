@@ -38,15 +38,10 @@ const AddWorkout = () => {
     };
 
     const onFinish = async (values) => {
-        console.log(values);
-
         const formattedData = {
             ...values,
             points: Number(values.points)
         }
-
-        console.log(formattedData);
-
 
         // Create FormData
         const formData = new FormData();
