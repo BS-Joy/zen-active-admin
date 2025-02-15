@@ -20,8 +20,19 @@ const Workouts = () => {
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
     const { data: workouts } = useGetAllWorkoutQuery(query)
-    console.log(workouts);
 
+    // Handle search input change
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+        console.log(searchTerm);
+
+    };
+
+    // Trigger search when button is clicked
+    const handleSearch = () => {
+        setQuery(searchTerm);
+
+    };
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -130,11 +141,16 @@ const Workouts = () => {
                         <h3 className="text-2xl text-black mb-4 pl-2">Workouts</h3>
                         <div className="flex items-center gap-4 mb-6">
 
-                            <Input placeholder="Search workouts by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }} />
+                            <Input placeholder="Search workouts by name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '1px solid #79CDFF' }}
+                                value={searchTerm || ''}
+                                onChange={handleSearchChange}
+                            />
                             {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
                                              <IoSearch />
                                            </Button> */}
-                            <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}><IoSearch size={20} /></button>
+                            <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}
+                                onClick={handleSearch}
+                            ><IoSearch size={20} /></button>
                         </div>
                     </div>
                     {/* Ant Design Table */}
