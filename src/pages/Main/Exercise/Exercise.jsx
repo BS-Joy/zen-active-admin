@@ -12,7 +12,6 @@ import { FaPlus } from "react-icons/fa6";
 import { useGetAllExerciseQuery } from "../../../redux/features/exercise/exerciseApi";
 
 
-
 const Exercise = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
@@ -26,19 +25,27 @@ const Exercise = () => {
     const showModal = (data) => {
         setIsModalOpen(true);
         setModalData(data);
-    }; 
+    };
 
     const columns = [
         {
             title: "Image",
             dataIndex: "image",
             key: "image",
-            render: (text) => <a>{text}</a>,
+            render: (image) => (
+                <div className="flex items-center justify-center">
+                    <img
+                        src={image ? `${import.meta.env.VITE_BASE_URL}${image}` : "https://via.placeholder.com/40"}
+                        alt="badge"
+                        className="w- h-10 rounded-full object-contain"
+                    />
+                </div>
+            ),
         },
         {
-            title: "Exercise Name",
-            dataIndex: "exerciseName",
-            key: "exerciseName",
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
         },
         {
             title: "Duration",
@@ -47,8 +54,8 @@ const Exercise = () => {
         },
         {
             title: "Reward Points",
-            key: "rewardPoints",
-            dataIndex: "rewardPoints",
+            key: "points",
+            dataIndex: "points",
         },
         {
             title: "Goal",
@@ -98,24 +105,15 @@ const Exercise = () => {
         },
     ];
 
-    const data = [];
-    for (let index = 0; index < 6; index++) {
-        data.push({
-            // transIs: `${index + 1}`,
-            image: <div className="flex items-center justify-center">
-                <img src={mealImg} alt="" className="w-10 h-10" />
-            </div>,
-            name: "Grilled Chicken Salad",
-            duration: "30 min",
-            rewardPoints: "50 points",
-            goal: "Walk 10,000 steps daily",
-            Review: "See Review",
-            date: "16 Apr 2024",
-            _id: index,
-        });
-    }
-
-
+    const data = exercises?.data?.map((exercise, index) => ({
+        key: index,
+        image: exercise.image,
+        name: exercise.name,
+        duration: exercise.duration,
+        points: exercise.points,
+        goal: exercise.goal,
+        ...exercise,
+    })) || [];
 
     return (
         <div>
