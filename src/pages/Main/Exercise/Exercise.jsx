@@ -148,27 +148,27 @@ const Exercise = () => {
                         maxWidth="500px"
                     >
                         <div>
-                            <h2 className="text-lg text-center mb-4">User Details</h2>
+                            <h2 className="text-lg text-center mb-4">Exercise Details</h2>
                             {/* <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
               <p>#SL</p>
               <p>{modalData.transIs}</p>
             </div> */}
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>User Name</p>
-                                <p>{modalData.name}</p>
+                                <p>Description</p>
+                                <p>{modalData.description}</p>
                             </div>
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Email</p>
-                                <p>{modalData.Email}</p>
+                                <p>Reps</p>
+                                <p>{modalData.reps}</p>
                             </div>
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Mobile Phone</p>
-                                <p>{modalData.Phone}</p>
+                                <p>Rest Time</p>
+                                <p>{modalData.restTime}</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-                                <p>Date</p>
-                                <p>{modalData.transIs}</p>
+                                <p>Sets</p>
+                                <p>{modalData.sets}</p>
                             </div>
 
 
