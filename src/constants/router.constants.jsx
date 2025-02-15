@@ -16,7 +16,6 @@ import {
 import HostDetails from "../pages/Main/Host/HostDetails";
 import { FaServicestack } from "react-icons/fa6";
 import { BiMessageSquareDetail } from "react-icons/bi";
-import { PiHandWithdrawBold } from "react-icons/pi";
 import Earnings from "../pages/Main/Earnings/Earnings";
 import Setting from "../pages/Main/Setting/Setting";
 import ChangePassword from "../pages/Main/Setting/Change-password/ChangePassword";
@@ -32,7 +31,6 @@ import Notifications from "../pages/Main/Notifications/Notifications";
 import AddSubscription from "../pages/Main/AddSubscription/AddSubscription";
 import EditSubscription from "../pages/Main/EditSubscription/EditSubscription";
 import { BiDish } from "react-icons/bi";
-import { GiMountainClimbing } from "react-icons/gi";
 import Meals from "../pages/Main/Meals/Meals";
 import Workouts from "../pages/Main/Workouts/Workouts";
 import { CiDumbbell } from "react-icons/ci";
@@ -40,7 +38,6 @@ import Store from "../pages/Main/Store/Store";
 import { PiHandbagSimple } from "react-icons/pi";
 import AddMeal from "../pages/Main/AddMeal/AddMeal";
 import EditMeal from "../pages/Main/EditMeal/EditMeal";
-import AddChallenge from "../pages/Main/AddChallenge/AddChallenge";
 import EditChallenge from "../pages/Main/EditChallenge/EditChallenge";
 import AddWorkout from "../pages/Main/AddWorkout/AddWorkout";
 import EditWorkout from "../pages/Main/EditWorkout/EditWorkout";
@@ -53,6 +50,7 @@ import WorkoutVideos from "../pages/Main/WorkoutVideos/WorkoutVideos";
 import EditWorkoutVideo from "../pages/Main/EditWorkoutVideo/EditWorkoutVideo";
 import AddWorkoutVideo from "../pages/Main/AddWorkoutVideo/AddWorkoutVideo";
 import WorkoutPlans from "../pages/Main/WorkoutPlans/WorkoutPlans";
+import AddExercise from "../pages/Main/AddExercise/AddExercise";
 
 export const dashboardItems = [
   {
@@ -113,8 +111,8 @@ export const dashboardItems = [
     element: <EditMeal />,
   },
   {
-    path: "add-challenge",
-    element: <AddChallenge />,
+    path: "add-exercise",
+    element: <AddExercise />,
   },
   {
     path: "edit-challenge",
