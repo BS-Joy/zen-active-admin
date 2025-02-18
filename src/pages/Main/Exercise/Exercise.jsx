@@ -159,6 +159,10 @@ const Exercise = () => {
                                 <p>{modalData.description}</p>
                             </div>
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+                                <p>About</p>
+                                <p>{modalData.about}</p>
+                            </div>
+                            <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Reps</p>
                                 <p>{modalData.reps}</p>
                             </div>
