@@ -15,6 +15,8 @@ const Users = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [query, setQuery] = useState("");
   const { data: allUsers } = useGetAllUserQuery(query)
+  console.log(allUsers);
+
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -75,18 +77,9 @@ const Users = () => {
     },
   ];
 
-  // const data = [];
-  // for (let index = 0; index < 6; index++) {
-  //   data.push({
-  //     transIs: `${index + 1}`,
-  //     name: "Henry",
-  //     subscription: "Standard",
-  //     amount: "9.99",
-  //     Review: "See Review",
-  //     date: "16 Apr 2024",
-  //     _id: index,
-  //   });
-  // }
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const data = allUsers?.data?.map((user, index) => ({
     key: index,
@@ -145,26 +138,69 @@ const Users = () => {
           </div> */}
           <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>User Name</p>
-            <p>{modalData.name}</p>
+            <p>{modalData.name ? `${modalData.name.firstName} ${modalData.name.lastName}` : "N/A"}</p>
           </div>
           <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Email</p>
-            <p>{modalData.Email}</p>
+            <p>{modalData.email}</p>
           </div>
           <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-            <p>Mobile Phone</p>
-            <p>{modalData.Phone}</p>
+            <p>Gender</p>
+            <p>{modalData.gender}</p>
           </div>
 
           <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-            <p>Date</p>
-            <p>{modalData.transIs}</p>
+            <p>Date of birth</p>
+            <p>{moment(modalData.dateOfBirth).format("MMM Do YYYY")}</p>
+          </div>
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Activity Level</p>
+            <p>{modalData.activityLevel}</p>
+          </div>
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Height</p>
+            <p>{modalData.height} cm</p>
+          </div>
+
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Weight</p>
+            <p>{modalData.weight} kg</p>
+          </div>
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Diet</p>
+            <p>{modalData.diet}</p>
+          </div>
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Injury</p>
+            <p>{modalData.injury}</p>
+          </div>
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Medical Condition</p>
+            <p>{modalData.medicalCondition}</p>
+          </div>
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Movement Difficulty</p>
+            <p>{modalData.movementDifficulty}</p>
+          </div>
+
+          <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Primary Goal</p>
+            <p>{modalData.primaryGoal}</p>
           </div>
 
 
           <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
             <button
               className="w-[300px] bg-[#174C6B] text-white px-10 h-[50px] flex items-center justify-center gap-3 text-lg outline-none rounded-xl"
+              onClick={handleCancel}
+
             >
               <span className="text-white font-light">Okay</span>
             </button>

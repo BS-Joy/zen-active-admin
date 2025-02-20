@@ -12,13 +12,13 @@ export const workoutPlansApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workout
             },
             providesTags: ["WorkoutPlans"]
         }),
-        // getSingleWorkout: builder.query({
-        //     query: (workoutId) => ({
-        //         url: `/workout/${workoutId}`,
-        //         method: 'GET',
-        //     }),
-        //     providesTags: ["Workouts"]
-        // }),
+        getSingleWorkoutPlan: builder.query({
+            query: (workoutPlanId) => ({
+                url: `/workout-plan/${workoutPlanId}`,
+                method: 'GET',
+            }),
+            providesTags: ["WorkoutPlans"]
+        }),
         // createWorkout: builder.mutation({
         //     query: (workout) => ({
         //         url: '/workout/create-workout',
@@ -45,4 +45,4 @@ export const workoutPlansApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workout
     })
 })
 
-export const { useGetWorkoutPlansQuery } = workoutPlansApi
+export const { useGetWorkoutPlansQuery, useGetSingleWorkoutPlanQuery } = workoutPlansApi

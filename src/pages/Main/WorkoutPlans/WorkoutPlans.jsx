@@ -178,13 +178,13 @@ const WorkoutPlans = () => {
                         maxWidth="700px"
                     >
                         <div>
-                            <h2 className="text-lg text-center mb-4">Workout Exercise Details</h2>
+                            <h2 className="text-lg text-center mb-4">Workouts Details</h2>
 
                             {/* Ant Design Table for Exercises */}
                             <Table
                                 columns={[
                                     {
-                                        title: "Exercise Name",
+                                        title: "Workout Name",
                                         dataIndex: "name",
                                         key: "name",
                                     },
@@ -214,14 +214,14 @@ const WorkoutPlans = () => {
                                         key: "points",
                                     },
                                 ]}
-                                dataSource={modalData?.exercises?.map((exercise, index) => ({
+                                dataSource={modalData?.workouts?.map((workout, index) => ({
                                     key: index,
-                                    name: exercise.name,
-                                    description: exercise.description,
-                                    sets: exercise.sets,
-                                    reps: exercise.reps,
-                                    restTime: exercise.restTime,
-                                    points: exercise.points,
+                                    name: workout.name,
+                                    description: workout.description,
+                                    sets: workout.sets,
+                                    reps: workout.reps,
+                                    restTime: workout.restTime,
+                                    points: workout.points,
                                 }))}
                                 pagination={false} // Disable pagination since it's a small modal
                                 bordered
