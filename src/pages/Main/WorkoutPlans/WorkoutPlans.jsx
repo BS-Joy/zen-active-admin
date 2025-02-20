@@ -194,24 +194,10 @@ const WorkoutPlans = () => {
                                         key: "description",
                                     },
                                     {
-                                        title: "Sets",
-                                        dataIndex: "sets",
-                                        key: "sets",
-                                    },
-                                    {
-                                        title: "Reps",
-                                        dataIndex: "reps",
-                                        key: "reps",
-                                    },
-                                    {
-                                        title: "Rest Time (s)",
-                                        dataIndex: "restTime",
-                                        key: "restTime",
-                                    },
-                                    {
-                                        title: "Points",
-                                        dataIndex: "points",
-                                        key: "points",
+                                        title: "Exercises",
+                                        dataIndex: "exercises",
+                                        key: "exercises",
+                                        render: (exercises) => exercises?.map(exercise => exercise.name).join(", ") || "N/A",
                                     },
                                 ]}
                                 dataSource={modalData?.workouts?.map((workout, index) => ({
@@ -219,9 +205,7 @@ const WorkoutPlans = () => {
                                     name: workout.name,
                                     description: workout.description,
                                     sets: workout.sets,
-                                    reps: workout.reps,
-                                    restTime: workout.restTime,
-                                    points: workout.points,
+                                    exercises: workout.exercises
                                 }))}
                                 pagination={false} // Disable pagination since it's a small modal
                                 bordered
