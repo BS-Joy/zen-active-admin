@@ -77,9 +77,9 @@ const Subscription = () => {
     };
     return (
         <div>
-            <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-subscription")}>
+            {/* <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-subscription")}>
                 <FaPlus />
-                Add new subscription</button>
+                Add new subscription</button> */}
             {/* <AddNewButton text={'Add new subscription'} path={'/add-subscription'} /> */}
             <div className="py-20">
 
