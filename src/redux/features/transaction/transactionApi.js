@@ -12,7 +12,18 @@ export const transactionApi = baseApi.injectEndpoints({
             query: () => '/subscription/total-earn',
         }),
         getRecentTransactions: builder.query({
-            query: () => '/subscription',
+            query: ({ searchTerm, purchaseDate }) => {
+                let queryParams = [];
+                if (searchTerm) queryParams.push(`searchTerm=${encodeURIComponent(searchTerm)}`);
+                if (purchaseDate) queryParams.push(`purchaseDate=${encodeURIComponent(purchaseDate)}`);
+
+                const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+                return {
+                    url: `/subscription${queryString}`,
+                    method: 'GET',
+                };
+            },
         }),
     })
 })

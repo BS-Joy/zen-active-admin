@@ -12,12 +12,39 @@ import moment from "moment";
 const Earnings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const { data: recentTransactions } = useGetRecentTransactionsQuery()
+  const [searchTerm, setSearchTerm] = useState(""); // State to store search input
+  const [purchaseDate, setPurchaseDate] = useState(""); // State to store search input
+  const [query, setQuery] = useState({ searchTerm: "", purchaseDate: "" });
+  // State to trigger search
+  const { data: recentTransactions } = useGetRecentTransactionsQuery(query)
 
   const showModal = (data) => {
     setIsModalOpen(true);
     setModalData(data);
   };
+
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    console.log(searchTerm);
+
+  };
+
+  // Handle date input change
+  const handleDateChange = (date, dateString) => {
+    setPurchaseDate(dateString); // Use the formatted date string
+    console.log(dateString);
+  };
+
+
+  // Trigger search when button is clicked
+  const handleSearch = () => {
+    setQuery({
+      searchTerm,
+      purchaseDate
+    });
+  };
+
 
   const columns = [
     {
@@ -108,10 +135,21 @@ const Earnings = () => {
         <div className="flex justify-between px-2">
           <h3 className="text-2xl text-black mb-4 pl-2">Earnings</h3>
           <div className="flex items-center gap-4 mb-6">
-            <DatePicker placeholder="Date" className="w-48 border-lightBlue" />
-            <Input placeholder="Search..." className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }} />
+            <DatePicker
+              placeholder="Date"
+              className="w-48 border-lightBlue"
+              value={purchaseDate ? moment(purchaseDate) : null}
+              onChange={handleDateChange}
+            />
 
-            <button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '50%', padding: '6px' }}><IoSearch size={18} /></button>
+            <Input placeholder="Search..." className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }}
+              value={searchTerm || ''}
+              onChange={handleSearchChange}
+            />
+
+            <button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '50%', padding: '6px' }}><IoSearch size={18}
+              onClick={handleSearch}
+            /></button>
           </div>
         </div>
 
