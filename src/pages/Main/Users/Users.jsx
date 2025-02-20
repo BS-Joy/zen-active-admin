@@ -13,13 +13,22 @@ const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
-  const { data: allUsers } = useGetAllUserQuery(searchTerm || undefined)
-  console.log(allUsers);
-
+  const [query, setQuery] = useState("");
+  const { data: allUsers } = useGetAllUserQuery(query)
 
   const showModal = (data) => {
     setIsModalOpen(true);
     setModalData(data);
+  };
+
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // Trigger search when button is clicked
+  const handleSearch = () => {
+    setQuery(searchTerm);
   };
 
   const columns = [
@@ -103,13 +112,15 @@ const Users = () => {
       <div className="flex justify-between px-2">
         <h3 className="text-2xl text-black mb-4 pl-2">Users List</h3>
         <div className="flex items-center gap-4 mb-6">
-          <DatePicker placeholder="Date" className="w-48 border-2 border-[#174C6B]" />
-          <Input placeholder="Subscription" className="w-48 border-2 border-[#174C6B] placeholder:text-[#174C6B]" style={{ border: '2px solid #174C6B' }} />
-          <Input placeholder="User Name" className="w-48 placeholder:text-[#174C6B]" style={{ border: '2px solid #174C6B' }} />
+
+          <Input placeholder="User Name" className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }}
+            value={searchTerm || ''}
+            onChange={handleSearchChange}
+          />
           {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
                    <IoSearch />
                  </Button> */}
-          <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}><IoSearch size={20} /></button>
+          <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}><IoSearch size={20} onClick={handleSearch} /></button>
         </div>
       </div>
       {/* Ant Design Table */}

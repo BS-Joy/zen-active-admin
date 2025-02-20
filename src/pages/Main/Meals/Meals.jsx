@@ -29,14 +29,11 @@ const Meals = () => {
     // Handle search input change
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-        console.log(searchTerm);
-
     };
 
     // Trigger search when button is clicked
     const handleSearch = () => {
         setQuery(searchTerm);
-
     };
 
     const columns = [
