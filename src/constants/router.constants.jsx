@@ -52,6 +52,7 @@ import AddWorkoutVideo from "../pages/Main/AddWorkoutVideo/AddWorkoutVideo";
 import WorkoutPlans from "../pages/Main/WorkoutPlans/WorkoutPlans";
 import AddExercise from "../pages/Main/AddExercise/AddExercise";
 import EditExercise from "../pages/Main/EditExercise/EditExercise";
+import AddWorkoutPlan from "../pages/Main/AddWorkoutPlan/AddWorkoutPlan";
 
 export const dashboardItems = [
   {
@@ -118,6 +119,10 @@ export const dashboardItems = [
   {
     path: "edit-exercise/:exerciseId",
     element: <EditExercise />,
+  },
+  {
+    path: "add-workout-plan",
+    element: <AddWorkoutPlan />,
   },
   {
     path: "add-workout",

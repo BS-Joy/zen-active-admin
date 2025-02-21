@@ -22,8 +22,6 @@ const WorkoutPlans = () => {
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
     const { data: workoutPlans } = useGetWorkoutPlansQuery(query)
-    console.log(workoutPlans);
-
 
     // Handle search input change
     const handleSearchChange = (event) => {
@@ -142,7 +140,7 @@ const WorkoutPlans = () => {
 
     return (
         <div>
-            <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-workout")}>
+            <button className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2" onClick={() => navigate("/add-workout-plan")}>
                 <FaPlus />
                 Add Workout Plan</button>
             <div className="py-10">
