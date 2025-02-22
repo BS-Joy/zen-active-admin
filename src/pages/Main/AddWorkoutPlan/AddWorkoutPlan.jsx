@@ -68,6 +68,9 @@ const AddWorkoutPlan = () => {
     }
 
     const onFinish = async (values) => {
+        const duration = Number(values.duration); // Convert string to number
+        const expectedWorkouts = duration * 7; // 8 weeks = 56 workouts, 12 weeks = 84 workouts
+
         setLoading(true);
         setError("");
 
@@ -113,26 +116,34 @@ const AddWorkoutPlan = () => {
                     contents: [{
                         parts: [{
                             text: `
-                ${JSON.stringify(values.description)} this is my workout data. 
-                Make a structured workout plan for ${values.duration} weeks. 
-                Workout plan name: ${values.name}. 
-                Ensure **each day of each week has exactly 1 workout**.
-                This means the total number of workouts should be **${values.duration * 7} workouts**.
-                **ONLY** select workouts from this list: ${JSON.stringify(workoutsId)}.
-                **DO NOT** return null values in the workouts array.
-                **DO NOT** generate new workout IDs, only use IDs from the given list.
-                Provide only JSON data based on this Mongoose schema:
-                [
-                    const WorkoutPlanSchema = new Schema<IWorkoutPlan>({
-                        name: { type: String, required: true },
-                        description: { type: String, required: true },
-                        duration: { type: Number, required: true },
-                        workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
-                        points: { type: Number, required: true },
-                        isDeleted: { type: Boolean, default: false },
-                        image: { type: String, required: true }
-                    }, { timestamps: true })
-                ]`
+                            ${JSON.stringify(values.description)} this is my workout data. 
+                            Make a structured workout plan for ${duration} weeks. 
+                            Workout plan name: ${values.name}. Points will be ${values.points} in number format.
+                            
+                            STRICT REQUIREMENT: 
+                            - If the duration is **8 weeks, you MUST return exactly 56 workouts (8 * 7)**.  
+                            - If the duration is **12 weeks, you MUST return exactly 84 workouts (12 * 7)**.  
+                            .
+                        
+                            **ONLY** select workouts from this list: ${JSON.stringify(workoutsId)}.
+                            **DO NOT** return null values in the workouts array.
+                            **DO NOT** generate new workout IDs, only use IDs from the given list.
+                           .
+                        
+                            Provide only JSON data based exactly on this Mongoose schema:
+                            [
+                                const WorkoutPlanSchema = new Schema<IWorkoutPlan>({
+                                    name: { type: String, required: true },
+                                    description: { type: String, required: true },
+                                    about: { type: String, required: true },
+                                    duration: { type: Number, required: true },
+                                    workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
+                                    points: { type: Number, required: true },
+                                    isDeleted: { type: Boolean, default: false },
+                                    image: { type: String, required: true }
+                                }, { timestamps: true })
+                            ]`
+
                         }]
                     }]
                 }),
@@ -158,6 +169,7 @@ const AddWorkoutPlan = () => {
                 const formattedData = {
                     name: parsedData.name,
                     description: parsedData.description,
+                    about: parsedData.about,
                     duration: parsedData.duration,
                     points: parsedData.points > 0 ? parsedData.points : 0, // Ensure points are positive
                     workouts: parsedData.workouts.filter(workout => workout && typeof workout === "string"), // Remove null values
@@ -287,6 +299,25 @@ const AddWorkoutPlan = () => {
                                         }} />
                                     </Form.Item>
 
+                                    {/* About */}
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Plan About</span>}
+                                        name="about"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                                    >
+                                        <Input type="text" placeholder="Enter Plan Description" style={{
+                                            height: '40px',
+                                            border: '1px solid #79CDFF',
+                                            fontSize: '16px',
+                                            fontWeight: 600,
+                                            color: '#525252',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                        }} />
+                                    </Form.Item>
+
                                     {/* Image */}
                                     <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
@@ -325,7 +356,7 @@ const AddWorkoutPlan = () => {
                                     </Form.Item>
 
                                     {/* Duration */}
-                                    <Form.Item
+                                    {/* <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Duration</span>}
                                         name="duration"
                                         className="responsive-form-item"
@@ -341,7 +372,35 @@ const AddWorkoutPlan = () => {
                                             alignItems: 'center',
                                             justifyContent: 'space-between',
                                         }} />
+                                    </Form.Item> */}
+
+                                    <Form.Item
+                                        label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Select Duration</span>}
+                                        name="duration"
+                                        className="responsive-form-item"
+                                    // rules={[{ required: true, message: 'Please select a duration!' }]}
+                                    >
+                                        <Select placeholder="Select Duration"
+                                            style={{
+                                                height: '40px',
+                                                fontWeight: 600,
+                                                border: 'none', // Remove the custom border styling here
+                                                fontSize: '18px',
+                                                color: '#525252',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                            }}
+                                            dropdownStyle={{
+                                                border: '1px solid #79CDFF', // Custom border for dropdown if needed
+                                            }}
+                                        >
+                                            <Option value="8">8</Option>
+                                            <Option value="12">12</Option>
+
+                                        </Select>
                                     </Form.Item>
+
 
                                     {/* Workouts */}
                                     <Form.Item

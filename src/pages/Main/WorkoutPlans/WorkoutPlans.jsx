@@ -81,6 +81,9 @@ const WorkoutPlans = () => {
             title: "Duration",
             key: "duration",
             dataIndex: "duration",
+            render: (duration) => (
+                <h1>{duration} days</h1>
+            ),
         },
         {
             title: "Action",
