@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Select, Space } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 const { Option } = Select;
@@ -13,6 +13,13 @@ import { useCreateWorkoutPlanMutation, useGetWorkoutPlansQuery } from "../../../
 
 const AddWorkoutPlan = () => {
     const [file, setFile] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [inputMessage, setInputMessage] = useState("");
+    const [week, setWeek] = useState(1);
+    const [name, setName] = useState("");
+    const [workoutPlan, setWorkoutPlan] = useState(null);
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const { data: workoutPlans } = useGetWorkoutPlansQuery(null)
@@ -22,6 +29,10 @@ const AddWorkoutPlan = () => {
     const handleFileChange = ({ file }) => {
         setFile(file.originFileObj); // Save selected file
     };
+
+    const workoutsArray = workoutPlans?.data?.map((workoutPlan) => workoutPlan.workouts);
+    const flattenedWorkouts = workoutsArray?.flat(); // Flattening the array of arrays
+    const workoutsId = flattenedWorkouts?.map((w) => w._id);
 
     // Logic for multi select input
     const options = workoutPlans?.data?.reduce((acc, workoutPlan) => {
@@ -38,29 +49,156 @@ const AddWorkoutPlan = () => {
         console.log(`Selected: ${value}`);
     };
 
-    const onFinish = async (values) => {
-        const formattedData = {
-            ...values,
-            points: Number(values.points),
-            duration: Number(values.duration)
-        }
+    function extractJsonData(jsonString) {
+        try {
+            // Use regex to match the content inside the first pair of curly braces
+            const match = jsonString.match(/{.*}/s);
 
-        // Create FormData
-        const formData = new FormData();
-        if (file) {
-            formData.append("image", file);
+            if (match) {
+                // Parse and return the matched part as a JSON object
+                return JSON.parse(match[0]);
+            } else {
+                // If no match, return null or handle accordingly
+                return null;
+            }
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+            return null;
         }
-        formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
+    }
+
+    const onFinish = async (values) => {
+        setLoading(true);
+        setError("");
 
         try {
-            const response = await createWorkoutPlan(formData).unwrap();
-            console.log(response, 'response from create workout plan');
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // Replace with your actual API key
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
-            message.success("Workout plan created successfully!");
-            form.resetFields(); // Reset form
-            setFile(null); // Clear file
-        } catch (error) {
-            message.error(error.data?.message || "Failed to create workout plan.");
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // body: JSON.stringify({
+                //     contents: [
+                //         {
+                //             parts: [
+                //                 {
+                //                     text: `${JSON.stringify(
+                //                         values.description
+                //                     )} this is my workout data.  make workout plan for ${values.duration} week. workout plan name is ${values.name}. ensure each day have 1 workout. make plan based on the workout plan name. workout can be repeted. give me just json data based on this mongoose schema : 
+                //                     [ const WorkoutPlanSchema = new Schema<IWorkoutPlan>(
+                //                     {
+                //                       name: { type: String, required: true },
+                //                       description: { type: String, required: true },
+                //                     duration: { type: Number, required: true },
+                //                       workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
+                //                       points: { type: Number, required: true },
+                //                       isDeleted: { type: Boolean, default: false },
+                //                       image: { type: String, required: true },
+                //                     },
+                //                     { timestamps: true }
+                //                         )]   
+                //                     ;
+
+
+                //                       `,
+                //                 },
+                //             ],
+                //         }
+                //     ]
+                // }),
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: `
+                ${JSON.stringify(values.description)} this is my workout data. 
+                Make a structured workout plan for ${values.duration} weeks. 
+                Workout plan name: ${values.name}. 
+                Ensure **each day of each week has exactly 1 workout**.
+                This means the total number of workouts should be **${values.duration * 7} workouts**.
+                **ONLY** select workouts from this list: ${JSON.stringify(workoutsId)}.
+                **DO NOT** return null values in the workouts array.
+                **DO NOT** generate new workout IDs, only use IDs from the given list.
+                Provide only JSON data based on this Mongoose schema:
+                [
+                    const WorkoutPlanSchema = new Schema<IWorkoutPlan>({
+                        name: { type: String, required: true },
+                        description: { type: String, required: true },
+                        duration: { type: Number, required: true },
+                        workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
+                        points: { type: Number, required: true },
+                        isDeleted: { type: Boolean, default: false },
+                        image: { type: String, required: true }
+                    }, { timestamps: true })
+                ]`
+                        }]
+                    }]
+                }),
+            });
+
+            const data = await response.json();
+            const responseText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+            console.log("API Response:", responseText);
+
+            const parsedData = extractJsonData(responseText);
+
+            console.log(parsedData, 'parsedData');
+
+            if (parsedData) {
+                // Ensure the number of workouts matches the required 7 days * X weeks
+                // const expectedWorkouts = parsedData.duration * 7;
+
+                // if (parsedData.workouts.length !== expectedWorkouts) {
+                //     console.error(`Mismatch: ${parsedData.workouts.length} workouts for ${parsedData.duration} weeks (expected ${expectedWorkouts})`);
+                //     message.error(`Error: Expected ${expectedWorkouts} workouts, but received ${parsedData.workouts.length}`);
+                //     return;
+                // }
+                const formattedData = {
+                    name: parsedData.name,
+                    description: parsedData.description,
+                    duration: parsedData.duration,
+                    points: parsedData.points > 0 ? parsedData.points : 0, // Ensure points are positive
+                    workouts: parsedData.workouts.filter(workout => workout && typeof workout === "string"), // Remove null values
+                    image: parsedData.image,
+                };
+
+                if (formattedData.workouts.length === 0) {
+                    message.error("No valid workouts returned from Gemini.");
+                    return;
+                }
+
+                const formData = new FormData();
+                if (file) {
+                    formData.append("image", file);
+                }
+                formData.append("data", JSON.stringify(formattedData));
+
+                const createResponse = await createWorkoutPlan(formData).unwrap();
+                console.log(createResponse, 'Workout plan created successfully!');
+                message.success("Workout plan created successfully!");
+                form.resetFields();
+                setFile(null);
+            } else {
+                message.error("Failed to process workout plan.");
+            }
+
+            // if (parsedData) {
+            //     setWorkoutPlan(parsedData);
+            // }
+
+            // setMessages((prevMessages) => [
+            //     ...prevMessages,
+            //     {
+            //         sender: "Gemini",
+            //         text: responseText,
+            //     },
+            // ]);
+        } catch (err) {
+            setError("Failed to fetch response from Gemini.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -85,6 +223,11 @@ const AddWorkoutPlan = () => {
             }
         },
     };
+
+
+
+
+
     return (
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
@@ -237,6 +380,74 @@ const AddWorkoutPlan = () => {
                         </Form>
                     </div>
                 </div>
+
+                {/* Form for AI */}
+                {/* <div className="flex flex-col">
+                    <input
+                        type="text"
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        placeholder="Enter workout details"
+                        className="border p-2 mr-2"
+                    />
+                    <input
+                        type="number"
+                        value={week}
+                        onChange={(e) => setWeek(Number(e.target.value))}
+                        placeholder="Number of weeks"
+                        className="border p-2 mr-2"
+                    />
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Workout plan name"
+                        className="border p-2 mr-2"
+                    />
+                    <button
+                        className="bg-blue-400 text-white px-4 py-2 rounded"
+                        onClick={handleSendMessage}
+                        disabled={loading}
+                    >
+                        {loading ? "Loading..." : "Send"}
+                    </button>
+
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
+
+                    {workoutPlan && (
+                        <div className="mt-6">
+                            <h2 className="text-lg font-bold">Generated Workout Plan</h2>
+                            <table className="table-auto border-collapse border border-gray-400 mt-2 w-full">
+                                <thead>
+                                    <tr className="bg-gray-200">
+                                        <th className="border border-gray-400 px-4 py-2">Name</th>
+                                        <th className="border border-gray-400 px-4 py-2">Description</th>
+                                        <th className="border border-gray-400 px-4 py-2">Duration</th>
+                                        <th className="border border-gray-400 px-4 py-2">Workouts</th>
+                                        <th className="border border-gray-400 px-4 py-2">Points</th>
+                                        <th className="border border-gray-400 px-4 py-2">Image</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className="border border-gray-400 px-4 py-2">{workoutPlan.name}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{workoutPlan.description}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{workoutPlan.duration} days</td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {workoutPlan.workouts.map((workout, index) => (
+                                                <span key={index} className="block">{workout._id}</span>
+                                            ))}
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">{workoutPlan.points}</td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            <img src={workoutPlan.image} alt="Workout Plan" className="w-20 h-20" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div> */}
             </div>
         </>
     )
