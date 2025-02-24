@@ -10,6 +10,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
 import { useGetAllMealQuery } from "../../../redux/features/meal/mealApi";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 
 
@@ -177,7 +178,22 @@ const Meals = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
-                        pagination={{ position: ["bottomCenter"] }}
+                        pagination={{
+                            position: ["bottomCenter"],
+                            itemRender: (current, type, originalElement) => {
+                                if (type === "prev") {
+                                    return <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue">
+                                        <IoIosArrowBack className="" />
+                                        Back</button>;
+                                }
+                                if (type === "next") {
+                                    return <button className="custom-pagination flex items-center gap-2 border border-darkBlue bg-darkBlue rounded-md px-2 text-white">Next
+                                        <IoIosArrowForward />
+                                    </button>;
+                                }
+                                return originalElement;
+                            },
+                        }}
                         className="rounded-lg"
                     />
 

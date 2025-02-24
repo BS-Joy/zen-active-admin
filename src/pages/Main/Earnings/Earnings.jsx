@@ -167,7 +167,7 @@ const Earnings = () => {
                   Back</button>;
               }
               if (type === "next") {
-                return <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue ">Next
+                return <button className="custom-pagination flex items-center gap-2 border border-darkBlue bg-darkBlue rounded-md px-2 text-white">Next
                   <IoIosArrowForward />
                 </button>;
               }

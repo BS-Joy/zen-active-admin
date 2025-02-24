@@ -12,8 +12,7 @@
   font-family: "Khula", serif;
 }
 
-
-/* phone Input  */
+/* ===================  PHONE INPUT STYLES =============================== */
 .PhoneInputInput {
   outline: none;
   /* background-color: #EFFAFF; */
@@ -52,23 +51,14 @@
   transition: all 0.3s;
 }
 
-/* responsive sidebar styles */
-/* .ant-menu {
-  background-color: none;
-} */
 
-/* #message-uesrs {
-  scrollbar-width: thin;
-} */
+/* ===================  Width of the scrollbar =============================== */
 #message-uesrs::-webkit-scrollbar {
   width: 4px;
   /* Width of the scrollbar */
 }
 
-
 /* Chrome, Edge, and Safari */
-
-
 #message-uesrs::-webkit-scrollbar-track {
   background: transparent;
   /* Background of the track */
@@ -86,7 +76,11 @@
   /* Darker thumb when hovered */
 }
 
-/* recent-users-table header backgroundColor */
+
+
+
+
+/* ===================  ANT TABLE HEAD =============================== */
 .recent-users-table .ant-table-thead>tr>th {
   background: #174C6B;
   text-align: center;
@@ -118,7 +112,11 @@
   color: gray;
 }
 
-/* React Quill */
+
+
+
+
+/* ===================  REACT QUILL STYLES =============================== */
 /* Parent Container */
 .ql-toolbar-container .quill.custom-quill-editor {
   /* display: flex;
@@ -337,6 +335,11 @@
 
 }
 
+
+
+
+
+/* ===================  SWAL STYLES =============================== */
 .swal-popup {
   width: 700px !important;
   height: 200px;
@@ -417,7 +420,12 @@
   height: 40px;
 }
 
-/* Ant design Custom Pagination Styles */
+
+
+
+
+
+/* ===================  ANTD PAGINATION CUSTOM STYLES =============================== */
 .ant-pagination-item {
   border-color: #79CDFF !important;
   /* Border color for pagination buttons */
@@ -427,6 +435,8 @@
 
 .ant-pagination-item a {
   color: #174C6B !important;
+  border: 1px solid #174C6B !important;
+  border-radius: 6px;
   /* Text color for pagination buttons */
 }
 
@@ -450,10 +460,14 @@
   /* Background for next/prev buttons */
 }
 
-.ant-pagination-next a,
+
 .ant-pagination-prev a {
   color: #174C6B !important;
   /* Text color for next/prev buttons */
+}
+
+.ant-pagination .ant-pagination-next button {
+  color: white !important;
 }
 
 .ant-btn:hover {
