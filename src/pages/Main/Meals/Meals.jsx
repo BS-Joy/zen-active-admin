@@ -11,6 +11,7 @@ import { Dropdown, Space } from 'antd';
 import { FaPlus } from "react-icons/fa6";
 import { useGetAllMealQuery } from "../../../redux/features/meal/mealApi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { MdEdit } from "react-icons/md";
 
 
 
@@ -87,10 +88,10 @@ const Meals = () => {
                 <div className="  items-center justify-around textcenter flex">
                     {/* Review Icon */}
                     <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
-                    {/* <Link to={'/reviews'} className="btn bg-black text-white px-3 py-1 text-sm rounded-full">
-                 
-                  View
-                </Link> */}
+                    <Link to={`/edit-meal/${data._id}`} className="">
+
+                        <MdEdit />
+                    </Link>
                 </div>
             ),
         },
@@ -229,22 +230,22 @@ const Meals = () => {
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Calories</p>
-                                <p>{modalData?.nutritionalInfo?.calories}</p>
+                                <p>{modalData?.nutritionalInfo?.calories}g</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Carbs</p>
-                                <p>{modalData?.nutritionalInfo?.carbs}</p>
+                                <p>{modalData?.nutritionalInfo?.carbs}g</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Protiens</p>
-                                <p>{modalData?.nutritionalInfo?.proteins}</p>
+                                <p>{modalData?.nutritionalInfo?.proteins}g</p>
                             </div>
 
                             <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                                 <p>Fats</p>
-                                <p>{modalData?.nutritionalInfo?.fats}</p>
+                                <p>{modalData?.nutritionalInfo?.fats}g</p>
                             </div>
 
                             <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center" onClick={handleCancel}>

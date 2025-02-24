@@ -12,6 +12,13 @@ export const mealApi = baseApi.enhanceEndpoints({ addTagTypes: ['Meals'] }).inje
             },
             providesTags: ['Meals']
         }),
+        getSingleMeal: builder.query({
+            query: (mealId) => ({
+                url: `/meal/${mealId}`,
+                method: 'GET',
+            }),
+            providesTags: ["Meals"]
+        }),
         createMeal: builder.mutation({
             query: (meal) => ({
                 url: '/meal/create-meal',
@@ -23,4 +30,4 @@ export const mealApi = baseApi.enhanceEndpoints({ addTagTypes: ['Meals'] }).inje
     })
 })
 
-export const { useGetAllMealQuery, useCreateMealMutation } = mealApi
+export const { useGetAllMealQuery, useCreateMealMutation, useGetSingleMealQuery } = mealApi

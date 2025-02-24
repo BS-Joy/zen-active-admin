@@ -111,7 +111,7 @@ export const dashboardItems = [
     element: <AddMeal />,
   },
   {
-    path: "edit-meal",
+    path: "edit-meal/:mealId",
     element: <EditMeal />,
   },
   {
