@@ -7,14 +7,16 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
-import { useGetSingleMealQuery } from "../../../redux/features/meal/mealApi";
+import { useDeleteMealMutation, useEditMealMutation, useGetSingleMealQuery } from "../../../redux/features/meal/mealApi";
 
 
 const EditMeal = () => {
-    const [features, setFeatures] = useState([""]);
+    const [file, setFile] = useState(null);
     const [form] = Form.useForm();
     const { mealId } = useParams()
     const { data: meal, refetch } = useGetSingleMealQuery(mealId)
+    const [editMeal] = useEditMealMutation()
+    const [deleteMeal] = useDeleteMealMutation()
 
     // Handle file selection
     const handleFileChange = ({ file }) => {
@@ -51,8 +53,38 @@ const EditMeal = () => {
         }
     }, [meal, form]);
 
-    const onFinish = (values) => {
-        console.log('Form Values:', values);
+    const onFinish = async (values) => {
+        if (!file) {
+            message.error("Please upload an image!");
+            return;
+        }
+
+        // Restructure the form data to include nutritionalInfo
+        const formattedData = {
+            ...values, // Spread other fields
+            nutritionalInfo: {
+                calories: Number(values.calories),
+                carbs: Number(values.carbs),
+                proteins: Number(values.proteins),
+                fats: Number(values.fats),
+            },
+        };
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append("image", file); // Append image
+        formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
+
+        try {
+            const response = await editMeal({ mealId, formData }).unwrap();
+            console.log(response, 'response from edit meal');
+
+            message.success("Meal edited successfully!");
+            form.resetFields(); // Reset form
+            setFile(null); // Clear file
+        } catch (error) {
+            message.error(error.data?.message || "Failed to edit meal.");
+        }
     };
     const navigate = useNavigate();
 

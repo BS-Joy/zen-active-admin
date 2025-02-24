@@ -18,7 +18,7 @@ const EditExercise = () => {
     const navigate = useNavigate();
 
     const { data: exercise, refetch } = useGetSingleExerciseQuery(exerciseId)
-    console.log(exercise);
+
     const [editExercise] = useEditExerciseMutation()
     const [deleteExercise] = useDeleteExerciseMutation()
 

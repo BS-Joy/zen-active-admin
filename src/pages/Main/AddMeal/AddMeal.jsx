@@ -10,9 +10,9 @@ import { useCreateMealMutation } from "../../../redux/features/meal/mealApi";
 
 const AddMeal = () => {
     const [form] = Form.useForm();
-    const [features, setFeatures] = useState([""]);
-    const [createMeal, { isLoading }] = useCreateMealMutation();
     const [file, setFile] = useState(null);
+    const [createMeal, { isLoading }] = useCreateMealMutation();
+
 
     // Handle file selection
     const handleFileChange = ({ file }) => {

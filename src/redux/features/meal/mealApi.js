@@ -27,7 +27,22 @@ export const mealApi = baseApi.enhanceEndpoints({ addTagTypes: ['Meals'] }).inje
             }),
             invalidatesTags: ['Meals']
         }),
+        editMeal: builder.mutation({
+            query: ({ mealId, formData }) => ({
+                url: `/meal/${mealId}`,
+                method: 'PATCH',
+                body: formData
+            }),
+            invalidatesTags: ["Meals"]
+        }),
+        deleteMeal: builder.mutation({
+            query: (mealId) => ({
+                url: `/meal/${mealId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ["Meals"]
+        }),
     })
 })
 
-export const { useGetAllMealQuery, useCreateMealMutation, useGetSingleMealQuery } = mealApi
+export const { useGetAllMealQuery, useCreateMealMutation, useGetSingleMealQuery, useDeleteMealMutation, useEditMealMutation } = mealApi
