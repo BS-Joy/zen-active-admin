@@ -5,6 +5,7 @@ import DashboardModal from "./DashboardModal";
 import { useState } from "react";
 import { useGetRecentTransactionsQuery } from "../redux/features/transaction/transactionApi";
 import moment from "moment";
+import DownloadButton from "./React-PDF/DownloadButton";
 
 const DashboardHomeTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,7 +117,7 @@ const DashboardHomeTable = () => {
           </div>
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>User Name :</p>
-            <p>{modalData.userId.name.firstName}</p>
+            <p>{modalData?.userId?.name.firstName}</p>
           </div>
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Package Name :</p>
@@ -148,11 +149,7 @@ const DashboardHomeTable = () => {
           </div> */}
 
           <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
-            <button
-              className="w-[300px] bg-[#174C6B] text-white px-10 h-[50px] flex items-center justify-center gap-3 text-lg outline-none rounded-xl"
-            >
-              <span className="text-white font-light">Download</span>
-            </button>
+            <DownloadButton modalData={modalData} />
           </div>
         </div>
       </DashboardModal>
