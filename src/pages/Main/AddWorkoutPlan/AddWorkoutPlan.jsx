@@ -123,7 +123,8 @@ const AddWorkoutPlan = () => {
                             STRICT REQUIREMENT: 
                             - If the duration is **8 weeks, you MUST return exactly 56 workouts (8 * 7)**.  
                             - If the duration is **12 weeks, you MUST return exactly 84 workouts (12 * 7)**.  
-                            .
+                            - DO NOT generate more or fewer workouts than the required number **${values.duration * 7}**.
+                            - DO NOT include extra workouts beyond ${values.duration * 7}.
                         
                             **ONLY** select workouts from this list: ${JSON.stringify(workoutsId)}.
                             **DO NOT** return null values in the workouts array.

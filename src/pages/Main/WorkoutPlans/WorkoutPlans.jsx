@@ -93,7 +93,7 @@ const WorkoutPlans = () => {
                 <div className="  items-center justify-around textcenter flex">
                     {/* Review Icon */}
                     <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
-                    <Link to={`/edit-workout/${data._id}`} className="">
+                    <Link to={`/edit-workout-plan/${data._id}`} className="">
 
                         <MdEdit />
                     </Link>
