@@ -26,7 +26,7 @@ const DashboardHome = () => {
           </div>
         </div> */}
 
-        <div className="flex items-center gap-6 px-[24px] bg-[#174C6B] border border-black  py-[20px] rounded-lg space-y-3  w-80">
+        <div className="flex items-center gap-6 px-[24px] bg-[#1E648C] border border-black  py-[20px] rounded-lg space-y-3  w-80">
           <div className="">
             <h3 className="text-[20px] text-white">{"Total Earnings"}</h3>
             <h3 className="text-[30px] text-white font-extralight">${totalEarnings?.data?.totalEarn}</h3>

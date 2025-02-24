@@ -77,7 +77,6 @@ const TransactionAreaChart = () => {
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState("weekly");
     const { data: transactions } = useGetAllTransactionQuery(filter)
-    console.log(transactions);
 
     useEffect(() => {
         if (transactions?.data) {

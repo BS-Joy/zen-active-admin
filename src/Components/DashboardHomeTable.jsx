@@ -9,7 +9,10 @@ import moment from "moment";
 const DashboardHomeTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const { data: recentTransactions } = useGetRecentTransactionsQuery()
+  const [query, setQuery] = useState({ searchTerm: "", purchaseDate: "" });
+  const { data: recentTransactions } = useGetRecentTransactionsQuery(query)
+  console.log(recentTransactions);
+
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -109,17 +112,25 @@ const DashboardHomeTable = () => {
           </div>
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Date :</p>
-            <p>{modalData.name}</p>
+            <p>{moment(modalData.purchaseDate).format('DD MM YYYY')}</p>
           </div>
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>User Name :</p>
-            <p>{modalData.Email}</p>
+            <p>{modalData.userId.name.firstName}</p>
           </div>
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Package Name :</p>
+            <p>{modalData.packageName}</p>
+          </div>
+          <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Package Price:</p>
+            <p>${modalData.packagePrice}</p>
+          </div>
+          {/* <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Mobile Phone :</p>
             <p>{modalData.Phone}</p>
-          </div>
-          <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+          </div> */}
+          {/* <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>A/C number :</p>
             <p>{modalData.transIs}</p>
           </div>
@@ -134,7 +145,7 @@ const DashboardHomeTable = () => {
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Service</p>
             <p>{modalData.transIs}</p>
-          </div>
+          </div> */}
 
           <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
             <button
