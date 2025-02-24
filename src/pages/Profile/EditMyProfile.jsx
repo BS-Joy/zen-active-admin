@@ -175,7 +175,7 @@ const EditMyProfile = () => {
                     className="h-[53px] rounded-lg"
                   />
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   className="text-lg text-[#222222] font-medium"
                   label="Phone Number"
                   name="phone"
@@ -183,7 +183,7 @@ const EditMyProfile = () => {
                   getValueFromEvent={(value) => value} // Extracts the value from the child component
                 >
                   <PhoneCountryInput />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item className="flex justify-end pt-4">
                   <Button
                     // onClick={(e) => navigate(`edit`)}

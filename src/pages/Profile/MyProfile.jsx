@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input } from "antd";
 import dashProfile from "../../assets/images/dashboard-profile.png";
 import { FiEdit } from "react-icons/fi";
@@ -12,19 +12,22 @@ import { useGetMeQuery } from "../../redux/features/auth/authApi";
 
 
 const MyProfile = () => {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
   const { data: me, isLoading, error } = useGetMeQuery()
-  console.log(me?.data);
+
+  useEffect(() => {
+    if (me?.data) {
+      form.setFieldsValue({
+        firstName: me?.data?.name?.firstName,
+        lastName: me?.data?.name?.lastName,
+        phone: me?.data?.phone
+      });
+    }
+  }, [me, form]);
 
 
-  const profileData = {
-    firstName: me?.data?.name?.firstName,
-    lastName: me?.data?.name?.lastName,
-    email: me?.data?.email,
-    phone: me?.data?.phone,
-    profile: dashProfile,
-  };
 
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
@@ -59,23 +62,19 @@ const MyProfile = () => {
               </div>
 
               <Form
+                form={form}
                 name="basic"
                 layout="vertical"
                 className="w-full grid grid-cols-12 gap-x-10 px-14 py-8"
                 autoComplete="off"
-                initialValues={{
-                  firstName: profileData.firstName,
-                  lastName: profileData.lastName,
-                  phone: profileData.phone
-                }}
               >
                 <div className="col-span-3 space-y-6 ">
                   <div className="min-h-[300px] flex flex-col items-center justify-center p-8 border border-black bg-lightGray/15">
                     <div className="my-2">
                       <img
-                        src={me?.data?.image}
+                        src={me?.data?.image ? `${import.meta.env.VITE_BASE_URL}${me?.data?.image}` : ""}
                         alt=""
-                        className="h-28 w-28 rounded-full border-4 border-black"
+                        className="h-28 w-28 object-cover rounded-full border-4 border-black"
                       />
                     </div>
                     <h5 className="text-lg text-[#222222]">{"Profile"}</h5>
@@ -108,13 +107,13 @@ const MyProfile = () => {
                     />
                   </Form.Item>
 
-                  <Form.Item
+                  {/* <Form.Item
                     className="text-lg text-[#222222] font-medium"
                     label="Phone Number"
                     name="phone"
                   >
                     <PhoneCountryInput />
-                  </Form.Item>
+                  </Form.Item> */}
                 </div>
               </Form>
             </div>

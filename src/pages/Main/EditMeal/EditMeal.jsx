@@ -13,15 +13,6 @@ const EditMeal = () => {
     const [form] = Form.useForm();
     const [features, setFeatures] = useState([""]);
 
-    const addFeature = () => {
-        setFeatures([...features, ""]);
-    };
-
-    const removeFeature = (index) => {
-        const newFeatures = features.filter((_, i) => i !== index);
-        setFeatures(newFeatures);
-    };
-
     const onFinish = (values) => {
         console.log('Form Values:', values);
     };
@@ -31,23 +22,7 @@ const EditMeal = () => {
         navigate(-1); // This takes the user back to the previous page
     };
 
-    const props = {
-        name: 'file',
-        action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
+
     return (
         <>
             <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
