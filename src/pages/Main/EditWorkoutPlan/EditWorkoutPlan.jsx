@@ -38,12 +38,16 @@ const EditWorkoutPlan = () => {
     };
 
     const onFinish = async (values) => {
-        // Create FormData
+        const formattedData = {
+            ...values,
+            points: Number(values.points)
+        }
+
         const formData = new FormData();
         if (file) {
             formData.append("image", file);
         }
-        formData.append("data", JSON.stringify(values)); // Convert text fields to JSON
+        formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
 
         try {
             const response = await editWorkoutPlan({ workoutPlanId, formData }).unwrap();

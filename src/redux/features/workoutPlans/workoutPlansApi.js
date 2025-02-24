@@ -37,7 +37,7 @@ export const workoutPlansApi = baseApi.enhanceEndpoints({ addTagTypes: ["Workout
         }),
         deleteWorkoutPlan: builder.mutation({
             query: (workoutPlanId) => ({
-                url: `/workout-plan/${workoutPlanId}`,
+                url: `/workout-plan/delete/${workoutPlanId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ["WorkoutPlans"]
