@@ -11,9 +11,7 @@ const DashboardHomeTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [query, setQuery] = useState({ searchTerm: "", purchaseDate: "" });
-  const { data: recentTransactions } = useGetRecentTransactionsQuery(query)
-  console.log(recentTransactions);
-
+  const { data: recentTransactions, isLoading } = useGetRecentTransactionsQuery(query)
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -64,18 +62,6 @@ const DashboardHomeTable = () => {
     },
   ];
 
-  // const data = [];
-  // for (let index = 0; index < 6; index++) {
-  //   data.push({
-  //     transIs: `${index + 1}`,
-  //     name: "Henry",
-  //     subscription: "Standard",
-  //     amount: "9.99",
-  //     Review: "See Review",
-  //     date: "16 Apr 2024",
-  //     _id: index,
-  //   });
-  // }
 
   // Map API response to table data
   const data = recentTransactions?.data?.map((transaction, index) => ({
@@ -95,6 +81,7 @@ const DashboardHomeTable = () => {
       <Table
         columns={columns}
         dataSource={data}
+        loading={isLoading}
         pagination={{ position: ["bottomCenter"] }}
         className="rounded-lg"
       />

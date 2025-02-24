@@ -20,9 +20,7 @@ const Exercise = () => {
     const [searchTerm, setSearchTerm] = useState(""); // State to store search input
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
-    const { data: exercises } = useGetAllExerciseQuery(query)
-    console.log(exercises);
-
+    const { data: exercises, isLoading } = useGetAllExerciseQuery(query)
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -143,6 +141,7 @@ const Exercise = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
+                        loading={isLoading}
                         pagination={{
                             position: ["bottomCenter"],
                             itemRender: (current, type, originalElement) => {

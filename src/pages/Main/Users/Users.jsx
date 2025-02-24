@@ -15,9 +15,7 @@ const Users = () => {
   const [modalData, setModalData] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [query, setQuery] = useState("");
-  const { data: allUsers } = useGetAllUserQuery(query)
-  console.log(allUsers);
-
+  const { data: allUsers, isLoading } = useGetAllUserQuery(query)
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -121,6 +119,7 @@ const Users = () => {
       <Table
         columns={columns}
         dataSource={data}
+        loading={isLoading}
         pagination={{
           position: ["bottomCenter"],
           itemRender: (current, type, originalElement) => {

@@ -17,7 +17,7 @@ const Earnings = () => {
   const [purchaseDate, setPurchaseDate] = useState(""); // State to store search input
   const [query, setQuery] = useState({ searchTerm: "", purchaseDate: "" });
   // State to trigger search
-  const { data: recentTransactions } = useGetRecentTransactionsQuery(query)
+  const { data: recentTransactions, isLoading } = useGetRecentTransactionsQuery(query)
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -91,18 +91,6 @@ const Earnings = () => {
     },
   ];
 
-  // const data = [];
-  // for (let index = 0; index < 20; index++) {
-  //   data.push({
-  //     transIs: `${index + 1}`,
-  //     name: "Henry",
-  //     Email: "sharif@gmail.com",
-  //     Phone: "+12746478994",
-  //     Review: "See Review",
-  //     date: "16 Apr 2024",
-  //     _id: index,
-  //   });
-  // }
   // Map API response to table data
   const data = recentTransactions?.data?.map((transaction, index) => ({
     key: index,
@@ -159,6 +147,7 @@ const Earnings = () => {
         <Table
           columns={columns}
           dataSource={data}
+          loading={isLoading}
           pagination={{
             position: ["bottomCenter"],
             itemRender: (current, type, originalElement) => {

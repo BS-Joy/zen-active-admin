@@ -20,7 +20,7 @@ const Meals = () => {
     const [searchTerm, setSearchTerm] = useState(""); // State to store search input
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
-    const { data: meals } = useGetAllMealQuery(query)
+    const { data: meals, isLoading } = useGetAllMealQuery(query)
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -182,6 +182,7 @@ const Meals = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
+                        loading={isLoading}
                         pagination={{
                             position: ["bottomCenter"],
                             itemRender: (current, type, originalElement) => {

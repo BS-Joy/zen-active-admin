@@ -21,7 +21,9 @@ const Workouts = () => {
     const [searchTerm, setSearchTerm] = useState(""); // State to store search input
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
-    const { data: workouts } = useGetAllWorkoutQuery(query)
+    const { data: workouts, isLoading } = useGetAllWorkoutQuery(query)
+    console.log(workouts);
+
 
     // Handle search input change
     const handleSearchChange = (event) => {
@@ -156,6 +158,7 @@ const Workouts = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
+                        loading={isLoading}
                         pagination={{
                             position: ["bottomCenter"],
                             itemRender: (current, type, originalElement) => {

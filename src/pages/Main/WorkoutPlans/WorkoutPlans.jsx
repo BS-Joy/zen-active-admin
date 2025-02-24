@@ -22,7 +22,7 @@ const WorkoutPlans = () => {
     const [searchTerm, setSearchTerm] = useState(""); // State to store search input
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
-    const { data: workoutPlans } = useGetWorkoutPlansQuery(query)
+    const { data: workoutPlans, isLoading } = useGetWorkoutPlansQuery(query)
 
     // Handle search input change
     const handleSearchChange = (event) => {
@@ -169,6 +169,7 @@ const WorkoutPlans = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
+                        loading={isLoading}
                         pagination={{
                             position: ["bottomCenter"],
                             itemRender: (current, type, originalElement) => {

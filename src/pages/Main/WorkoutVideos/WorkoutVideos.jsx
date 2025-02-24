@@ -21,7 +21,7 @@ const WorkoutVideos = () => {
     const [searchTerm, setSearchTerm] = useState(""); // State to store search input
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
-    const { data: workoutVideos } = useGetWorkoutVideosQuery(query)
+    const { data: workoutVideos, isLoading } = useGetWorkoutVideosQuery(query)
 
     const showModal = (data) => {
         setIsModalOpen(true);
@@ -135,6 +135,7 @@ const WorkoutVideos = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
+                        loading={isLoading}
                         pagination={{
                             position: ["bottomCenter"],
                             itemRender: (current, type, originalElement) => {
