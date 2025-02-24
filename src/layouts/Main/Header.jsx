@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Badge } from "antd";
 import profileImage from "../../assets/images/dash-profile.png";
-import { TbBellRinging } from "react-icons/tb";
+import { HiOutlineBell } from "react-icons/hi2";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { Select } from 'antd';
 
@@ -52,10 +52,10 @@ const Header = () => {
           className="relative flex items-center "
         >
           <Badge style={{ backgroundColor: "#37B5FF", width: '20px', height: '20px', objectFit: 'contain' }} count={1}>
-            <div className="bg-white p-2 rounded-full">
-              <TbBellRinging
+            <div className="bg-[#EBF8FF] p-2 rounded-full">
+              <HiOutlineBell
                 style={{ cursor: "pointer" }}
-                className={` w-6 h-6 rounded-full shadow-sm  font-bold transition-all`}
+                className={` w-6 h-6 rounded-full shadow-sm  font-bold transition-all text-darkBlue`}
               />
             </div>
           </Badge>

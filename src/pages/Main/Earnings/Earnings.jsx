@@ -8,6 +8,7 @@ import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useGetRecentTransactionsQuery } from "../../../redux/features/transaction/transactionApi";
 import moment from "moment";
+import DownloadButton from "../../../Components/React-PDF/DownloadButton";
 
 const Earnings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -192,39 +193,43 @@ const Earnings = () => {
             </div>
             <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
               <p>Date :</p>
-              <p>{modalData.name}</p>
+              <p>{moment(modalData.purchaseDate).format('DD MM YYYY')}</p>
             </div>
             <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
               <p>User Name :</p>
-              <p>{modalData.Email}</p>
+              <p>{modalData?.userId?.name.firstName}</p>
             </div>
             <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
-              <p>Mobile Phone :</p>
-              <p>{modalData.Phone}</p>
+              <p>Package Name :</p>
+              <p>{modalData.packageName}</p>
             </div>
             <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
-              <p>A/C number :</p>
-              <p>{modalData.transIs}</p>
+              <p>Package Price:</p>
+              <p>${modalData.packagePrice}</p>
             </div>
-            <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
-              <p>A/C holder name :</p>
-              <p>{modalData.transIs}</p>
-            </div>
-            <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
-              <p>Transaction amount</p>
-              <p>{modalData.transIs}</p>
-            </div>
-            <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
-              <p>Service</p>
-              <p>{modalData.transIs}</p>
-            </div>
+            {/* <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Mobile Phone :</p>
+            <p>{modalData.Phone}</p>
+          </div> */}
+            {/* <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>A/C number :</p>
+            <p>{modalData.transIs}</p>
+          </div>
+          <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>A/C holder name :</p>
+            <p>{modalData.transIs}</p>
+          </div>
+          <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Transaction amount</p>
+            <p>{modalData.transIs}</p>
+          </div>
+          <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
+            <p>Service</p>
+            <p>{modalData.transIs}</p>
+          </div> */}
 
             <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
-              <button
-                className="w-[300px] bg-[#174C6B] text-white px-10 h-[50px] flex items-center justify-center gap-3 text-lg outline-none rounded-xl"
-              >
-                <span className="text-white font-light">Download</span>
-              </button>
+              <DownloadButton modalData={modalData} />
             </div>
           </div>
         </DashboardModal>

@@ -96,6 +96,10 @@ const Meals = () => {
         },
     ];
 
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
     const items = [
         {
             label: (
@@ -242,7 +246,7 @@ const Meals = () => {
                                 <p>{modalData?.nutritionalInfo?.fats}</p>
                             </div>
 
-                            <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
+                            <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center" onClick={handleCancel}>
                                 <button
                                     className="w-[300px] bg-[#174C6B] text-white px-10 h-[50px] flex items-center justify-center gap-3 text-lg outline-none rounded-xl"
                                 >
