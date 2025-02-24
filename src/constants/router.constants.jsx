@@ -54,6 +54,7 @@ import AddExercise from "../pages/Main/AddExercise/AddExercise";
 import EditExercise from "../pages/Main/EditExercise/EditExercise";
 import AddWorkoutPlan from "../pages/Main/AddWorkoutPlan/AddWorkoutPlan";
 import EditWorkoutPlan from "../pages/Main/EditWorkoutPlan/EditWorkoutPlan";
+import { MdManageHistory } from "react-icons/md";
 
 export const dashboardItems = [
   {
@@ -198,7 +199,7 @@ export const dashboardItems = [
   {
     name: "Workout Plans",
     path: "workoutPlans",
-    icon: CiDumbbell,
+    icon: MdManageHistory,
     element: <WorkoutPlans />,
   },
   {

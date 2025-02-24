@@ -7,18 +7,19 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { UploadOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import { CiCamera } from "react-icons/ci";
-import { useDeleteWorkoutMutation, useEditWorkoutMutation, useGetSingleWorkoutQuery } from "../../../redux/features/workout/workoutApi";
+
+import { useDeleteWorkoutPlanMutation, useEditWorkoutPlanMutation, useGetSingleWorkoutPlanQuery } from "../../../redux/features/workoutPlans/workoutPlansApi";
 
 
 const EditWorkoutPlan = () => {
     const [file, setFile] = useState(null);
     const [form] = Form.useForm();
-    const { workoutId } = useParams()
+    const { workoutPlanId } = useParams()
     const navigate = useNavigate();
 
-    const { data: workout, refetch } = useGetSingleWorkoutQuery(workoutId)
-    const [editWorkout] = useEditWorkoutMutation()
-    const [deleteWorkout] = useDeleteWorkoutMutation()
+    const { data: workoutPlan, refetch } = useGetSingleWorkoutPlanQuery(workoutPlanId)
+    const [editWorkoutPlan] = useEditWorkoutPlanMutation()
+    const [deleteWorkoutPlan] = useDeleteWorkoutPlanMutation()
 
     // Handle Video Upload
     const handleFileChange = ({ file }) => {
@@ -26,10 +27,10 @@ const EditWorkoutPlan = () => {
     };
 
     // Logic for multi select input
-    const options = workout?.data?.exercises.map((exercise) => ({
-        value: exercise._id,  // Value stored in the database
-        label: exercise.name, // Displayed in the UI
-    })) || [];
+    // const options = workout?.data?.exercises.map((exercise) => ({
+    //     value: exercise._id,  // Value stored in the database
+    //     label: exercise.name, // Displayed in the UI
+    // })) || [];
 
 
     const handleMultiSelectChange = (value) => {
@@ -45,36 +46,36 @@ const EditWorkoutPlan = () => {
         formData.append("data", JSON.stringify(values)); // Convert text fields to JSON
 
         try {
-            const response = await editWorkout({ workoutId, formData }).unwrap();
-            message.success("workout edited successfully!");
+            const response = await editWorkoutPlan({ workoutPlanId, formData }).unwrap();
+            message.success("Workout plan edited successfully!");
             form.resetFields(); // Reset form
             setFile(null); // Clear file
         } catch (error) {
-            message.error(error.data?.message || "Failed to edit workout.");
+            message.error(error.data?.message || "Failed to edit workout plan.");
         }
     };
 
     const handleDelete = async () => {
         try {
             // Call your delete API
-            await deleteWorkout(workoutId).unwrap();
-            message.success("workout deleted successfully!");
+            await deleteWorkoutPlan(workoutPlanId).unwrap();
+            message.success("workout plan deleted successfully!");
             navigate(-1); // Navigate back after deletion
         } catch (error) {
-            message.error(error.data?.message || "Failed to delete workout.");
+            message.error(error.data?.message || "Failed to delete workout plan.");
         }
     };
 
     useEffect(() => {
-        if (workout?.data) {
+        if (workoutPlan?.data) {
             form.setFieldsValue({
-                name: workout.data.name,
-                description: workout.data.description,
-                points: workout.data.points,
-                exercises: workout.data.exercises.map((exercise) => exercise._id),
+                name: workoutPlan.data.name,
+                description: workoutPlan.data.description,
+                points: workoutPlan.data.points,
+                exercises: workoutPlan.data.workouts.map((exercise) => exercise._id),
             });
         }
-    }, [workout, form]);
+    }, [workoutPlan, form]);
 
     const handleBackButtonClick = () => {
         navigate(-1); // This takes the user back to the previous page
@@ -195,7 +196,7 @@ const EditWorkoutPlan = () => {
 
 
                                     {/* Exercises */}
-                                    <Form.Item
+                                    {/* <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Select Exercise</span>}
                                         name="exercises"
                                         className="responsive-form-item"
@@ -212,7 +213,7 @@ const EditWorkoutPlan = () => {
                                             }}
                                             options={options}
                                         />
-                                    </Form.Item>
+                                    </Form.Item> */}
 
                                 </Space>
                             </Space>

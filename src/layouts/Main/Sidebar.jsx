@@ -43,7 +43,7 @@ const Sidebar = () => {
   return (
     <div className="fixed top-0 left-0 w-[290px] min-h-screen h-full pr-0 bg-[#174C6B]">
       <div className="h-full flex flex-col justify-between  pt-[50px] border drop-shadow">
-        <div className="space-y[24px">
+        <div className="space-y-[24px]">
           <div className="px-[38px]">
             <img className="w-full mx-auto" src={logo} alt="" />
           </div>
@@ -127,13 +127,13 @@ const Sidebar = () => {
                         className={({ isActive }) =>
                           isActive
                             ? "bg-[#EBF8FF] text-[#174C6B]" +
-                            " w-full px-4 py-3 flex items-center justify-start gap-3 text-md transition-all rounded-xl"
+                            " w-full px-4 py-3 flex items-center justify-start gap-[24px]  transition-all rounded-xl"
                             : " hover:text-[#174C6B]  hover:bg-[#EBF8FF] text-[#EBF8FF]" +
-                            " w-full px-4 py-3 flex items-center justify-start gap-3 text-md transition-all rounded-xl"
+                            " w-full px-4 py-3 flex items-center justify-start gap-[24px]  transition-all rounded-xl"
                         }
                       >
-                        <div>{createElement(icon, { size: "18" })}</div>
-                        <span> {name}</span>
+                        <div>{createElement(icon, { size: "24" })}</div>
+                        <span className="text-[18px]"> {name}</span>
                       </NavLink>
                     </li>
                   )
