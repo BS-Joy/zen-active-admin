@@ -58,7 +58,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-[92vh] w-full flex justify-center items-center gap-1 lg:gap-[165px]">
+    <div className="min-h-[92vh] w-full flex flex-col lg:flex-row justify-center items-center gap-1 lg:gap-[165px]">
       {/* Left */}
       <div className=" border-[#1E648C] flex-1">
         <img src={image} alt="" className="w-[768px] h-[768px] object-contain" />
@@ -70,11 +70,11 @@ const SignIn = () => {
 
       {/* Right */}
       <div className=" order-first lg:order-last bg-white w-[630px] h-[480px] border border-[#2781B5] shadow-xl rounded-[16px] flex-1">
-        <div className="py-[20px] lg:px-[44px]">
+        <div className="py-[20px] lg:px-[44px]  relative">
           <div className="pb-[24px] space-y-2">
             <h1 className="text-[33px] text-center font-semibold text-[#3A3A3A]">Sign In</h1>
-
           </div>
+
           <Form
             name="normal_login"
             layout="vertical"
@@ -147,7 +147,7 @@ const SignIn = () => {
                 type="primary"
                 size="large"
                 htmlType="submit"
-                className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-[8px] h-[62px] min-w-[335px] text-[26px] mb-[20px]"
+                className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-[8px] h-[62px] min-w-[335px] text-[26px] mb-[20px] fixed bottom-12"
               >
                 {isLoading ? "Loading..." : "Sign In"}
               </Button>
