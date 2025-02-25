@@ -473,3 +473,12 @@
 .ant-btn:hover {
   background-color: #37B5FF !important;
 }
+
+
+
+
+
+/* ======================== ANT DESIGN FORM ITEM MARGIN BOTTOM =================== */
+.ant-form-item {
+  margin-bottom: 0;
+}

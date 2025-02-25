@@ -1,7 +1,7 @@
 import { Button, Checkbox, Input } from "antd";
 import Form from "antd/es/form/Form";
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login.png";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
@@ -56,15 +56,23 @@ const SignIn = () => {
       });
     }
   };
+
   return (
-    <div className="min-h-[92vh] w-full grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-1 lg:gap-8">
-      <div className="lg:border-r-2 border-primary mx-auto w-full lg:p-[15%] lg:pr-[20%] ">
-        <img src={image} alt="" className="w-full h-full object-contain" />
+    <div className="min-h-[92vh] w-full flex justify-center items-center gap-1 lg:gap-[165px]">
+      {/* Left */}
+      <div className=" border-[#1E648C] flex-1">
+        <img src={image} alt="" className="w-[768px] h-[768px] object-contain" />
       </div>
-      <div className="lg:p-[5%] order-first lg:order-last">
-        <div className="w-full py-[44px] lg:px-[44px]">
-          <div className="pb-[30px] space-y-2">
-            <h1 className="text-[33px] text-center text-[#3A3A3A]">Sign in</h1>
+
+      <div className="hidden lg:block border-r border-[#1E648C]/60 h-[500px]">
+
+      </div>
+
+      {/* Right */}
+      <div className=" order-first lg:order-last bg-white w-[630px] h-[480px] border border-[#2781B5] shadow-xl rounded-[16px] flex-1">
+        <div className="py-[20px] lg:px-[44px]">
+          <div className="pb-[24px] space-y-2">
+            <h1 className="text-[33px] text-center font-semibold text-[#3A3A3A]">Sign In</h1>
 
           </div>
           <Form
@@ -75,67 +83,79 @@ const SignIn = () => {
             }}
             onFinish={onFinish}
             requiredMark={false}
-            className="text-start"
+            className="text-start space-y-[50px]"
 
           >
-            <Form.Item
-              // label={<span className="font-medium text-base">Email</span>}
-              name="email"
-              rules={[
-                {
-                  type: "email",
-                  message: "Please input a valid Email!",
-                },
-                {
-                  required: true,
-                  message: "Please input your Email!",
-                },
-              ]}
-            >
-              <Input size="large" placeholder="Email" style={{ border: '1px solid #2781B5', borderRadius: '7px' }} />
-            </Form.Item>
-            <Form.Item
-              // label={<span className="font-medium text-base">Password</span>}
-              className="mt-6"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input.Password size="large" placeholder="Password" style={{ border: '1px solid #2781B5', borderRadius: '7px' }} />
-            </Form.Item>
-            <div className="flex justify-between items-center">
-              <Form.Item name="remember" valuePropName="checked">
+            <div className="space-y-[53px]">
+              {/* Email */}
+              <Form.Item
+                // label={<span className="font-medium text-base">Email</span>}
+                name="email"
+                rules={[
+                  {
+                    type: "email",
+                    message: "Please input a valid Email!",
+                  },
+                  {
+                    required: true,
+                    message: "Please input your Email!",
+                  },
+                ]}
+              >
+                <Input size="large" placeholder="Email" style={{ border: '1px solid #2781B5', borderRadius: '7px', height: '56px', fontSize: '16px' }} />
+              </Form.Item>
+
+              {/* Passworkd */}
+              <Form.Item
+                // label={<span className="font-medium text-base">Password</span>}
+                className="mt-6"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your password!",
+                  },
+                ]}
+              >
+                <Input.Password size="large" placeholder="Password" style={{ border: '1px solid #2781B5', borderRadius: '7px', height: '56px' }} />
+              </Form.Item>
+            </div>
+
+            {/* Forget password */}
+            <div className="flex justify-end items-center">
+              {/* <Form.Item name="remember" valuePropName="checked">
                 <Checkbox className="text-base font-medium">
                   Remember me
                 </Checkbox>
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item>
-                <Button
+                <Link to='/auth/forgot-password' className="text-[18px] font-medium text-[#757575]">
+                  Forget password?
+                </Link>
+                {/* <Button
                   onClick={() => navigate("/auth/forgot-password")}
                   type="link"
                   className="text-base font-medium text-info"
                 >
                   Forget password?
-                </Button>
+                </Button> */}
               </Form.Item>
             </div>
+
             <div className="w-full flex justify-center ">
               <Button
                 type="primary"
                 size="large"
                 htmlType="submit"
-                className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-xl font-semibold h-11 min-w-[400px]"
+                className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-[8px] h-[62px] min-w-[335px] text-[26px] mb-[20px]"
               >
-                Sign In
+                {isLoading ? "Loading..." : "Sign In"}
               </Button>
             </div>
           </Form>
         </div>
       </div>
+
     </div>
   );
 };
