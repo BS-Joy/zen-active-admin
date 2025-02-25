@@ -54,11 +54,6 @@ const EditMeal = () => {
     }, [meal, form]);
 
     const onFinish = async (values) => {
-        if (!file) {
-            message.error("Please upload an image!");
-            return;
-        }
-
         // Restructure the form data to include nutritionalInfo
         const formattedData = {
             ...values, // Spread other fields
@@ -72,7 +67,9 @@ const EditMeal = () => {
 
         // Create FormData
         const formData = new FormData();
-        formData.append("image", file); // Append image
+        if (file) {
+            formData.append("image", file);
+        }
         formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
 
         try {
