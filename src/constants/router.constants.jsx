@@ -55,6 +55,7 @@ import EditExercise from "../pages/Main/EditExercise/EditExercise";
 import AddWorkoutPlan from "../pages/Main/AddWorkoutPlan/AddWorkoutPlan";
 import EditWorkoutPlan from "../pages/Main/EditWorkoutPlan/EditWorkoutPlan";
 import { MdManageHistory } from "react-icons/md";
+import AddWorkoutVideoNormal from "../pages/Main/AddWorkoutVideo/AddWorkoutVideoNormal";
 
 export const dashboardItems = [
   {
@@ -140,7 +141,8 @@ export const dashboardItems = [
   },
   {
     path: "add-workout-video",
-    element: <AddWorkoutVideo />,
+    element: <AddWorkoutVideoNormal />,
+    // element: <AddWorkoutVideo />,
   },
   {
     path: "edit-workout-video/:workoutId",
