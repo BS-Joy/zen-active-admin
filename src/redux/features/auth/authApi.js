@@ -30,6 +30,13 @@ const authApi = baseApi.injectEndpoints({
                 body: userInfo,
             })
         }),
+        updatePassword: builder.mutation({
+            query: (user) => ({
+                url: `/auth/update-password`,
+                method: 'PATCH',
+                body: user
+            }),
+        }),
         getTotalUsers: builder.query({
             query: () => '/user/total-user',
         }),
@@ -55,4 +62,4 @@ const authApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation, useGetTotalUsersQuery, useGetAllUserQuery, useGetMeQuery, useEditProfileMutation } = authApi
+export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation, useGetTotalUsersQuery, useGetAllUserQuery, useGetMeQuery, useEditProfileMutation, useUpdatePasswordMutation } = authApi
