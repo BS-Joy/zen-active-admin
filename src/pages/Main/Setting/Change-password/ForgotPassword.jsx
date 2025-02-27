@@ -16,12 +16,12 @@ const ForgotPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        navigate(`/auth/verify-email`, { state: { email: email } });
+        // navigate(`/settings/change-password/forgot-password/verify-email`, { state: { email: email } });
         try {
             const response = await forgotPassword({ email: email });
             // console.log(response);
             if (response?.data?.status == 200) {
-                navigate(`/auth/verify-email`, { state: { email: email } });
+                navigate(`/settings/change-password/forgot-password/verify-email`, { state: { email: email } });
             } else {
                 Swal.fire({
                     icon: "error",

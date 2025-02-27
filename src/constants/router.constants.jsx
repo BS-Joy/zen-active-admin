@@ -256,6 +256,10 @@ export const dashboardItems = [
         element: <VerifyEmail />,
       },
       {
+        path: "settings/change-password/forgot-password/reset-password",
+        element: <VerifyEmail />,
+      },
+      {
         name: "Terms & Condition",
         icon: FaServicestack,
         path: "settings/terms-conditions",
