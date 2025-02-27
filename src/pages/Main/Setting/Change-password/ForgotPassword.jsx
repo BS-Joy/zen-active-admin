@@ -4,10 +4,43 @@ import { LuMailOpen } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { TbMailOpened } from "react-icons/tb";
 import { HiOutlineArrowLeft } from "react-icons/hi";
+import Swal from "sweetalert2";
+import { useForgotPasswordMutation } from "../../../../redux/features/auth/authApi";
+import { useState } from "react";
 
 
 const ForgotPassword = () => {
+    const [email, setEmail] = useState("");
     const navigate = useNavigate();
+    const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        navigate(`/auth/verify-email`, { state: { email: email } });
+        try {
+            const response = await forgotPassword({ email: email });
+            // console.log(response);
+            if (response?.data?.status == 200) {
+                navigate(`/auth/verify-email`, { state: { email: email } });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed!!",
+                    text:
+                        response?.data?.message ||
+                        response?.error?.data?.message ||
+                        "Something went wrong. Please try again later.",
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Failed!!",
+                text: "Something went wrong. Please try again later.",
+            });
+        }
+    };
+
     const handleBackButtonClick = () => {
         navigate(-1); // This takes the user back to the previous page
     };
@@ -32,6 +65,8 @@ const ForgotPassword = () => {
                                 {/* Input Field */}
                                 <input
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     placeholder='Enter your email'
                                     className="w-full pl-10 pr-10 py-3 pt-4 border border-[#79CDFF] rounded-lg placeholder:text-[#757575] focus:outline-none focus:ring-2 focus:ring-gray-400"
                                 />
@@ -41,8 +76,11 @@ const ForgotPassword = () => {
                     </div>
 
                     {/* Send OTP Button */}
-                    <button className="mt-8 w-full bg-[#174C6B] text-white pt-2 rounded-lg hover:bg-[#174C6B]/80 h-[56px] text-[20px]" onClick={(e) => navigate(`verify-email`)}>
-                        Send OTP
+                    <button className="mt-8 w-full bg-[#174C6B] text-white pt-2 rounded-lg hover:bg-[#174C6B]/80 h-[56px] text-[20px]"
+                        // onClick={(e) => navigate(`verify-email`)}
+                        onClick={handleSubmit}
+                    >
+                        {isLoading ? "Sending OTP..." : "Send OTP"}
                     </button>
                 </div>
             </div>

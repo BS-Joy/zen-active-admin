@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+
   const onFinish = async (values) => {
     navigate(`/auth/verify-email`, { state: { email: values.email } });
     try {
@@ -80,7 +81,7 @@ const ForgotPassword = () => {
                 htmlType="submit"
                 className="w-full px-2 bg-[#174C6B]"
               >
-                Send OTP
+                {isLoading ? "Sending OTP..." : "Send OTP"}
               </Button>
             </div>
           </Form>
