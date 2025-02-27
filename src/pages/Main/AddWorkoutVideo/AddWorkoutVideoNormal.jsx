@@ -226,10 +226,10 @@ const AddWorkoutVideoNormal = () => {
                     </h3>
                     <div className="w-full px-16">
                         <form onSubmit={handleSubmit}>
-                            <div className="grid grid-cols-2 gap-8 mt-8">
+                            <div className="grid grid-cols-3 gap-44 mt-8">
                                 <div>
-                                    <label className="block text-lg font-semibold text-[#2D2D2D]">Upload Video</label>
-                                    <div className="relative w-full border border-[#79CDFF] flex justify-between items-center p-2 rounded-md">
+                                    <label className="block text-lg font-semibold text-[#2D2D2D] mb-[6px]">Upload Video</label>
+                                    <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center  px-2 py-3 rounded-md">
                                         <input
                                             type="file"
                                             accept="video/*"
@@ -298,8 +298,8 @@ const AddWorkoutVideoNormal = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-lg font-semibold text-[#2D2D2D]">Upload Image</label>
-                                    <div className="relative w-full border border-[#79CDFF] flex justify-between items-center p-2 rounded-md">
+                                    <label className="block text-lg font-semibold text-[#2D2D2D] mb-[6px]">Upload Thumbnail</label>
+                                    <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -318,13 +318,13 @@ const AddWorkoutVideoNormal = () => {
                             </div>
 
                             <div className="mt-8">
-                                <label className="block text-lg font-semibold text-[#2D2D2D]">Video name</label>
+                                <label className="block text-lg font-semibold text-[#2D2D2D] mb-[6px]">Video Title</label>
                                 <input
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder="Enter video name"
-                                    className="w-full border border-[#79CDFF] p-2 rounded-md text-lg font-semibold text-[#525252]"
+                                    placeholder="Enter video title"
+                                    className="w-[482px] border border-[#79CDFF]  px-2 py-3 rounded-md text-lg font-semibold text-[#525252] placeholder:text-[#525252]"
                                     required
                                 />
                             </div>
