@@ -23,6 +23,8 @@ const WorkoutPlans = () => {
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
     const { data: workoutPlans, isLoading } = useGetWorkoutPlansQuery(query)
+    console.log(workoutPlans);
+
 
     // Handle search input change
     const handleSearchChange = (event) => {

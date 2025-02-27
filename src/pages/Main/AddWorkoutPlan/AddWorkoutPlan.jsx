@@ -23,7 +23,7 @@ const AddWorkoutPlan = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const { data: workoutPlans } = useGetWorkoutPlansQuery(null)
-    const [createWorkoutPlan] = useCreateWorkoutPlanMutation()
+    const [createWorkoutPlan, { isLoading }] = useCreateWorkoutPlanMutation()
 
     // Handle file selection
     const handleFileChange = ({ file }) => {
@@ -68,6 +68,11 @@ const AddWorkoutPlan = () => {
     }
 
     const onFinish = async (values) => {
+        const formattedData = {
+            ...values,
+            points: Number(values.points),
+            duration: Number(values.duration),
+        }
         const duration = Number(values.duration); // Convert string to number
         const expectedWorkouts = duration * 7; // 8 weeks = 56 workouts, 12 weeks = 84 workouts
 
@@ -75,127 +80,138 @@ const AddWorkoutPlan = () => {
         setError("");
 
         try {
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // Replace with your actual API key
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                // body: JSON.stringify({
-                //     contents: [
-                //         {
-                //             parts: [
-                //                 {
-                //                     text: `${JSON.stringify(
-                //                         values.description
-                //                     )} this is my workout data.  make workout plan for ${values.duration} week. workout plan name is ${values.name}. ensure each day have 1 workout. make plan based on the workout plan name. workout can be repeted. give me just json data based on this mongoose schema : 
-                //                     [ const WorkoutPlanSchema = new Schema<IWorkoutPlan>(
-                //                     {
-                //                       name: { type: String, required: true },
-                //                       description: { type: String, required: true },
-                //                     duration: { type: Number, required: true },
-                //                       workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
-                //                       points: { type: Number, required: true },
-                //                       isDeleted: { type: Boolean, default: false },
-                //                       image: { type: String, required: true },
-                //                     },
-                //                     { timestamps: true }
-                //                         )]   
-                //                     ;
-
-
-                //                       `,
-                //                 },
-                //             ],
-                //         }
-                //     ]
-                // }),
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: `
-                            ${JSON.stringify(values.description)} this is my workout data. 
-                            Make a structured workout plan for ${duration} weeks. 
-                            Workout plan name: ${values.name}. Points will be ${values.points} in number format.
-                            
-                            STRICT REQUIREMENT: 
-                            - If the duration is **8 weeks, you MUST return exactly 56 workouts (8 * 7)**.  
-                            - If the duration is **12 weeks, you MUST return exactly 84 workouts (12 * 7)**.  
-                            - DO NOT generate more or fewer workouts than the required number **${values.duration * 7}**.
-                            - DO NOT include extra workouts beyond ${values.duration * 7}.
-                        
-                            **ONLY** select workouts from this list: ${JSON.stringify(workoutsId)}.
-                            **DO NOT** return null values in the workouts array.
-                            **DO NOT** generate new workout IDs, only use IDs from the given list.
-                           .
-                        
-                            Provide only JSON data based exactly on this Mongoose schema:
-                            [
-                                const WorkoutPlanSchema = new Schema<IWorkoutPlan>({
-                                    name: { type: String, required: true },
-                                    description: { type: String, required: true },
-                                    about: { type: String, required: true },
-                                    duration: { type: Number, required: true },
-                                    workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
-                                    points: { type: Number, required: true },
-                                    isDeleted: { type: Boolean, default: false },
-                                    image: { type: String, required: true }
-                                }, { timestamps: true })
-                            ]`
-
-                        }]
-                    }]
-                }),
-            });
-
-            const data = await response.json();
-            const responseText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
-            console.log("API Response:", responseText);
-
-            const parsedData = extractJsonData(responseText);
-
-            console.log(parsedData, 'parsedData');
-
-            if (parsedData) {
-                // Ensure the number of workouts matches the required 7 days * X weeks
-                // const expectedWorkouts = parsedData.duration * 7;
-
-                // if (parsedData.workouts.length !== expectedWorkouts) {
-                //     console.error(`Mismatch: ${parsedData.workouts.length} workouts for ${parsedData.duration} weeks (expected ${expectedWorkouts})`);
-                //     message.error(`Error: Expected ${expectedWorkouts} workouts, but received ${parsedData.workouts.length}`);
-                //     return;
-                // }
-                const formattedData = {
-                    name: parsedData.name,
-                    description: parsedData.description,
-                    about: parsedData.about,
-                    duration: parsedData.duration,
-                    points: parsedData.points > 0 ? parsedData.points : 0, // Ensure points are positive
-                    workouts: parsedData.workouts.filter(workout => workout && typeof workout === "string"), // Remove null values
-                    image: parsedData.image,
-                };
-
-                if (formattedData.workouts.length === 0) {
-                    message.error("No valid workouts returned from Gemini.");
-                    return;
-                }
-
-                const formData = new FormData();
-                if (file) {
-                    formData.append("image", file);
-                }
-                formData.append("data", JSON.stringify(formattedData));
-
-                const createResponse = await createWorkoutPlan(formData).unwrap();
-                console.log(createResponse, 'Workout plan created successfully!');
-                message.success("Workout plan created successfully!");
-                form.resetFields();
-                setFile(null);
-            } else {
-                message.error("Failed to process workout plan.");
+            const formData = new FormData();
+            if (file) {
+                formData.append("image", file);
             }
+            formData.append("data", JSON.stringify(formattedData));
+
+            const createResponse = await createWorkoutPlan(formData).unwrap();
+            console.log(createResponse, 'Workout plan created successfully!');
+            message.success("Workout plan created successfully!");
+            form.resetFields();
+            setFile(null);
+            // const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // Replace with your actual API key
+            // const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            // const response = await fetch(url, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     // body: JSON.stringify({
+            //     //     contents: [
+            //     //         {
+            //     //             parts: [
+            //     //                 {
+            //     //                     text: `${JSON.stringify(
+            //     //                         values.description
+            //     //                     )} this is my workout data.  make workout plan for ${values.duration} week. workout plan name is ${values.name}. ensure each day have 1 workout. make plan based on the workout plan name. workout can be repeted. give me just json data based on this mongoose schema : 
+            //     //                     [ const WorkoutPlanSchema = new Schema<IWorkoutPlan>(
+            //     //                     {
+            //     //                       name: { type: String, required: true },
+            //     //                       description: { type: String, required: true },
+            //     //                     duration: { type: Number, required: true },
+            //     //                       workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
+            //     //                       points: { type: Number, required: true },
+            //     //                       isDeleted: { type: Boolean, default: false },
+            //     //                       image: { type: String, required: true },
+            //     //                     },
+            //     //                     { timestamps: true }
+            //     //                         )]   
+            //     //                     ;
+
+
+            //     //                       `,
+            //     //                 },
+            //     //             ],
+            //     //         }
+            //     //     ]
+            //     // }),
+            //     body: JSON.stringify({
+            //         contents: [{
+            //             parts: [{
+            //                 text: `
+            //                 ${JSON.stringify(values.description)} this is my workout data. 
+            //                 Make a structured workout plan for ${duration} weeks. 
+            //                 Workout plan name: ${values.name}. Points will be ${values.points} in number format.
+
+            //                 STRICT REQUIREMENT: 
+            //                 - If the duration is **8 weeks, you MUST return exactly 56 workouts (8 * 7)**.  
+            //                 - If the duration is **12 weeks, you MUST return exactly 84 workouts (12 * 7)**.  
+            //                 - DO NOT generate more or fewer workouts than the required number **${values.duration * 7}**.
+            //                 - DO NOT include extra workouts beyond ${values.duration * 7}.
+
+            //                 **ONLY** select workouts from this list: ${JSON.stringify(workoutsId)}.
+            //                 **DO NOT** return null values in the workouts array.
+            //                 **DO NOT** generate new workout IDs, only use IDs from the given list.
+            //                .
+
+            //                 Provide only JSON data based exactly on this Mongoose schema:
+            //                 [
+            //                     const WorkoutPlanSchema = new Schema<IWorkoutPlan>({
+            //                         name: { type: String, required: true },
+            //                         description: { type: String, required: true },
+            //                         about: { type: String, required: true },
+            //                         duration: { type: Number, required: true },
+            //                         workouts: [{ type: Schema.Types.ObjectId, required: true, ref: "Workout" }],
+            //                         points: { type: Number, required: true },
+            //                         isDeleted: { type: Boolean, default: false },
+            //                         image: { type: String, required: true }
+            //                     }, { timestamps: true })
+            //                 ]`
+
+            //             }]
+            //         }]
+            //     }),
+            // });
+
+            // const data = await response.json();
+            // const responseText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+            // console.log("API Response:", responseText);
+
+            // const parsedData = extractJsonData(responseText);
+
+            // console.log(parsedData, 'parsedData');
+
+            // if (parsedData) {
+            //     // Ensure the number of workouts matches the required 7 days * X weeks
+            //     // const expectedWorkouts = parsedData.duration * 7;
+
+            //     // if (parsedData.workouts.length !== expectedWorkouts) {
+            //     //     console.error(`Mismatch: ${parsedData.workouts.length} workouts for ${parsedData.duration} weeks (expected ${expectedWorkouts})`);
+            //     //     message.error(`Error: Expected ${expectedWorkouts} workouts, but received ${parsedData.workouts.length}`);
+            //     //     return;
+            //     // }
+            //     // const formattedData = {
+            //     //     name: parsedData.name,
+            //     //     description: parsedData.description,
+            //     //     about: parsedData.about,
+            //     //     duration: parsedData.duration,
+            //     //     points: parsedData.points > 0 ? parsedData.points : 0, // Ensure points are positive
+            //     //     workouts: parsedData.workouts.filter(workout => workout && typeof workout === "string"), // Remove null values
+            //     //     image: parsedData.image,
+            //     // };
+
+            //     // if (formattedData.workouts.length === 0) {
+            //     //     message.error("No valid workouts returned from Gemini.");
+            //     //     return;
+            //     // }
+
+            //     const formData = new FormData();
+            //     if (file) {
+            //         formData.append("image", file);
+            //     }
+            //     formData.append("data", JSON.stringify(formattedData));
+
+            //     const createResponse = await createWorkoutPlan(formData).unwrap();
+            //     console.log(createResponse, 'Workout plan created successfully!');
+            //     message.success("Workout plan created successfully!");
+            //     form.resetFields();
+            //     setFile(null);
+            // } else {
+            //     message.error("Failed to process workout plan.");
+            // }
 
             // if (parsedData) {
             //     setWorkoutPlan(parsedData);
@@ -357,7 +373,7 @@ const AddWorkoutPlan = () => {
                                     </Form.Item>
 
                                     {/* Duration */}
-                                    {/* <Form.Item
+                                    <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Duration</span>}
                                         name="duration"
                                         className="responsive-form-item"
@@ -373,9 +389,9 @@ const AddWorkoutPlan = () => {
                                             alignItems: 'center',
                                             justifyContent: 'space-between',
                                         }} />
-                                    </Form.Item> */}
+                                    </Form.Item>
 
-                                    <Form.Item
+                                    {/* <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Select Duration</span>}
                                         name="duration"
                                         className="responsive-form-item"
@@ -400,11 +416,11 @@ const AddWorkoutPlan = () => {
                                             <Option value="12">12</Option>
 
                                         </Select>
-                                    </Form.Item>
+                                    </Form.Item> */}
 
 
                                     {/* Workouts */}
-                                    <Form.Item
+                                    {/* <Form.Item
                                         label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Select Workout</span>}
                                         name="workouts"
                                         className="responsive-form-item"
@@ -421,7 +437,7 @@ const AddWorkoutPlan = () => {
                                             }}
                                             options={options}
                                         />
-                                    </Form.Item>
+                                    </Form.Item> */}
 
                                 </Space>
                             </Space>
@@ -433,7 +449,7 @@ const AddWorkoutPlan = () => {
                                     <button
                                         className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                                     >
-                                        <span className="text-white font-semibold">Create</span>
+                                        <span className="text-white font-semibold">{isLoading ? 'Creating' : 'Create'}</span>
                                     </button>
                                 </div>
                             </Form.Item>
