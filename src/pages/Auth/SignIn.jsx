@@ -70,7 +70,7 @@ const SignIn = () => {
 
       {/* Right */}
       <div className=" order-first lg:order-last bg-white w-[630px] h-[480px] border border-[#2781B5] shadow-xl rounded-[16px] flex-1">
-        <div className="py-[20px] lg:px-[44px]  relative">
+        <div className="pt-3 lg:px-[44px]">
           <div className="pb-[24px] space-y-2">
             <h1 className="text-[33px] text-center font-semibold text-[#3A3A3A]">Sign In</h1>
           </div>
@@ -83,10 +83,10 @@ const SignIn = () => {
             }}
             onFinish={onFinish}
             requiredMark={false}
-            className="text-start space-y-[50px]"
+            className="text-start space-y-[40px]"
 
           >
-            <div className="space-y-[53px]">
+            <div className="space-y-[45px]">
               {/* Email */}
               <Form.Item
                 // label={<span className="font-medium text-base">Email</span>}
@@ -147,7 +147,7 @@ const SignIn = () => {
                 type="primary"
                 size="large"
                 htmlType="submit"
-                className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-[8px] h-[62px] min-w-[335px] text-[26px] mb-[20px] fixed bottom-12"
+                className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-[8px] h-[62px] min-w-[335px] text-[26px] mb-[20px]"
               >
                 {isLoading ? "Loading..." : "Sign In"}
               </Button>
