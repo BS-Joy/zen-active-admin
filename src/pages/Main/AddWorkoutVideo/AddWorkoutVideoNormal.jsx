@@ -36,6 +36,8 @@ const AddWorkoutVideoNormal = () => {
         try {
             const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm"
             const ffmpeg = ffmpegRef.current
+            console.log(ffmpeg);
+
 
             ffmpeg.on("log", ({ message }) => {
                 if (messageRef.current) {
@@ -137,7 +139,7 @@ const AddWorkoutVideoNormal = () => {
                 "-crf",
                 "23",
                 "-preset",
-                "medium",
+                "ultrafast",
                 "-c:a",
                 "aac",
                 "-b:a",
@@ -273,13 +275,19 @@ const AddWorkoutVideoNormal = () => {
                                     {isConverting && (
                                         <div className="mt-3">
                                             <p>Converting video... {conversionProgress}%</p>
-                                            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                            {/* <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
                                                 <div
                                                     className="bg-[#174C6B] h-2.5 rounded-full"
                                                     style={{ width: `${conversionProgress}%` }}
                                                 ></div>
+                                            </div> */}
+                                            <div>
+                                                <div class="relative">
+                                                    <div class="w-full bg-[#d9d9d9] rounded-xl h-5 flex items-center justify-between px-2">
+                                                        <div class="bg-[#174C6B] h-3 rounded-xl" style={{ width: `${conversionProgress}%` }}></div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <p ref={messageRef} className="text-xs mt-1 text-gray-500"></p>
                                         </div>
                                     )}
 

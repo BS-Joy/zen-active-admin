@@ -22,6 +22,8 @@ const WorkoutVideos = () => {
     const [query, setQuery] = useState(""); // State to trigger search
     const navigate = useNavigate();
     const { data: workoutVideos, isLoading } = useGetWorkoutVideosQuery(query)
+    console.log(workoutVideos, 'workoutVideos');
+
 
     const showModal = (data) => {
         setIsModalOpen(true);
