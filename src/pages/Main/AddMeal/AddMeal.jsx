@@ -108,7 +108,7 @@ const AddMeal = () => {
                         // style={{ maxWidth: 600, margin: '0 auto' }}
                         >
                             {/* Section 1 */}
-                            <Space direction="vertical" style={{ width: '100%', borderBottom: '1px solid #79CDFF' }}>
+                            <Space direction="vertical" style={{ width: '100%', borderBottom: '1px solid #79CDFF', paddingBottom: '32px' }}>
                                 <Space size="large" direction="horizontal" className="responsive-space">
                                     {/* Name */}
                                     <Form.Item
@@ -220,6 +220,7 @@ const AddMeal = () => {
                                             onChange={handleMultiSelectChange}
                                             style={{
                                                 width: '100%',
+                                                height: '40px',
                                             }}
                                             options={options}
                                         />

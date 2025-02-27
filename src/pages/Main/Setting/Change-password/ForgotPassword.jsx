@@ -3,6 +3,7 @@ import { MdLockOutline } from "react-icons/md"
 import { LuMailOpen } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { TbMailOpened } from "react-icons/tb";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 
 const ForgotPassword = () => {
@@ -16,7 +17,7 @@ const ForgotPassword = () => {
                 <div className="flex flex-col  w-full max-w-md mx-auto mt-10 p-4 rounded-lg">
                     <div className="flex items-center gap-2 cursor-pointer mb-2" onClick={handleBackButtonClick}>
                         <div className="w-[24px] h-[24px]">
-                            <FaArrowLeft className="text-[19px]" />
+                            <HiOutlineArrowLeft className="text-[19px]" />
                         </div>
                         <h1 className="text-[26px] text-[#525252] font-semibold">Forgot password</h1>
                     </div>

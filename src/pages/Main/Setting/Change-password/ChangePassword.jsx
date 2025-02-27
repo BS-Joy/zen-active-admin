@@ -1,7 +1,7 @@
 import { FaArrowLeft, FaEye, FaLock } from "react-icons/fa6";
 import { HiOutlineEyeSlash } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import { HiOutlineLockClosed } from "react-icons/hi";
+import { HiOutlineLockClosed, HiOutlineArrowLeft } from "react-icons/hi";
 
 const ChangePassword = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ChangePassword = () => {
                     <div className="space-y-[10px] mb-[30px]">
                         <div className="flex items-center gap-2 cursor-pointer" onClick={handleBackButtonClick}>
                             <div className="w-[24px] h-[24px]">
-                                <FaArrowLeft className="text-[19px]" />
+                                <HiOutlineArrowLeft className="text-[19px]" />
                             </div>
                             <h1 className="text-[26px] text-[#525252] font-semibold">Change password</h1>
                         </div>
@@ -56,7 +56,7 @@ const ChangePassword = () => {
                     </p>
 
                     {/* Update Password Button */}
-                    <button className="mt-6 w-full bg-[#174C6B] text-white h-[56px] rounded-lg hover:bg-[#174C6B]/80 text-[24px] pt-1">
+                    <button className="mt-6 w-full bg-[#174C6B] text-white h-[56px] rounded-lg hover:bg-[#174C6B]/80 text-[20px] pt-1">
                         Update password
                     </button>
                 </div>
