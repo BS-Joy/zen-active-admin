@@ -29,6 +29,7 @@ const ResetPassword = () => {
             });
 
             if (response?.data?.status == 200) {
+                localStorage.removeItem("verify-token");
                 navigate("/auth");
                 Swal.fire({
                     icon: "success",

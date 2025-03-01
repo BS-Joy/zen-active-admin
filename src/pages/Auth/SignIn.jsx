@@ -6,7 +6,7 @@ import image from "../../assets/images/login.png";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { setUser } from "../../redux/features/auth/authSlice";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
   const navigate = useNavigate();
