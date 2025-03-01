@@ -33,7 +33,7 @@ const VerifyEmail = () => {
 
         try {
             const response = await verifyEmail({
-                email: id, // Assuming ID contains email
+                email: email,
                 code: Number(otp),
             });
 

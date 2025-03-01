@@ -6,9 +6,15 @@ export const baseApi = createApi({
         baseUrl: 'http://192.168.10.18:3500/api',
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token
+            const verifyToken = localStorage.getItem("verify-token");
 
             if (token) {
                 headers.set('authorization', `Bearer ${token}`)
+            }
+
+            // Set verify-token only when needed (for password reset routes)
+            if (verifyToken) {
+                headers.set('authorization', verifyToken);
             }
 
             return headers
