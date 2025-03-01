@@ -31,16 +31,13 @@ const VerifyEmail = () => {
             });
         }
 
-        console.log("OTP: ", otp);
-        console.log("Email: ", email);
-
         try {
             const response = await verifyEmail({
                 email: id, // Assuming ID contains email
                 code: Number(otp),
             });
 
-            if (response?.data?.statusCode === 200) {
+            if (response?.data?.status === 200) {
                 localStorage.setItem("verify-token", response?.data?.data);
                 navigate(`/settings/change-password/forgot-password/reset-password`);
             } else {
@@ -56,41 +53,6 @@ const VerifyEmail = () => {
         } catch (error) {
             Swal.fire({
                 icon: "error",
-                text: "Something went wrong. Please try again later.",
-            });
-        }
-
-        if (isNaN(otp) || otp.length < 6) {
-            return Swal.fire({
-                icon: "error",
-                title: "Failed",
-                text: "Please enter 4 digits OTP number!!.",
-            });
-        }
-        navigate(`/settings/change-password/forgot-password/reset-password`);
-        try {
-            const response = await verifyEmail({
-                email: email,
-                code: Number(otp),
-            });
-            // console.log(response);
-            if (response?.data?.statusCode == 200) {
-                localStorage.setItem("verify-token", response?.data?.data);
-                navigate(`/settings/change-password/forgot-password/reset-password`);
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "failed!",
-                    text:
-                        response?.data?.message ||
-                        response?.error?.data?.message ||
-                        "Something went wrong. Please try again later.",
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: "error",
-                // title: "Login Failed , Try Again...",
                 text: "Something went wrong. Please try again later.",
             });
         }

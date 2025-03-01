@@ -56,6 +56,7 @@ import AddWorkoutPlan from "../pages/Main/AddWorkoutPlan/AddWorkoutPlan";
 import EditWorkoutPlan from "../pages/Main/EditWorkoutPlan/EditWorkoutPlan";
 import { MdManageHistory } from "react-icons/md";
 import AddWorkoutVideoNormal from "../pages/Main/AddWorkoutVideo/AddWorkoutVideoNormal";
+import ResetPassword from "../pages/Main/Setting/Change-password/ResetPassword";
 
 export const dashboardItems = [
   {
@@ -257,7 +258,7 @@ export const dashboardItems = [
       },
       {
         path: "settings/change-password/forgot-password/reset-password",
-        element: <VerifyEmail />,
+        element: <ResetPassword />,
       },
       {
         name: "Terms & Condition",
