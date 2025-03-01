@@ -47,7 +47,7 @@ const Header = () => {
         <p className="text-sm md:text-xl">{"Have a nice day!"}</p> */}
       </div>
       <div className="flex gap-x-[41px]">
-        <div
+        {/* <div
           onClick={(e) => navigate("/notifications")}
           className="relative flex items-center "
         >
@@ -59,7 +59,7 @@ const Header = () => {
               />
             </div>
           </Badge>
-        </div>
+        </div> */}
         <div className="flex items-center gap-4">
           <div>
             <img src={profileImage} alt="" className="rounded-full h-[42px] w-[42px]" />
