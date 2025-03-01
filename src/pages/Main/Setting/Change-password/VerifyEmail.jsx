@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6"
 import { HiOutlineArrowLeft } from "react-icons/hi";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useVerifyEmailMutation } from "../../../../redux/features/auth/authApi";
+import { useResendCodeMutation, useVerifyEmailMutation } from "../../../../redux/features/auth/authApi";
 import Swal from "sweetalert2";
 
 const VerifyEmail = () => {
@@ -13,6 +13,7 @@ const VerifyEmail = () => {
     const { id } = useParams();
     const [otp, setOtp] = useState(0);
     const [verifyEmail, { isLoading }] = useVerifyEmailMutation();
+    const [resendCode, { isLoading: isResendCodeLoading }] = useResendCodeMutation();
 
     // Handle OTP input change
     const handleOtpChange = (value) => {
@@ -22,7 +23,7 @@ const VerifyEmail = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(otp);
+
         if (otp.length < 6 || isNaN(Number(otp))) {
             return Swal.fire({
                 icon: "error",
@@ -48,6 +49,29 @@ const VerifyEmail = () => {
                         response?.data?.message ||
                         response?.error?.data?.message ||
                         "Something went wrong. Please try again later.",
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                text: "Something went wrong. Please try again later.",
+            });
+        }
+    };
+
+
+    const handleResend = async (e) => {
+        e.preventDefault()
+
+        try {
+            const response = await resendCode({
+                email: email,
+            });
+
+            if (response?.data?.status === 200) {
+                Swal.fire({
+                    icon: "success",
+                    text: "Code resent successfully.",
                 });
             }
         } catch (error) {
@@ -86,7 +110,7 @@ const VerifyEmail = () => {
 
                     <div className="flex justify-between items-center">
                         <h1 className="text-[16px] text-[#525252] font-semibold">Didn’t receive the code?</h1>
-                        <h1 className="text-[#32A5E8]">Resend</h1>
+                        <button className="text-[#32A5E8]" onClick={handleResend}>Resend</button>
                     </div>
                     {/* Send OTP Button */}
                     <button className="mt-6 w-full bg-[#174C6B] text-white py-2 rounded-lg hover:bg-[#174C6B]/80 h-[56px] text-[20px]"

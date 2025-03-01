@@ -6,7 +6,6 @@ export const baseApi = createApi({
         baseUrl: 'http://192.168.10.18:3500/api',
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token
-            console.log(token);
 
             const verifyToken = localStorage.getItem("verify-token");
 

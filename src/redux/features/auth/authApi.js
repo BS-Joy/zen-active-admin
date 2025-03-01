@@ -23,6 +23,13 @@ const authApi = baseApi.injectEndpoints({
                 body: userInfo,
             })
         }),
+        resendCode: builder.mutation({
+            query: (userInfo) => ({
+                url: '/auth/resend-code',
+                method: 'POST',
+                body: userInfo,
+            })
+        }),
         changePassword: builder.mutation({
             query: (userInfo) => ({
                 url: '/auth/reset-pass',
@@ -62,4 +69,4 @@ const authApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation, useGetTotalUsersQuery, useGetAllUserQuery, useGetMeQuery, useEditProfileMutation, useUpdatePasswordMutation } = authApi
+export const { useLoginMutation, useForgotPasswordMutation, useVerifyEmailMutation, useChangePasswordMutation, useGetTotalUsersQuery, useGetAllUserQuery, useGetMeQuery, useEditProfileMutation, useUpdatePasswordMutation, useResendCodeMutation } = authApi

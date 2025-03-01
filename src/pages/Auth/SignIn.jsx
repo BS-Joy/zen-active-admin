@@ -22,6 +22,7 @@ const SignIn = () => {
       console.log(response);
       if (response?.data?.status == 200) {
         if (response?.data?.data?.user?.role === "ADMIN") {
+          localStorage.removeItem("verify-token");
           localStorage.setItem("token", response?.data?.data?.token);
           dispatch(
             setUser({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiOutlineArrowLeft, HiOutlineEye, HiOutlineLockClosed } from 'react-icons/hi';
 import { HiOutlineEyeSlash } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
@@ -55,6 +55,15 @@ const ResetPassword = () => {
             });
         }
     }
+
+    // Remove verify-token If the User Navigates Away From the Reset Password Page
+    useEffect(() => {
+        return () => {
+            // When the user leaves this component, remove verify-token
+            localStorage.removeItem("verify-token");
+        };
+    }, []);
+
     return (
         <div className="flex items-center justify-center ">
             <div className="bg-[#F4F9FB] rounded-lg shadow-lg mt-8 w-[630px] h-[450px] mx-auto py-10 px-8">
@@ -74,7 +83,7 @@ const ResetPassword = () => {
                             { label: 'Set your password', placeholder: 'Set your password', value: newPassword, setValue: setNewPassword, show: showPassword.new, setShow: setShowPassword, name: 'new_password', key: "new" },
                             { label: 'Re-enter password', placeholder: 'Re-enter password', value: confirmPassword, setValue: setConfirmPassword, show: showPassword.confirm, setShow: setShowPassword, name: 'confirm_password', key: "confirm" }
                         ].map(({ label, placeholder, value, setValue, show, setShow, name, key }, index) => (
-                            <div>
+                            <div key={index}>
                                 {/* <h1 className="mb-[5px] text-[20px] text-[#4B4B4B] font-semibold">{label}</h1> */}
                                 <div key={index} className=" flex items-center relative">
 
