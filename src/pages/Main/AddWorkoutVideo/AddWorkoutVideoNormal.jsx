@@ -252,7 +252,8 @@ const AddWorkoutVideoNormal = () => {
                                                 Resolution: {videoResolution.width}x{videoResolution.height}
                                             </p>
                                             {needsConversion ? (
-                                                <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
+                                                <p className="text-amber-600">This video is larger than 720p, please upload a video in 720p/smallar than 720p</p>
+                                                // <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
                                             ) : (
                                                 <p className="text-green-600">This video is already 720p or lower</p>
                                             )}
@@ -260,7 +261,7 @@ const AddWorkoutVideoNormal = () => {
                                     )}
 
                                     {/* Conversion Button */}
-                                    {needsConversion && videoFile && !convertedVideo && !isConverting && (
+                                    {/* {needsConversion && videoFile && !convertedVideo && !isConverting && (
                                         <button
                                             type="button"
                                             onClick={convertVideo}
@@ -269,18 +270,12 @@ const AddWorkoutVideoNormal = () => {
                                         >
                                             Convert to 720p
                                         </button>
-                                    )}
+                                    )} */}
 
                                     {/* Conversion Status */}
-                                    {isConverting && (
+                                    {/* {isConverting && (
                                         <div className="mt-3">
                                             <p>Converting video... {conversionProgress}%</p>
-                                            {/* <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                                                <div
-                                                    className="bg-[#174C6B] h-2.5 rounded-full"
-                                                    style={{ width: `${conversionProgress}%` }}
-                                                ></div>
-                                            </div> */}
                                             <div>
                                                 <div class="relative">
                                                     <div class="w-full bg-[#d9d9d9] rounded-xl h-5 flex items-center justify-between px-2">
@@ -289,12 +284,12 @@ const AddWorkoutVideoNormal = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    )}
+                                    )} */}
 
                                     {/* Conversion Complete */}
-                                    {convertedVideo && (
+                                    {/* {convertedVideo && (
                                         <p className="mt-2 text-green-600">Video converted successfully! Ready to upload.</p>
-                                    )}
+                                    )} */}
                                 </div>
 
                                 <div>
