@@ -26,10 +26,10 @@ const ResetPassword = () => {
         confirm_password: values.confirm_password,
         // token: token,
       });
-      console.log(response, 'response');
 
       if (response?.data?.status == 200) {
-        localStorage.setItem("verify-token", null);
+        // localStorage.setItem("verify-token", null);
+        localStorage.removeItem("verify-token");
         dispatch(
           setUser({
             user: null,

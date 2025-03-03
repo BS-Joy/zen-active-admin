@@ -18,21 +18,21 @@ const VerifyEmail = () => {
   const [mutation, { isLoading }] = useVerifyEmailMutation();
 
   const onFinish = async (values) => {
-    if (isNaN(otp) || otp.length < 4) {
+    if (isNaN(otp) || otp.length < 6) {
       return Swal.fire({
         icon: "error",
         title: "Failed",
-        text: "Please enter 4 digits OTP number!!.",
+        text: "Please enter 6 digits OTP number!!.",
       });
     }
     navigate(`/auth/reset-password`);
     try {
       const response = await mutation({
-        email: id,
+        email: email,
         code: Number(otp),
       });
       // console.log(response);
-      if (response?.data?.statusCode == 200) {
+      if (response?.data?.status == 200) {
         localStorage.setItem("verify-token", response?.data?.data);
         navigate(`/auth/reset-password`);
       } else {
