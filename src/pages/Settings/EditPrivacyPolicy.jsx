@@ -19,7 +19,8 @@ const modules = {
       [{ color: [] }], // Text color dropdown
       ["bold", "italic", "underline", 'strike'], // Formatting options
       [{ align: [] }],
-      ["image", "link"],
+      ["link"],
+      // ["image", "link"],
       [{ list: 'bullet' }],
     ],
     handlers: {
@@ -38,7 +39,7 @@ const formats = [
   "italic",
   "underline",
   "link",
-  "image",
+  // "image",
   "list",
 ];
 
