@@ -22,12 +22,21 @@ const styles = StyleSheet.create({
     value: {
         marginLeft: 5,
     },
+    heading: {
+        fontSize: 20,
+        marginBottom: 10,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    }
 });
 
 const RecentTransactionsPdf = ({ modalData }) => (
     <Document>
         <Page style={styles.page}>
             <View style={styles.section}>
+                <View style={styles.row}>
+                    <Text style={styles.heading}>Transaction Details</Text>
+                </View>
                 <View style={styles.row}>
                     <Text style={styles.label}>Transaction ID:</Text>
                     <Text style={styles.value}>{modalData.transIs}</Text>
