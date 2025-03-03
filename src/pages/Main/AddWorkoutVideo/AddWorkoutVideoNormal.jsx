@@ -252,7 +252,7 @@ const AddWorkoutVideoNormal = () => {
                                                 Resolution: {videoResolution.width}x{videoResolution.height}
                                             </p>
                                             {needsConversion ? (
-                                                <p className="text-amber-600">This video is larger than 720p, please upload a video in 720p/smallar than 720p</p>
+                                                <p className="text-amber-600">This video is larger than 720p, please upload a video in 720p or lower</p>
                                                 // <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
                                             ) : (
                                                 <p className="text-green-600">This video is already 720p or lower</p>
