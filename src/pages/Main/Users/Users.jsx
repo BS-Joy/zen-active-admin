@@ -10,6 +10,9 @@ import moment from "moment";
 import mealImg from "../../../assets/images/meal.png";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
+const defaultImage =
+  "https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg";
+
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -92,6 +95,7 @@ const Users = () => {
         <div className="flex items-center justify-center">
           <img
             src={user.image || "https://via.placeholder.com/40"} // Use placeholder if no image
+            onError={(e) => (e.target.src = defaultImage)}
             alt="User"
             className="w-10 h-10 rounded-full object-cover"
           />
