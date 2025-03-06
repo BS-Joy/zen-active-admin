@@ -13,9 +13,9 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [query, setQuery] = useState("");
-  const { data: allUsers, isLoading } = useGetAllUserQuery(query)
+  const { data: allUsers, isLoading } = useGetAllUserQuery(query);
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -62,11 +62,16 @@ const Users = () => {
     {
       title: "Action",
       key: "Review",
-      aligen: 'center',
+      aligen: "center",
       render: (_, data) => (
         <div className="  items-center justify-around textcenter flex">
           {/* Review Icon */}
-          <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
+          <img
+            src={exlamIcon}
+            alt=""
+            className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer"
+            onClick={() => showModal(data)}
+          />
           {/* <Link to={'/reviews'} className="btn bg-black text-white px-3 py-1 text-sm rounded-full">
              
               View
@@ -80,39 +85,55 @@ const Users = () => {
     setIsModalOpen(false);
   };
 
-  const data = allUsers?.data?.map((user, index) => ({
-    key: index,
-    userImage:
-      <div className="flex items-center justify-center">
-        <img
-          src={user.image || "https://via.placeholder.com/40"} // Use placeholder if no image
-          alt="User"
-          className="w-10 h-10 rounded-full object-cover"
-        />
-      </div>
-    ,
-    userName: user.name ? `${user.name.firstName} ${user.name.lastName}` : "N/A",
-    email: user.email,
-    primaryGoal: user.primaryGoal || "N/A",
-    points: user.appData?.points || 0,
-    ...user,
-  })) || [];
+  const data =
+    allUsers?.data?.map((user, index) => ({
+      key: index,
+      userImage: (
+        <div className="flex items-center justify-center">
+          <img
+            src={user.image || "https://via.placeholder.com/40"} // Use placeholder if no image
+            alt="User"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        </div>
+      ),
+      userName: user.name
+        ? `${user.name.firstName} ${user.name.lastName}`
+        : "N/A",
+      email: user.email,
+      primaryGoal: user.primaryGoal || "N/A",
+      points: user.appData?.points || 0,
+      ...user,
+    })) || [];
 
+  console.log(data);
 
   return (
     <div className="rounded-lg border-2 py-4 border-[#37B5FF]/80 mt-8 recent-users-table">
       <div className="flex justify-between px-2">
         <h3 className="text-2xl text-black mb-4 pl-2">Users List</h3>
         <div className="flex items-center gap-4 mb-6">
-
-          <Input placeholder="User Name" className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }}
-            value={searchTerm || ''}
+          <Input
+            placeholder="User Name"
+            className="w-48 placeholder:text-lightblue border border-lightBlue"
+            style={{ border: "1px solid #37B5FF" }}
+            value={searchTerm || ""}
             onChange={handleSearchChange}
           />
           {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
                    <IoSearch />
                  </Button> */}
-          <button style={{ border: 'none', backgroundColor: '#caf0f8', color: '#174C6B', borderRadius: '50%', padding: '7px' }}><IoSearch size={20} onClick={handleSearch} /></button>
+          <button
+            style={{
+              border: "none",
+              backgroundColor: "#caf0f8",
+              color: "#174C6B",
+              borderRadius: "50%",
+              padding: "7px",
+            }}
+          >
+            <IoSearch size={20} onClick={handleSearch} />
+          </button>
         </div>
       </div>
       {/* Ant Design Table */}
@@ -124,14 +145,20 @@ const Users = () => {
           position: ["bottomCenter"],
           itemRender: (current, type, originalElement) => {
             if (type === "prev") {
-              return <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue">
-                <IoIosArrowBack className="" />
-                Back</button>;
+              return (
+                <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue">
+                  <IoIosArrowBack className="" />
+                  Back
+                </button>
+              );
             }
             if (type === "next") {
-              return <button className="custom-pagination flex items-center gap-2 border border-darkBlue bg-darkBlue rounded-md px-2 text-white">Next
-                <IoIosArrowForward />
-              </button>;
+              return (
+                <button className="custom-pagination flex items-center gap-2 border border-darkBlue bg-darkBlue rounded-md px-2 text-white">
+                  Next
+                  <IoIosArrowForward />
+                </button>
+              );
             }
             return originalElement;
           },
@@ -153,7 +180,11 @@ const Users = () => {
           </div> */}
           <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>User Name</p>
-            <p>{modalData.name ? `${modalData.name.firstName} ${modalData.name.lastName}` : "N/A"}</p>
+            <p>
+              {modalData.name
+                ? `${modalData.name.firstName} ${modalData.name.lastName}`
+                : "N/A"}
+            </p>
           </div>
           <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Email</p>
@@ -178,7 +209,6 @@ const Users = () => {
             <p>Height</p>
             <p>{modalData.height} cm</p>
           </div>
-
 
           <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Weight</p>
@@ -210,12 +240,10 @@ const Users = () => {
             <p>{modalData.primaryGoal}</p>
           </div>
 
-
           <div className="p-4 mt-auto text-center mx-auto flex items-center justify-center">
             <button
               className="w-[300px] bg-[#174C6B] text-white px-10 h-[50px] flex items-center justify-center gap-3 text-lg outline-none rounded-xl"
               onClick={handleCancel}
-
             >
               <span className="text-white font-light">Okay</span>
             </button>

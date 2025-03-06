@@ -1,6 +1,5 @@
 import { Button, Checkbox, Input } from "antd";
 import Form from "antd/es/form/Form";
-import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login.png";
 import { useDispatch } from "react-redux";
@@ -62,18 +61,22 @@ const SignIn = () => {
     <div className="min-h-[92vh] w-full flex flex-col lg:flex-row justify-center items-center gap-1 lg:gap-[165px]">
       {/* Left */}
       <div className=" border-[#1E648C] flex-1">
-        <img src={image} alt="" className="w-[768px] h-[768px] object-contain" />
+        <img
+          src={image}
+          alt=""
+          className="w-[768px] h-[768px] object-contain"
+        />
       </div>
 
-      <div className="hidden lg:block border-r border-[#1E648C]/60 h-[500px]">
-
-      </div>
+      <div className="hidden lg:block border-r border-[#1E648C]/60 h-[500px]"></div>
 
       {/* Right */}
       <div className=" order-first lg:order-last bg-white w-[630px] h-[480px] border border-[#2781B5] shadow-xl rounded-[16px] flex-1">
         <div className="pt-3 lg:px-[44px]">
           <div className="pb-[24px] space-y-2">
-            <h1 className="text-[33px] text-center font-semibold text-[#3A3A3A]">Sign In</h1>
+            <h1 className="text-[33px] text-center font-semibold text-[#3A3A3A]">
+              Sign In
+            </h1>
           </div>
 
           <Form
@@ -85,7 +88,6 @@ const SignIn = () => {
             onFinish={onFinish}
             requiredMark={false}
             className="text-start space-y-[40px]"
-
           >
             <div className="space-y-[45px]">
               {/* Email */}
@@ -103,7 +105,16 @@ const SignIn = () => {
                   },
                 ]}
               >
-                <Input size="large" placeholder="Email" style={{ border: '1px solid #2781B5', borderRadius: '7px', height: '56px', fontSize: '16px' }} />
+                <Input
+                  size="large"
+                  placeholder="Email"
+                  style={{
+                    border: "1px solid #2781B5",
+                    borderRadius: "7px",
+                    height: "56px",
+                    fontSize: "16px",
+                  }}
+                />
               </Form.Item>
 
               {/* Passworkd */}
@@ -118,7 +129,15 @@ const SignIn = () => {
                   },
                 ]}
               >
-                <Input.Password size="large" placeholder="Password" style={{ border: '1px solid #2781B5', borderRadius: '7px', height: '56px' }} />
+                <Input.Password
+                  size="large"
+                  placeholder="Password"
+                  style={{
+                    border: "1px solid #2781B5",
+                    borderRadius: "7px",
+                    height: "56px",
+                  }}
+                />
               </Form.Item>
             </div>
 
@@ -130,7 +149,10 @@ const SignIn = () => {
                 </Checkbox>
               </Form.Item> */}
               <Form.Item>
-                <Link to='/auth/forgot-password' className="text-[18px] font-medium text-[#757575]">
+                <Link
+                  to="/auth/forgot-password"
+                  className="text-[18px] font-medium text-[#757575]"
+                >
                   Forget password?
                 </Link>
                 {/* <Button
@@ -156,7 +178,6 @@ const SignIn = () => {
           </Form>
         </div>
       </div>
-
     </div>
   );
 };

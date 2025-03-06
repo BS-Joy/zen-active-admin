@@ -1,5 +1,4 @@
 import { CiSettings, CiUser } from "react-icons/ci";
-import { GrMoney } from "react-icons/gr";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import DashboardHome from "../pages/Main/DashboardHome/DashboardHome";
 import Guests from "../pages/Main/Users/Users";
@@ -10,9 +9,7 @@ import EditTermsConditions from "../pages/Settings/EditTermsConditions";
 import PrivacyPolicy from "../pages/Settings/PrivacyPolicy";
 import EditPrivacyPolicy from "../pages/Settings/EditPrivacyPolicy";
 import { FaRegUser } from "react-icons/fa6";
-import {
-  MdOutlineSecurityUpdateWarning,
-} from "react-icons/md";
+import { MdOutlineSecurityUpdateWarning } from "react-icons/md";
 import HostDetails from "../pages/Main/Host/HostDetails";
 import { FaServicestack } from "react-icons/fa6";
 import { BiMessageSquareDetail } from "react-icons/bi";
@@ -161,7 +158,6 @@ export const dashboardItems = [
   //   path: '/reviews',
   //   element: <Review></Review>
   // },
-
 
   // {
   //   name: "Driver",
