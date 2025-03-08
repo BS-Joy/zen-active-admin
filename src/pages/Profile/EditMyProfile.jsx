@@ -6,7 +6,11 @@ import { IoMdCamera } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useEditProfileMutation } from "../../redux/features/auth/authApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, useCurrentUser } from "../../redux/features/auth/authSlice";
+import {
+  setUser,
+  useCurrentToken,
+  useCurrentUser,
+} from "../../redux/features/auth/authSlice";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const EditMyProfile = () => {
@@ -16,6 +20,8 @@ const EditMyProfile = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const user = useSelector(useCurrentUser);
+  const token = useSelector(useCurrentToken);
+  // console.log(token);
   const dispatch = useDispatch();
 
   const [editProfile, { isLoading: updateLoading }] = useEditProfileMutation();
@@ -52,7 +58,7 @@ const EditMyProfile = () => {
 
     try {
       const res = await editProfile(formData).unwrap();
-      dispatch(setUser({ user: res?.data }));
+      dispatch(setUser({ user: res?.data, token }));
       message.success("Profile update successful!");
       form.resetFields();
       setFile(null);

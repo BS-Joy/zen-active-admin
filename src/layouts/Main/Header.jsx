@@ -4,7 +4,10 @@ import { Badge } from "antd";
 import profileImage from "../../assets/images/dash-profile.png";
 import { HiOutlineBell } from "react-icons/hi2";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { Select } from 'antd';
+import { Select } from "antd";
+import { useSelector } from "react-redux";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import defaultAvatar from "../../assets/images/avatar.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -12,10 +15,11 @@ const Header = () => {
   const notificationRef = useRef(null);
   const [notificationPopup, setNotificationPopup] = useState(false);
 
+  const user = useSelector(useCurrentUser);
+
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -38,7 +42,6 @@ const Header = () => {
   }, [loacatin.pathname]);
 
   return (
-
     <div className="w-full h-[88px] flex justify-between items-center rounded-sm py-[16px] px-[32px] shadow-lg bg-[#174C6B]">
       <div className="text-start space-y-0.5">
         {/* <p className="text-sm md:text-xl font-light">
@@ -62,10 +65,15 @@ const Header = () => {
         </div> */}
         <div className="flex items-center gap-4">
           <div>
-            <img src={profileImage} alt="" className="rounded-full h-[42px] w-[42px]" />
+            <img
+              src={import.meta.env.VITE_BASE_URL + user?.image}
+              alt="profile avatar"
+              className="rounded-full h-[42px] w-[42px]"
+              onError={(e) => (e.target.src = defaultAvatar)}
+            />
           </div>
           <div className="flex flex-col items-center">
-            <h1 className="text-white text-lg">Jane</h1>
+            <h1 className="text-white text-lg">{user?.name}</h1>
             <h1 className="text-white text-xs">Admin</h1>
           </div>
           {/* <Select
