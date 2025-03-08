@@ -1,198 +1,155 @@
-import React, { useState } from "react";
-import { Button, Form, Input, message, Upload } from "antd";
-import dashProfile from "../../assets/images/dashboard-profile.png";
-// import "react-phone-number-input/style.css";
-// import PhoneInput from "react-phone-number-input";
-import { FiEdit } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import PhoneCountryInput from "../../Components/PhoneCountryInput";
-import PageHeading from "../../Components/PageHeading";
-import { PiCameraPlus } from "react-icons/pi";
+import React, { useState, useRef } from "react";
+import { Button, Form, Input, message } from "antd";
+import dashProfile from "../../assets/images/avatar.png";
 import { FaAngleLeft } from "react-icons/fa6";
-import { useEditProfileMutation, useGetMeQuery } from "../../redux/features/auth/authApi";
-import { IoCameraOutline } from "react-icons/io5";
+import { IoMdCamera } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import { useEditProfileMutation } from "../../redux/features/auth/authApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, useCurrentUser } from "../../redux/features/auth/authSlice";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const EditMyProfile = () => {
-  const [code, setCode] = useState();
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const fileInputRef = useRef(null); // Reference for file input
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { data: me, isLoading, error } = useGetMeQuery()
-  console.log(me);
+  const user = useSelector(useCurrentUser);
+  const dispatch = useDispatch();
 
+  const [editProfile, { isLoading: updateLoading }] = useEditProfileMutation();
 
-  const [editProfile] = useEditProfileMutation()
+  // Handle file selection and show preview
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile)); // Set preview URL
+    }
+  };
 
-  // Handle file selection
-  const handleFileChange = ({ file }) => {
-    setFile(file.originFileObj); // Save selected file
+  // Trigger file input on overlay click
+  const handleOverlayClick = () => {
+    fileInputRef.current.click();
   };
 
   const handleBackButtonClick = () => {
-    navigate(-1); // This takes the user back to the previous page
+    navigate(-1); // Navigate back
   };
+
   const onFinish = async (values) => {
-    // Restructure the form data to include nutritionalInfo
     const formattedData = {
-      ...values, // Spread other fields
-      name: {
-        firstName: values.firstName || me?.data?.name?.firstName, // Ensure values are not undefined
-        lastName: values.lastName || me?.data?.name?.lastName,
-      }
+      mobile: values.phone || user.phone || "",
     };
-
-    // Remove firstName and lastName if they are empty
-    if (!formattedData.name.firstName && !formattedData.name.lastName) {
-      delete formattedData.name;
-    }
-
-    // Remove other empty or undefined fields
-    Object.keys(formattedData).forEach(
-      (key) => (formattedData[key] === "" || formattedData[key] === undefined) && delete formattedData[key]
-    );
-
-    console.log(formattedData);
-
 
     // Create FormData
     const formData = new FormData();
     if (file) {
       formData.append("image", file);
     }
-    formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
+    formData.append("data", JSON.stringify(formattedData));
 
     try {
-      const response = await editProfile(formData).unwrap();
-      console.log(response, 'response from edit profile');
-
-      message.success("Profile edited successfully!");
-      form.resetFields(); // Reset form
-      setFile(null); // Clear file
+      const res = await editProfile(formData).unwrap();
+      dispatch(setUser({ user: res?.data }));
+      message.success("Profile update successful!");
+      form.resetFields();
+      setFile(null);
+      setPreview(null);
     } catch (error) {
       message.error(error.data?.message || "Failed to edit profile.");
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  const profileData = {
-    firstName: me?.data?.name?.firstName || '',
-    lastName: me?.data?.name?.lastName || '',
-    phone: me?.data?.phone || '',
-    profile: me?.data.image || dashProfile,
-  };
-
-
-  const props = {
-    name: 'file',
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-    headers: {
-      authorization: 'authorization-text',
-    },
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
-
   return (
     <>
-      <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
+      <div
+        className="flex items-center gap-2 text-xl cursor-pointer"
+        onClick={handleBackButtonClick}
+      >
         <FaAngleLeft />
-        <h1>Personal information Edit</h1>
+        <h1>Personal Information Edit</h1>
       </div>
       <div className="rounded-lg py-4 border-[#174C6B]/40 border-2 shadow-lg mt-8 bg-white">
         <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
           <h3 className="text-2xl text-[#174C6B] mb-4 pl-5 border-b-2 border-[#174C6B]/40 pb-3">
-            Personal information Edit
+            Personal Information Edit
           </h3>
           <div className="w-full">
             <Form
-              name="basic"
+              name="edit-profile"
               layout="vertical"
               className="w-full grid grid-cols-12 gap-x-10 px-14 py-8"
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
               autoComplete="off"
               initialValues={{
-                firstName: profileData.firstName,
-                lastName: profileData.lastName,
+                name: "Admin",
+                phone: user.mobile || "N/A",
               }}
             >
-              <div className="col-span-3 space-y-6 ">
-                <div className="min-h-[300px] flex flex-col items-center justify-center p-8 border border-black bg-lightGray/15">
-                  <Form.Item
-                    name='image'
-                    className="my-2 relative">
+              <div className="col-span-3 space-y-6">
+                <div className="min-h-[300px] flex flex-col items-center justify-center p-8 border border-black bg-lightGray/15 relative">
+                  {/* Profile Image and Overlay */}
+                  <div
+                    className="relative group cursor-pointer"
+                    onClick={handleOverlayClick}
+                  >
                     <img
-                      src={dashProfile}
-                      alt=""
-                      className="h-28 w-28 rounded-full border-4 border-black"
+                      src={
+                        preview ||
+                        `${import.meta.env.VITE_BASE_URL}${user?.image}`
+                      }
+                      alt="Profile"
+                      className="h-28 w-28 rounded-full border-4 border-black object-cover"
+                      onError={(e) => (e.target.src = dashProfile)}
                     />
-                    <Upload {...props}
-                      onChange={handleFileChange}
-                      maxCount={1}
-                    >
+                    <div className="absolute top-0 w-full h-full bg-[#174C6B]/50 p-2 rounded-full hidden group-hover:flex justify-center items-center">
+                      <IoMdCamera size={23} color="white" />
+                    </div>
+                  </div>
 
-                      <div className="absolute bottom-2 right-9 bg-[#174C6B] p-2 rounded-full cursor-pointer">
-                        <IoCameraOutline size={23} color="white" />
-                      </div>
-                    </Upload>
+                  {/* Hidden File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
 
-                  </Form.Item>
-                  <h5 className="text-lg text-[#222222]">{"Profile"}</h5>
-                  <h4 className="text-2xl text-[#222222]">{"Admin"}</h4>
+                  <h5 className="text-lg text-[#222222]">Profile</h5>
+                  <h4 className="text-2xl text-[#222222]">Admin</h4>
                 </div>
               </div>
               <div className="col-span-9 space-y-[14px] w-full">
-                <Form.Item
-                  className="text-lg  font-medium text-black -mb-1"
-                  label="First Name"
-                  name="firstName"
-                // rules={[{ required: true, message: "Please enter your first name!" }]}
-                >
+                <Form.Item label="Name" name="name">
                   <Input
+                    size="large"
+                    className="h-[53px] rounded-lg"
+                    readOnly
+                    value="Admin"
+                  />
+                </Form.Item>
+                <Form.Item label="Phone Number" name="phone">
+                  <Input
+                    type="tel"
                     size="large"
                     className="h-[53px] rounded-lg"
                   />
                 </Form.Item>
-                <Form.Item
-                  className="text-lg  font-medium text-black -mb-1"
-                  label="Last Name"
-                  name="lastName"
-                // rules={[{ required: true, message: "Please enter your last name!" }]}
-                >
-                  <Input
-                    size="large"
-                    className="h-[53px] rounded-lg"
-                  />
-                </Form.Item>
-                {/* <Form.Item
-                  className="text-lg text-[#222222] font-medium"
-                  label="Phone Number"
-                  name="phone"
-                  // rules={[{ required: true, message: "Please enter your phone number!" }]}
-                  getValueFromEvent={(value) => value} // Extracts the value from the child component
-                >
-                  <PhoneCountryInput />
-                </Form.Item> */}
                 <Form.Item className="flex justify-end pt-4">
                   <Button
-                    // onClick={(e) => navigate(`edit`)}
                     size="large"
                     type="primary"
                     htmlType="submit"
                     className="px-8 bg-[#174C6B] text-white hover:bg-black/90 rounded-xl font-semibold h-11"
                   >
-                    Save Changes
+                    {updateLoading ? (
+                      <LoadingSpinner color="white" />
+                    ) : (
+                      "Save Changes"
+                    )}
                   </Button>
                 </Form.Item>
               </div>
