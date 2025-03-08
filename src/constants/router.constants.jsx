@@ -258,7 +258,7 @@ export const dashboardItems = [
         element: <VerifyEmail />,
       },
       {
-        path: "settings/change-password/forgot-password/reset-password",
+        path: "settings/change-password/forgot-password/verify-email/reset-password",
         element: <ResetPassword />,
       },
       {
