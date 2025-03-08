@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input } from "antd";
+import { Button, Checkbox, Input, message } from "antd";
 import Form from "antd/es/form/Form";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,14 +10,13 @@ import { useChangePasswordMutation } from "../../redux/features/auth/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/features/auth/authSlice";
 import Swal from "sweetalert2";
-
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const [mutation, { isLoading }] = useChangePasswordMutation();
-
 
   const onFinish = async (values) => {
     try {
@@ -28,6 +27,7 @@ const ResetPassword = () => {
       });
 
       if (response?.data?.status == 200) {
+        message.success(response.data.message || "Password Reset Successfull.");
         // localStorage.setItem("verify-token", null);
         localStorage.removeItem("verify-token");
         dispatch(
@@ -69,7 +69,11 @@ const ResetPassword = () => {
       <div className="lg:p-[5%] order-first lg:order-first">
         <div className="w-full py-[44px] lg:px-[44px] space-y-8">
           <div className="flex flex-col items-center lg:items-start">
-            <PageHeading backPath={-1} title={"Reset password"} disbaledBackBtn={true} />
+            <PageHeading
+              backPath={-1}
+              title={"Reset password"}
+              disbaledBackBtn={true}
+            />
             <p className=" drop-shadow text-[#464343] mt-5">
               Your password must be 8-10 character long.
             </p>
@@ -82,6 +86,7 @@ const ResetPassword = () => {
             }}
             requiredMark={false}
             onFinish={onFinish}
+            className="space-y-8"
           >
             <Form.Item
               // label={<span className="font-medium text-base">New Password</span>}
@@ -92,8 +97,13 @@ const ResetPassword = () => {
                   message: "Please input new password!",
                 },
               ]}
+              className="mb-4"
             >
-              <Input.Password size="large" placeholder="Set your password" style={{ border: '1px solid #2781B5', borderRadius: '7px' }} />
+              <Input.Password
+                size="large"
+                placeholder="Set your password"
+                style={{ border: "1px solid #2781B5", borderRadius: "7px" }}
+              />
             </Form.Item>
             <Form.Item
               // label={<span className="font-medium text-base">Confirm New Password</span>}
@@ -117,7 +127,11 @@ const ResetPassword = () => {
                 }),
               ]}
             >
-              <Input.Password size="large" placeholder="Re-enter password" style={{ border: '1px solid #2781B5', borderRadius: '7px' }} />
+              <Input.Password
+                size="large"
+                placeholder="Re-enter password"
+                style={{ border: "1px solid #2781B5", borderRadius: "7px" }}
+              />
             </Form.Item>
             <div className="w-full flex justify-center pt-4 ">
               <Button
@@ -127,7 +141,11 @@ const ResetPassword = () => {
                 htmlType="submit"
                 className="w-full px-2 bg-[#174C6B]"
               >
-                Reset Password
+                {isLoading ? (
+                  <LoadingSpinner color="white" />
+                ) : (
+                  "Reset Password"
+                )}
               </Button>
             </div>
           </Form>

@@ -54,13 +54,18 @@ import EditWorkoutPlan from "../pages/Main/EditWorkoutPlan/EditWorkoutPlan";
 import { MdManageHistory } from "react-icons/md";
 import AddWorkoutVideoNormal from "../pages/Main/AddWorkoutVideo/AddWorkoutVideoNormal";
 import ResetPassword from "../pages/Main/Setting/Change-password/ResetPassword";
+import PrivateProtectedRoute from "../routes/PrivateProtectedRoute";
 
 export const dashboardItems = [
   {
     name: "Dashboard",
     path: "/",
     icon: RiDashboardHorizontalFill,
-    element: <DashboardHome />,
+    element: (
+      <PrivateProtectedRoute>
+        <DashboardHome />
+      </PrivateProtectedRoute>
+    ),
   },
   {
     name: "Earnings",

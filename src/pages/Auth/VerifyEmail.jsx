@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input } from "antd";
+import { Button, Checkbox, Input, message } from "antd";
 import Form from "antd/es/form/Form";
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ import PageHeading from "../../Components/PageHeading";
 import OTPInput from "react-otp-input";
 import Swal from "sweetalert2";
 import { useVerifyEmailMutation } from "../../redux/features/auth/authApi";
-
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -25,15 +25,18 @@ const VerifyEmail = () => {
         text: "Please enter 6 digits OTP number!!.",
       });
     }
-    navigate(`/auth/reset-password`);
     try {
       const response = await mutation({
         email: email,
         code: Number(otp),
       });
-      // console.log(response);
+
       if (response?.data?.status == 200) {
         localStorage.setItem("verify-token", response?.data?.data);
+        message.success(
+          response.data.message || "Email verification successful."
+        );
+
         navigate(`/auth/reset-password`);
       } else {
         Swal.fire({
@@ -106,7 +109,7 @@ const VerifyEmail = () => {
                 htmlType="submit"
                 className="w-full px-2 bg-[#174C6B]"
               >
-                Verify Email
+                {isLoading ? <LoadingSpinner color="white" /> : "Verify Email"}
               </Button>
             </div>
           </Form>

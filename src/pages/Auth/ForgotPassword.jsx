@@ -6,18 +6,22 @@ import image from "../../assets/images/forgot.png";
 import PageHeading from "../../Components/PageHeading";
 import { useForgotPasswordMutation } from "../../redux/features/auth/authApi";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../Components/LoadingSpinner";
+import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
   const onFinish = async (values) => {
-    navigate(`/auth/verify-email`, { state: { email: values.email } });
     try {
       const response = await forgotPassword(values);
-      // console.log(response);
+
       if (response?.data?.status == 200) {
         navigate(`/auth/verify-email`, { state: { email: values.email } });
+        toast.success(
+          response.data.message || "Verification code sent to email."
+        );
       } else {
         Swal.fire({
           icon: "error",
@@ -44,7 +48,11 @@ const ForgotPassword = () => {
       <div className="lg:p-[5%] order-first lg:order-first">
         <div className="w-full py-[64px] lg:px-[44px] space-y-8">
           <div className="flex flex-col items-center lg:items-start">
-            <PageHeading backPath={"/auth"} title={"Forgot Password"} disbaledBackBtn={true} />
+            <PageHeading
+              backPath={"/auth"}
+              title={"Forgot Password"}
+              disbaledBackBtn={true}
+            />
             <p className="drop-shadow text-hash mt-4 text-center lg:text-start text-[#3A3A3A]">
               Please enter your email address to reset your password.
             </p>
@@ -76,12 +84,11 @@ const ForgotPassword = () => {
               <Button
                 // disabled={isLoading}
                 type="primary"
-
                 size="large"
                 htmlType="submit"
                 className="w-full px-2 bg-[#174C6B]"
               >
-                {isLoading ? "Sending OTP..." : "Send OTP"}
+                {isLoading ? <LoadingSpinner color="white" /> : "Send OTP"}
               </Button>
             </div>
           </Form>

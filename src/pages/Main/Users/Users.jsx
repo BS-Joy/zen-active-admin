@@ -110,8 +110,6 @@ const Users = () => {
       ...user,
     })) || [];
 
-  console.log(data);
-
   return (
     <div className="rounded-lg border-2 py-4 border-[#37B5FF]/80 mt-8 recent-users-table">
       <div className="flex justify-between px-2">

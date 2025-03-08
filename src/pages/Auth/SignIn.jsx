@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input } from "antd";
+import { Button, Input } from "antd";
 import Form from "antd/es/form/Form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login.png";
@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { setUser } from "../../redux/features/auth/authSlice";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -14,18 +15,18 @@ const SignIn = () => {
   const [login, { isLoading }] = useLoginMutation();
 
   const onFinish = async (values) => {
-    navigate(location.state ? location.state : "/");
-
     try {
       const response = await login(values);
-      console.log(response);
       if (response?.data?.status == 200) {
+        const user = response?.data?.data?.user;
+        const { password, ...rest } = user;
+
         if (response?.data?.data?.user?.role === "ADMIN") {
           localStorage.removeItem("verify-token");
           localStorage.setItem("token", response?.data?.data?.token);
           dispatch(
             setUser({
-              user: response?.data?.data?.user,
+              user: rest,
               token: response?.data?.data?.token,
             })
           );
@@ -143,11 +144,6 @@ const SignIn = () => {
 
             {/* Forget password */}
             <div className="flex justify-end items-center">
-              {/* <Form.Item name="remember" valuePropName="checked">
-                <Checkbox className="text-base font-medium">
-                  Remember me
-                </Checkbox>
-              </Form.Item> */}
               <Form.Item>
                 <Link
                   to="/auth/forgot-password"
@@ -155,13 +151,6 @@ const SignIn = () => {
                 >
                   Forget password?
                 </Link>
-                {/* <Button
-                  onClick={() => navigate("/auth/forgot-password")}
-                  type="link"
-                  className="text-base font-medium text-info"
-                >
-                  Forget password?
-                </Button> */}
               </Form.Item>
             </div>
 
@@ -172,7 +161,7 @@ const SignIn = () => {
                 htmlType="submit"
                 className="px-8 bg-[#174C6B] text-white hover:bg-[#174C6B]/90 rounded-[8px] h-[62px] min-w-[335px] text-[26px] mb-[20px]"
               >
-                {isLoading ? "Loading..." : "Sign In"}
+                {isLoading ? <LoadingSpinner color="white" /> : "Sign In"}
               </Button>
             </div>
           </Form>
