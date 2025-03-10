@@ -1,10 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Select, Space } from "antd";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-const { Option } = Select;
+import { Form, Input, Button, Space } from "antd";
 import { FaAngleLeft } from "react-icons/fa6";
-import { UploadOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { CiCamera } from "react-icons/ci";
 import {
@@ -12,23 +9,32 @@ import {
   useEditExerciseMutation,
   useGetSingleExerciseQuery,
 } from "../../../redux/features/exercise/exerciseApi";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const EditExercise = () => {
   const [form] = Form.useForm();
   const [videoFile, setVideoFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [imageFileName, setImageFileName] = useState("Select an image");
+  const [videoFileName, setVideoFileName] = useState("Select a video");
   const { exerciseId } = useParams();
   const navigate = useNavigate();
 
-  const { data: exercise, refetch } = useGetSingleExerciseQuery(exerciseId);
+  const [videoResolution, setVideoResolution] = useState(null);
+  const [needsConversion, setNeedsConversion] = useState(false);
+  const [convertedVideo, setConvertedVideo] = useState(null);
 
-  const [editExercise] = useEditExerciseMutation();
-  const [deleteExercise] = useDeleteExerciseMutation();
+  const { data: exercise } = useGetSingleExerciseQuery(exerciseId);
+
+  const [editExercise, { isLoading: editLoading }] = useEditExerciseMutation();
+  const [deleteExercise, { isLoading: deleteLoading }] =
+    useDeleteExerciseMutation();
 
   useEffect(() => {
     if (exercise?.data) {
       form.setFieldsValue({
         name: exercise.data.exercise.name,
+        about: exercise.data.exercise.about,
         description: exercise.data.exercise.description,
         points: exercise.data.exercise.points,
         duration: exercise.data.exercise.duration,
@@ -37,22 +43,76 @@ const EditExercise = () => {
         sets: exercise.data.exercise.sets,
         restTime: exercise.data.exercise.restTime,
       });
+
+      // Set existing image filename
+      if (exercise.data.exercise.image) {
+        const imageUrlParts = exercise.data.exercise.image.split("/");
+        setImageFileName(imageUrlParts[imageUrlParts.length - 1]);
+      }
+
+      // Set existing video filename
+      console.log(exercise.data.exercise);
+      if (exercise.data.exercise.video) {
+        const videoUrlParts = exercise.data.exercise.video.split("/");
+        setVideoFileName(videoUrlParts[videoUrlParts.length - 1]);
+      }
     }
   }, [exercise, form]);
 
+  // Check video resolution
+  const checkVideoResolution = (file) => {
+    return new Promise((resolve) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        const width = video.videoWidth;
+        const height = video.videoHeight;
+        resolve({ width, height });
+      };
+
+      video.src = URL.createObjectURL(file);
+    });
+  };
+
   // Handle Video Upload
-  const handleVideoChange = ({ file }) => {
-    setVideoFile(file.originFileObj);
+  const handleVideoChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file || !file.type.startsWith("video/")) {
+      alert("You can only upload video files!");
+      return;
+    }
+
+    setVideoFile(file);
+    setVideoFileName(file.name);
+    setConvertedVideo(null);
+
+    // Check video resolution
+    const { width, height } = await checkVideoResolution(file);
+    setVideoResolution({ width, height });
+
+    // Determine if conversion is needed (if resolution is higher than 720p)
+    const needsConversion = height > 720;
+    setNeedsConversion(needsConversion);
+
+    console.log(
+      `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
+    );
   };
 
   // Handle Image Upload
-  const handleImageChange = ({ file }) => {
-    setImageFile(file.originFileObj);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setImageFileName(file.name);
+    } else {
+      alert("You can only upload image files!");
+    }
   };
 
   const onFinish = async (values) => {
-    console.log(values);
-
     const formattedData = {
       ...values,
       points: Number(values.points),
@@ -73,12 +133,15 @@ const EditExercise = () => {
 
     try {
       const response = await editExercise({ exerciseId, formData }).unwrap();
-      console.log(response, "response from edit exercise");
 
-      message.success("exercise edited successfully!");
-      form.resetFields(); // Reset form
-      setFile(null); // Clear file
+      if (response.success) {
+        message.success("exercise edited successfully!");
+        form.resetFields(); // Reset form
+        // setFile(null); // Clear file
+        navigate(-1);
+      }
     } catch (error) {
+      console.log(error);
       message.error(error.data?.message || "Failed to edit exercise.");
     }
   };
@@ -90,57 +153,16 @@ const EditExercise = () => {
   const handleDelete = async () => {
     try {
       // Call your delete API
-      await deleteExercise(exerciseId).unwrap();
-      message.success("exercise deleted successfully!");
-      navigate(-1); // Navigate back after deletion
+      const res = await deleteExercise(exerciseId).unwrap();
+      if (res.success) {
+        message.success("exercise deleted successfully!");
+        navigate(-1);
+      }
     } catch (error) {
       message.error(error.data?.message || "Failed to delete exercise.");
     }
   };
 
-  const videoUploadProps = {
-    name: "video",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    headers: {
-      authorization: "authorization-text",
-    },
-    beforeUpload: (file) => {
-      const isVideo = file.type.startsWith("video/");
-      if (!isVideo) {
-        message.error("You can only upload video files!");
-      }
-      return isVideo;
-    },
-    onChange(info) {
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} video uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} video upload failed.`);
-      }
-    },
-  };
-
-  const imageUploadProps = {
-    name: "image",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    headers: {
-      authorization: "authorization-text",
-    },
-    beforeUpload: (file) => {
-      const isImage = file.type.startsWith("image/");
-      if (!isImage) {
-        message.error("You can only upload image files!");
-      }
-      return isImage;
-    },
-    onChange(info) {
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} image uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} image upload failed.`);
-      }
-    },
-  };
   return (
     <>
       <div
@@ -165,7 +187,11 @@ const EditExercise = () => {
               {/* Section 1 */}
               <Space
                 direction="vertical"
-                style={{ width: "100%", borderBottom: "1px solid #79CDFF" }}
+                style={{
+                  width: "100%",
+                  borderBottom: "1px solid #79CDFF",
+                  paddingBottom: "32px",
+                }}
               >
                 <Space
                   size="large"
@@ -205,6 +231,39 @@ const EditExercise = () => {
                     />
                   </Form.Item>
 
+                  {/* about */}
+                  <Form.Item
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        About Exercise
+                      </span>
+                    }
+                    name="about"
+                    className="responsive-form-item"
+                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="About Exercise"
+                      style={{
+                        height: "40px",
+                        border: "1px solid #79CDFF",
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        color: "#525252",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    />
+                  </Form.Item>
+
                   {/* Description */}
                   <Form.Item
                     label={
@@ -215,7 +274,7 @@ const EditExercise = () => {
                           color: "#2D2D2D",
                         }}
                       >
-                        Exercise Name
+                        Exercise Description
                       </span>
                     }
                     name="description"
@@ -224,7 +283,7 @@ const EditExercise = () => {
                   >
                     <Input
                       type="text"
-                      placeholder="Enter Exercise Name"
+                      placeholder="Enter Exercise Description"
                       style={{
                         height: "40px",
                         border: "1px solid #79CDFF",
@@ -240,95 +299,76 @@ const EditExercise = () => {
 
                   {/* Image */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Upload Image
-                      </span>
-                    }
+                    label="Upload Image"
                     name="image"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                   >
-                    <Upload
-                      {...imageUploadProps}
-                      onChange={handleImageChange}
-                      maxCount={1}
-                    >
-                      <Button
-                        style={{
-                          width: "440px",
-                          height: "40px",
-                          border: "1px solid #79CDFF",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
+                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                        style={{ display: "none" }}
+                        id="imageUpload"
+                      />
+                      <label
+                        htmlFor="imageUpload"
+                        className="cursor-pointer w-full flex justify-between items-center"
                       >
-                        <span
-                          style={{
-                            color: "#525252",
-                            fontSize: "16px",
-                            fontWeight: 600,
-                          }}
-                        >
-                          Select an image
+                        <span className="text-[#525252] font-semibold">
+                          {imageFileName}
                         </span>
                         <CiCamera size={25} color="#174C6B" />
-                      </Button>
-                    </Upload>
+                      </label>
+                    </div>
                   </Form.Item>
 
                   {/* Video */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Upload Video
-                      </span>
-                    }
+                    label="Upload Video"
                     name="media"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                   >
-                    <Upload
-                      {...videoUploadProps}
-                      onChange={handleVideoChange}
-                      maxCount={1}
-                    >
-                      <Button
-                        style={{
-                          width: "440px",
-                          height: "40px",
-                          border: "1px solid #79CDFF",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
+                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={handleVideoChange}
+                        className="hidden"
+                        id="videoUpload"
+                        style={{ display: "none" }}
+                      />
+                      <label
+                        htmlFor="videoUpload"
+                        className="cursor-pointer w-full flex justify-between items-center"
                       >
-                        <span
-                          style={{
-                            color: "#525252",
-                            fontSize: "16px",
-                            fontWeight: 600,
-                          }}
-                        >
-                          Select an video
+                        <span className="text-[#525252] font-semibold">
+                          {videoFileName}
                         </span>
                         <CiCamera size={25} color="#174C6B" />
-                      </Button>
-                    </Upload>
+                      </label>
+                    </div>
                   </Form.Item>
+                  {videoResolution && (
+                    <div className="mt-2 text-sm">
+                      <p>
+                        Resolution: {videoResolution.width}x
+                        {videoResolution.height}
+                      </p>
+                      {needsConversion ? (
+                        <p className="text-amber-600">
+                          This video is larger than 720p, please upload a video
+                          in 720p or lower
+                        </p>
+                      ) : (
+                        // <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
+                        <p className="text-green-600">
+                          This video is in good shape
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </Space>
               </Space>
 
@@ -546,13 +586,25 @@ const EditExercise = () => {
                     className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                     onClick={() => handleDelete()}
                   >
-                    <span className="text-[#1E648C] font-semibold">Delete</span>
+                    <span className="text-[#1E648C] font-semibold">
+                      {deleteLoading ? (
+                        <LoadingSpinner color="#436F88" />
+                      ) : (
+                        "Delete"
+                      )}
+                    </span>
                   </button>
                   <button
                     type="submit"
                     className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                   >
-                    <span className="text-white font-semibold">Update</span>
+                    <span className="text-white font-semibold">
+                      {deleteLoading ? (
+                        <LoadingSpinner color="white" />
+                      ) : (
+                        "Update"
+                      )}
+                    </span>
                   </button>
                 </div>
               </Form.Item>

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { Form, Input, Button, Space } from "antd";
 import { FaAngleLeft } from "react-icons/fa6";
-import { message, Upload } from "antd";
+import { message } from "antd";
 import { CiCamera } from "react-icons/ci";
 import { useCreateExerciseMutation } from "../../../redux/features/exercise/exerciseApi";
 import { IoVideocamOutline } from "react-icons/io5";
