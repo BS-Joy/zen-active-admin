@@ -77,40 +77,6 @@ const WorkoutVideos = () => {
     },
   ];
 
-  const items = [
-    {
-      label: (
-        <a
-          href="https://www.antgroup.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          1st menu item
-        </a>
-      ),
-      key: "0",
-    },
-    {
-      label: (
-        <a
-          href="https://www.aliyun.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          2nd menu item
-        </a>
-      ),
-      key: "1",
-    },
-    {
-      type: "divider",
-    },
-    {
-      label: "3rd menu item",
-      key: "3",
-    },
-  ];
-
   const data =
     workoutVideos?.data?.map((workoutVideo, index) => ({
       key: index,
@@ -134,7 +100,7 @@ const WorkoutVideos = () => {
             <h3 className="text-2xl font-semibold text-black mb-4 pl-2">
               Workout Videos
             </h3>
-            <div className="flex items-center gap-4 mb-6">
+            {/* <div className="flex items-center gap-4 mb-6">
               <Input
                 placeholder="Search badges by name"
                 className="w-48 placeholder:text-[#174C6B]"
@@ -142,9 +108,6 @@ const WorkoutVideos = () => {
                 value={searchTerm || ""}
                 onChange={handleSearchChange}
               />
-              {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
-                     <IoSearch />
-                   </Button> */}
               <button
                 style={{
                   border: "none",
@@ -157,7 +120,7 @@ const WorkoutVideos = () => {
               >
                 <IoSearch size={20} />
               </button>
-            </div>
+            </div> */}
           </div>
           {/* Ant Design Table */}
           <Table

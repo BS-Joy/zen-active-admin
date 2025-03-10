@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, DatePicker, Input, Table } from "antd";
 import { FiAlertCircle } from "react-icons/fi";
 import DashboardModal from "../../../Components/DashboardModal";
-import { IoSearch } from "react-icons/io5";
+import { IoClose, IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import workoutImg from "../../../assets/images/workout-image.png";
@@ -179,6 +179,23 @@ const Workouts = () => {
               >
                 <IoSearch size={20} />
               </button>
+              {searchTerm && (
+                <button
+                  style={{
+                    border: "none",
+                    backgroundColor: "#caf0f8",
+                    color: "#174C6B",
+                    borderRadius: "50%",
+                    padding: "7px",
+                  }}
+                  onClick={() => {
+                    setSearchTerm(null);
+                    setQuery(null);
+                  }}
+                >
+                  <IoClose size={20} />
+                </button>
+              )}
             </div>
           </div>
           {/* Ant Design Table */}

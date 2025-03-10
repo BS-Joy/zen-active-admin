@@ -6,7 +6,7 @@ export const exerciseApi = baseApi
     endpoints: (builder) => ({
       getAllExercise: builder.query({
         query: (searchTerm) => {
-          const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : "";
+          const queryParam = searchTerm ? `name=${searchTerm}` : "";
           return {
             url: `/exercise?limit=999&${queryParam}`,
             method: "GET",
