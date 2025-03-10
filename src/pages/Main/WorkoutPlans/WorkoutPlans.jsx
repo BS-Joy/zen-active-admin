@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { Button, DatePicker, Input, Table } from "antd";
-import { FiAlertCircle } from "react-icons/fi";
+import { Input, Table } from "antd";
 import DashboardModal from "../../../Components/DashboardModal";
-import { IoSearch } from "react-icons/io5";
+import { IoClose, IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
-import workoutImg from "../../../assets/images/workout-image.png";
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
 import { FaPlus } from "react-icons/fa6";
-import { useGetAllWorkoutQuery } from "../../../redux/features/workout/workoutApi";
 import { MdEdit } from "react-icons/md";
 import { useGetWorkoutPlansQuery } from "../../../redux/features/workoutPlans/workoutPlansApi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -154,6 +149,23 @@ const WorkoutPlans = () => {
               >
                 <IoSearch size={20} />
               </button>
+              {searchTerm && (
+                <button
+                  style={{
+                    border: "none",
+                    backgroundColor: "#caf0f8",
+                    color: "#174C6B",
+                    borderRadius: "50%",
+                    padding: "7px",
+                  }}
+                  onClick={() => {
+                    setSearchTerm(null);
+                    setQuery(null);
+                  }}
+                >
+                  <IoClose size={20} />
+                </button>
+              )}
             </div>
           </div>
           {/* Ant Design Table */}
