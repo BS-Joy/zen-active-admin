@@ -274,7 +274,7 @@ const AddWorkoutVideoNormal = () => {
                       ) : (
                         // <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
                         <p className="text-green-600">
-                          This video is already 720p or lower
+                          This video is in good shape
                         </p>
                       )}
                     </div>

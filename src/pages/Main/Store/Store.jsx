@@ -14,17 +14,12 @@ import { MdEdit } from "react-icons/md";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const Store = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState({});
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [modalData, setModalData] = useState({});
   const [searchTerm, setSearchTerm] = useState(""); // State to store search input
   const [query, setQuery] = useState(""); // State to trigger search
   const navigate = useNavigate();
   const { data: badges, isLoading } = useGetBadgesQuery(query);
-
-  const showModal = (data) => {
-    setIsModalOpen(true);
-    setModalData(data);
-  };
 
   // Handle search input change
   const handleSearchChange = (event) => {
@@ -82,39 +77,44 @@ const Store = () => {
     },
   ];
 
-  const items = [
-    {
-      label: (
-        <a
-          href="https://www.antgroup.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          1st menu item
-        </a>
-      ),
-      key: "0",
-    },
-    {
-      label: (
-        <a
-          href="https://www.aliyun.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          2nd menu item
-        </a>
-      ),
-      key: "1",
-    },
-    {
-      type: "divider",
-    },
-    {
-      label: "3rd menu item",
-      key: "3",
-    },
-  ];
+  // const showModal = (data) => {
+  //   setIsModalOpen(true);
+  //   setModalData(data);
+  // };
+
+  // const items = [
+  //   {
+  //     label: (
+  //       <a
+  //         href="https://www.antgroup.com"
+  //         target="_blank"
+  //         rel="noopener noreferrer"
+  //       >
+  //         1st menu item
+  //       </a>
+  //     ),
+  //     key: "0",
+  //   },
+  //   {
+  //     label: (
+  //       <a
+  //         href="https://www.aliyun.com"
+  //         target="_blank"
+  //         rel="noopener noreferrer"
+  //       >
+  //         2nd menu item
+  //       </a>
+  //     ),
+  //     key: "1",
+  //   },
+  //   {
+  //     type: "divider",
+  //   },
+  //   {
+  //     label: "3rd menu item",
+  //     key: "3",
+  //   },
+  // ];
 
   const data =
     badges?.data?.map((badge, index) => ({
@@ -140,30 +140,6 @@ const Store = () => {
             <h3 className="text-2xl font-semibold text-black mb-4 pl-2">
               Badges List
             </h3>
-            <div className="flex items-center gap-4 mb-6">
-              <Input
-                placeholder="Search badges by name"
-                className="w-48 placeholder:text-[#174C6B]"
-                style={{ border: "1px solid #79CDFF" }}
-                value={searchTerm || ""}
-                onChange={handleSearchChange}
-              />
-              {/* <Button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '8px' }}>
-                     <IoSearch />
-                   </Button> */}
-              <button
-                style={{
-                  border: "none",
-                  backgroundColor: "#caf0f8",
-                  color: "#174C6B",
-                  borderRadius: "50%",
-                  padding: "7px",
-                }}
-                onClick={handleSearch}
-              >
-                <IoSearch size={20} />
-              </button>
-            </div>
           </div>
           {/* Ant Design Table */}
           <Table
@@ -196,17 +172,13 @@ const Store = () => {
           />
 
           {/* Dashboard Modal */}
-          <DashboardModal
+          {/* <DashboardModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             maxWidth="500px"
           >
             <div>
               <h2 className="text-lg text-center mb-4">User Details</h2>
-              {/* <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
-              <p>#SL</p>
-              <p>{modalData.transIs}</p>
-            </div> */}
               <div className="flex justify-between mb-2 text-gray-600  border-b border-[#79CDFF] pb-1">
                 <p>User Name</p>
                 <p>{modalData.name}</p>
@@ -231,7 +203,7 @@ const Store = () => {
                 </button>
               </div>
             </div>
-          </DashboardModal>
+          </DashboardModal> */}
         </div>
       </div>
     </div>

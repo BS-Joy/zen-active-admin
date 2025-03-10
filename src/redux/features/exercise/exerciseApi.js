@@ -1,48 +1,56 @@
 import { baseApi } from "../../api/baseApi";
 
-export const exerciseApi = baseApi.enhanceEndpoints({ addTagTypes: ["Exercises"] }).injectEndpoints({
+export const exerciseApi = baseApi
+  .enhanceEndpoints({ addTagTypes: ["Exercises"] })
+  .injectEndpoints({
     endpoints: (builder) => ({
-        getAllExercise: builder.query({
-            query: (searchTerm) => {
-                const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : '';
-                return {
-                    url: `/exercise${queryParam}`,
-                    method: 'GET',
-                };
-            },
-            providesTags: ["Exercises"]
+      getAllExercise: builder.query({
+        query: (searchTerm) => {
+          const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : "";
+          return {
+            url: `/exercise?limit=999&${queryParam}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Exercises"],
+      }),
+      getSingleExercise: builder.query({
+        query: (exerciseId) => ({
+          url: `/exercise/${exerciseId}`,
+          method: "GET",
         }),
-        getSingleExercise: builder.query({
-            query: (exerciseId) => ({
-                url: `/exercise/${exerciseId}`,
-                method: 'GET',
-            }),
-            providesTags: ["Exercises"]
+        providesTags: ["Exercises"],
+      }),
+      createExercise: builder.mutation({
+        query: (exercise) => ({
+          url: "/exercise",
+          method: "POST",
+          body: exercise,
         }),
-        createExercise: builder.mutation({
-            query: (exercise) => ({
-                url: '/exercise',
-                method: 'POST',
-                body: exercise,
-            }),
-            invalidatesTags: ["Exercises"]
+        invalidatesTags: ["Exercises"],
+      }),
+      editExercise: builder.mutation({
+        query: ({ exerciseId, formData }) => ({
+          url: `/exercise/${exerciseId}`,
+          method: "PATCH",
+          body: formData,
         }),
-        editExercise: builder.mutation({
-            query: ({ exerciseId, formData }) => ({
-                url: `/exercise/${exerciseId}`,
-                method: 'PATCH',
-                body: formData
-            }),
-            invalidatesTags: ["Exercises"]
+        invalidatesTags: ["Exercises"],
+      }),
+      deleteExercise: builder.mutation({
+        query: (exerciseId) => ({
+          url: `/exercise/${exerciseId}`,
+          method: "DELETE",
         }),
-        deleteExercise: builder.mutation({
-            query: (exerciseId) => ({
-                url: `/exercise/${exerciseId}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ["Exercises"]
-        }),
-    })
-})
+        invalidatesTags: ["Exercises"],
+      }),
+    }),
+  });
 
-export const { useGetAllExerciseQuery, useCreateExerciseMutation, useGetSingleExerciseQuery, useEditExerciseMutation, useDeleteExerciseMutation } = exerciseApi
+export const {
+  useGetAllExerciseQuery,
+  useCreateExerciseMutation,
+  useGetSingleExerciseQuery,
+  useEditExerciseMutation,
+  useDeleteExerciseMutation,
+} = exerciseApi;

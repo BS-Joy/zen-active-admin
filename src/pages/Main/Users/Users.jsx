@@ -133,8 +133,9 @@ const Users = () => {
               borderRadius: "50%",
               padding: "7px",
             }}
+            onClick={handleSearch}
           >
-            <IoSearch size={20} onClick={handleSearch} />
+            <IoSearch size={20} />
           </button>
         </div>
       </div>

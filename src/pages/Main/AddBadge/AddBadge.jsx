@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Form, Input, Button, Select, Space, Spin } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 const { Option } = Select;
@@ -9,16 +9,34 @@ import { message, Upload } from "antd";
 import { CiCamera } from "react-icons/ci";
 import { useCreateBadgeMutation } from "../../../redux/features/badge/badgeApi";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
+import { IoCloseCircle } from "react-icons/io5";
 
 const AddBadge = () => {
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const [createBadge, { isLoading }] = useCreateBadgeMutation();
   const navigate = useNavigate();
 
-  // Handle file selection
-  const handleFileChange = ({ file }) => {
-    setFile(file.originFileObj); // Save selected file
+  // Handle Image Selection and Preview Update
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+    }
+  };
+
+  // Trigger file input on button click
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // Remove selected image
+  const handleRemoveImage = () => {
+    setFile(null);
+    setPreview(null);
   };
 
   const onFinish = async (values) => {
@@ -51,23 +69,23 @@ const AddBadge = () => {
     navigate(-1); // This takes the user back to the previous page
   };
 
-  const props = {
-    name: "file",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+  // const props = {
+  //   name: "file",
+  //   action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
+  //   headers: {
+  //     authorization: "authorization-text",
+  //   },
+  //   onChange(info) {
+  //     if (info.file.status !== "uploading") {
+  //       console.log(info.file, info.fileList);
+  //     }
+  //     if (info.file.status === "done") {
+  //       message.success(`${info.file.name} file uploaded successfully`);
+  //     } else if (info.file.status === "error") {
+  //       message.error(`${info.file.name} file upload failed.`);
+  //     }
+  //   },
+  // };
 
   return (
     <>
@@ -137,56 +155,53 @@ const AddBadge = () => {
                         }}
                       />
                     </Form.Item>
+
+                    {/* image */}
                     <Form.Item
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please upload an image!",
-                        },
-                      ]}
                       label={
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "600",
-                            color: "#2D2D2D",
-                          }}
-                        >
+                        <span className="text-lg font-semibold text-[#2D2D2D]">
                           Upload Image
                         </span>
                       }
                       name="image"
                       className="responsive-form-item"
-                      // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                     >
-                      <Upload
-                        {...props}
-                        onChange={handleFileChange}
-                        maxCount={1}
-                      >
-                        <Button
-                          style={{
-                            width: "440px",
-                            height: "40px",
-                            border: "1px solid #79CDFF",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <span
-                            style={{
-                              color: "#525252",
-                              fontSize: "16px",
-                              fontWeight: 600,
-                            }}
+                      <div className="relative w-[440px]">
+                        {preview ? (
+                          <div className="relative">
+                            <img
+                              src={preview}
+                              alt="Preview"
+                              className="w-full h-40 object-contain border border-[#79CDFF] rounded-md"
+                            />
+                            <IoCloseCircle
+                              className="absolute top-2 right-2 text-red-600 text-2xl cursor-pointer"
+                              onClick={handleRemoveImage}
+                            />
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handleUploadClick}
+                            className="w-full h-10 border border-[#79CDFF] flex items-center justify-between px-4 rounded-md cursor-pointer"
                           >
-                            Select an image
-                          </span>
-                          <CiCamera size={25} color="#174C6B" />
-                        </Button>
-                      </Upload>
+                            <span className="text-base font-semibold text-[#525252]">
+                              Select an image
+                            </span>
+                            <CiCamera size={25} color="#174C6B" />
+                          </button>
+                        )}
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          onChange={handleFileChange}
+                        />
+                      </div>
                     </Form.Item>
+
+                    {/* points */}
                     <Form.Item
                       rules={[
                         {
@@ -227,7 +242,6 @@ const AddBadge = () => {
                 </div>
               </div>
 
-              {/* </Space> */}
               {/* </Space> */}
 
               {/* Submit Button */}

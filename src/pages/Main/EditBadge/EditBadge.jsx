@@ -1,212 +1,309 @@
 import { useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Select, Space } from 'antd';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-const { Option } = Select;
+import React, { useEffect, useRef, useState } from "react";
+import { Form, Input, Space } from "antd";
 import { FaAngleLeft } from "react-icons/fa6";
-import { UploadOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
+import { message, Upload } from "antd";
 import { CiCamera } from "react-icons/ci";
-import { useDeleteBadgeMutation, useEditBadgeMutation, useGetSingleBadgeQuery } from "../../../redux/features/badge/badgeApi";
+import {
+  useDeleteBadgeMutation,
+  useEditBadgeMutation,
+  useGetSingleBadgeQuery,
+} from "../../../redux/features/badge/badgeApi";
+import { IoCloseCircle } from "react-icons/io5";
+import notFoundImage from "../../../assets/images/not-found.png";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const EditBadge = () => {
-    const [form] = Form.useForm();
-    const [file, setFile] = useState(null);
-    const { badgeId } = useParams()
-    const { data: badge, refetch } = useGetSingleBadgeQuery(badgeId)
-    const [editBadge] = useEditBadgeMutation()
-    const [deleteBadge] = useDeleteBadgeMutation()
+  const [form] = Form.useForm();
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
-    // Handle file selection
-    const handleFileChange = ({ file }) => {
-        setFile(file.originFileObj); // Save selected file
+  const fileInputRef = useRef(null);
+  const { badgeId } = useParams();
+  const { data: badge } = useGetSingleBadgeQuery(badgeId);
+  const [editBadge, { isLoading: editLoading }] = useEditBadgeMutation();
+  const [deleteBadge, { isLoading: deleteLoading }] = useDeleteBadgeMutation();
+
+  // Set the initial preview image when data loads
+  useEffect(() => {
+    if (badge?.data?.image) {
+      setPreview(badge.data.image);
+    }
+  }, [badge]);
+
+  // Handle Image Selection and Preview Update
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+    }
+  };
+
+  // Trigger file input on button click
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // Remove selected image
+  const handleRemoveImage = () => {
+    setFile(null);
+    setPreview(null);
+  };
+
+  useEffect(() => {
+    if (badge?.data) {
+      form.setFieldsValue({
+        name: badge.data.name,
+        points: badge.data.points,
+      });
+    }
+  }, [badge, form]);
+
+  const onFinish = async (values) => {
+    if (!file) {
+      message.error("Please select a badge image.");
+      return;
+    }
+    const formattedData = {
+      ...values,
+      points: Number(values.points), // Ensure points is a number
     };
 
-    useEffect(() => {
-        if (badge?.data) {
-            form.setFieldsValue({
-                name: badge.data.name,
-                points: badge.data.points
-            });
-        }
-    }, [badge, form]);
+    Object.keys(formattedData).forEach(
+      (key) =>
+        (formattedData[key] === "" || formattedData[key] === undefined) &&
+        delete formattedData[key]
+    );
 
-    const onFinish = async (values) => {
-        const formattedData = {
-            ...values,
-            points: Number(values.points), // Ensure points is a number
-        };
+    const formData = new FormData();
+    console.log(file);
+    if (file) {
+      formData.append("image", file);
+    }
 
-        Object.keys(formattedData).forEach(
-            (key) => (formattedData[key] === "" || formattedData[key] === undefined) && delete formattedData[key]
-        );
+    formData.append("data", JSON.stringify(formattedData));
 
-        const formData = new FormData();
-        if (file) {
-            formData.append("image", file);
-        }
+    try {
+      const response = await editBadge({ badgeId, formData }).unwrap();
+      if (response.success) {
+        message.success("Badge edited successfully!");
+        setFile(null);
+        navigate(-1);
+      }
+    } catch (error) {
+      message.error(error.data?.message || "Failed to edit badge.");
+    }
+  };
 
-        formData.append("data", JSON.stringify(formattedData));
+  const handleDelete = async () => {
+    try {
+      // Call your delete API
+      const res = await deleteBadge(badgeId).unwrap();
 
-        try {
-            const response = await editBadge({ badgeId, formData }).unwrap();
-            console.log("Response from edit badge:", response);
+      if (res.success) {
+        message.success("Badge deleted successfully!");
+        navigate(-1);
+      }
+    } catch (error) {
+      message.error(error.data?.message || "Failed to delete badge.");
+    }
+  };
 
-            message.success("Badge edited successfully!");
-            await refetch(); // Ensure updated data is fetched
+  const navigate = useNavigate();
 
-            form.setFieldsValue({
-                name: response.data.name,
-                points: response.data.points,
-            });
+  const handleBackButtonClick = () => {
+    navigate(-1); // This takes the user back to the previous page
+  };
 
-            setFile(null);
-        } catch (error) {
-            message.error(error.data?.message || "Failed to edit badge.");
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            // Call your delete API
-            await deleteBadge(badgeId).unwrap();
-            message.success("Badge deleted successfully!");
-            navigate(-1); // Navigate back after deletion
-        } catch (error) {
-            message.error(error.data?.message || "Failed to delete badge.");
-        }
-    };
-
-
-    const navigate = useNavigate();
-
-    const handleBackButtonClick = () => {
-        navigate(-1); // This takes the user back to the previous page
-    };
-
-    const props = {
-        name: 'file',
-        action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
-
-    return (
-        <>
-            <div className="flex items-center gap-2 text-xl cursor-pointer" onClick={handleBackButtonClick}>
-                <FaAngleLeft />
-                <h1 className="font-semibold">Edit Badge</h1>
-            </div>
-            <div className="rounded-lg py-4 border-[#79CDFF] border-2 shadow-lg mt-8 bg-white">
-                <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
-                    <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
-                        Editing Badge
-                    </h3>
-                    <div className="w-full px-16">
-                        <Form
-                            form={form}
-                            layout="vertical"
-                            onFinish={onFinish}
-                        // style={{ maxWidth: 600, margin: '0 auto' }}
+  return (
+    <>
+      <div
+        className="flex items-center gap-2 text-xl cursor-pointer"
+        onClick={handleBackButtonClick}
+      >
+        <FaAngleLeft />
+        <h1 className="font-semibold">Edit Badge</h1>
+      </div>
+      <div className="rounded-lg py-4 border-[#79CDFF] border-2 shadow-lg mt-8 bg-white">
+        <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
+          <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
+            Editing Badge
+          </h3>
+          <div className="w-full px-16">
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={onFinish}
+              // style={{ maxWidth: 600, margin: '0 auto' }}
+            >
+              <div className="grid grid-cols-2 gap-8 mt-8">
+                <div>
+                  <Space
+                    size="large"
+                    direction="horizontal"
+                    className="responsive-space-section-2"
+                  >
+                    {/* Name */}
+                    <Form.Item
+                      label={
+                        <span
+                          style={{
+                            fontSize: "18px",
+                            fontWeight: "600",
+                            color: "#2D2D2D",
+                          }}
                         >
-                            <div className="grid grid-cols-2 gap-8 mt-8">
-                                <div>
-                                    <Space size="large" direction="horizontal" className="responsive-space-section-2">
-                                        {/* Name */}
-                                        <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Badge Name</span>}
-                                            name="name"
-                                            className="responsive-form-item"
-                                        // rules={[{ required: true, message: 'Please select a package name!' }]}
-                                        >
-                                            <Input type="text"
-                                                //  placeholder="Enter Badge Name"
-                                                style={{
-                                                    height: '40px',
-                                                    border: '1px solid #79CDFF',
-                                                    fontSize: '16px',
-                                                    fontWeight: 600,
-                                                    color: '#525252',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'space-between',
-                                                }} />
-                                        </Form.Item>
+                          Badge Name
+                        </span>
+                      }
+                      name="name"
+                      className="responsive-form-item"
+                      // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    >
+                      <Input
+                        type="text"
+                        //  placeholder="Enter Badge Name"
+                        style={{
+                          height: "40px",
+                          border: "1px solid #79CDFF",
+                          fontSize: "16px",
+                          fontWeight: 600,
+                          color: "#525252",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      />
+                    </Form.Item>
 
-                                        {/* Image */}
-                                        <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Upload Image</span>}
-                                            name="image"
-                                            className="responsive-form-item"
-                                        // rules={[{ required: true, message: 'Please enter the package amount!' }]}
-                                        >
-                                            <Upload {...props}
-                                                onChange={handleFileChange}
-                                                maxCount={1}
-                                            >
-                                                <Button style={{ width: '440px', height: '40px', border: '1px solid #79CDFF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <span style={{ color: '#525252', fontSize: '16px', fontWeight: 600 }}>Select an image</span>
-                                                    <CiCamera size={25} color="#174C6B" />
-                                                </Button>
-                                            </Upload>
-                                        </Form.Item>
+                    {/* Image */}
+                    <Form.Item
+                      label={
+                        <span className="text-lg font-semibold text-[#2D2D2D]">
+                          Upload Image
+                        </span>
+                      }
+                      name="image"
+                      className="responsive-form-item"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select a badge image!",
+                        },
+                      ]}
+                    >
+                      <div className="relative w-[440px]">
+                        {preview ? (
+                          <div className="relative">
+                            <img
+                              src={
+                                preview === badge?.data?.image
+                                  ? import.meta.env.VITE_BASE_URL + preview
+                                  : preview
+                              }
+                              alt="Preview"
+                              className="w-full h-40 object-contain border border-[#79CDFF] rounded-md"
+                              onError={(e) => (e.target.src = notFoundImage)}
+                            />
+                            <IoCloseCircle
+                              className="absolute top-2 right-2 text-red-600 text-2xl cursor-pointer"
+                              onClick={handleRemoveImage}
+                            />
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handleUploadClick}
+                            className="w-full h-10 border border-[#79CDFF] flex items-center justify-between px-4 rounded-md cursor-pointer"
+                          >
+                            <span className="text-base font-semibold text-[#525252]">
+                              Select an image
+                            </span>
+                            <CiCamera size={25} color="#174C6B" />
+                          </button>
+                        )}
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          onChange={handleFileChange}
+                        />
+                      </div>
+                    </Form.Item>
 
-                                        {/* Phone */}
-                                        <Form.Item
-                                            label={<span style={{ fontSize: '18px', fontWeight: '600', color: '#2D2D2D' }}>Points To Achieve</span>}
-                                            name="points"
-                                            className="responsive-form-item-section-2"
-                                        >
-                                            <Input type="number" placeholder="Enter Points" style={{
-                                                height: '40px',
-                                                border: '1px solid #79CDFF',
-                                                fontSize: '16px',
-                                                fontWeight: 600,
-                                                color: '#525252',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'space-between',
-                                            }} />
-                                        </Form.Item>
-                                    </Space>
-                                </div>
-                            </div>
-
-                            {/* Submit Button */}
-                            <Form.Item>
-                                <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
-                                    <button
-                                        type="button"
-                                        className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
-                                        onClick={() => handleDelete()}
-                                    >
-                                        <span className="text-[#1E648C] font-semibold">Delete</span>
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
-                                    >
-                                        <span className="text-white font-semibold">Update</span>
-                                    </button>
-                                </div>
-                            </Form.Item>
-                        </Form>
-                    </div>
+                    {/* points */}
+                    <Form.Item
+                      label={
+                        <span
+                          style={{
+                            fontSize: "18px",
+                            fontWeight: "600",
+                            color: "#2D2D2D",
+                          }}
+                        >
+                          Points To Achieve
+                        </span>
+                      }
+                      name="points"
+                      className="responsive-form-item-section-2"
+                    >
+                      <Input
+                        type="number"
+                        placeholder="Enter Points"
+                        style={{
+                          height: "40px",
+                          border: "1px solid #79CDFF",
+                          fontSize: "16px",
+                          fontWeight: 600,
+                          color: "#525252",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      />
+                    </Form.Item>
+                  </Space>
                 </div>
-            </div>
-        </>
-    )
-}
+              </div>
 
-export default EditBadge
+              {/* Submit Button */}
+              <Form.Item>
+                <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
+                  <button
+                    type="button"
+                    className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
+                    onClick={() => handleDelete()}
+                  >
+                    <span className="text-[#1E648C] font-semibold">
+                      {deleteLoading ? (
+                        <LoadingSpinner color="#436F88" />
+                      ) : (
+                        "Delete"
+                      )}
+                    </span>
+                  </button>
+                  <button
+                    type="submit"
+                    className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
+                  >
+                    <span className="text-white font-semibold">
+                      {editLoading ? (
+                        <LoadingSpinner color="white" />
+                      ) : (
+                        "Update"
+                      )}
+                    </span>
+                  </button>
+                </div>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default EditBadge;
