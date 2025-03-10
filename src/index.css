@@ -483,11 +483,11 @@
   margin-bottom: 0;
 }
 
-
-
-
-
 .ant-otp .ant-input-lg {
   width: 64px !important;
   height: 72px !important;
+}
+
+.ant-select-multiple.ant-select-lg .ant-select-selector {
+  border-radius: 6px;
 }

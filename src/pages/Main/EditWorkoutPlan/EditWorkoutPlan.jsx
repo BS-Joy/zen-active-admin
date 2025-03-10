@@ -96,6 +96,8 @@ const EditWorkoutPlan = () => {
     }
   }, [workoutPlan, form]);
 
+  console.log(preview === workoutPlan?.data?.image);
+
   return (
     <>
       <div
@@ -166,7 +168,11 @@ const EditWorkoutPlan = () => {
                       {preview ? (
                         <div className="relative">
                           <img
-                            src={import.meta.env.VITE_BASE_URL + preview}
+                            src={
+                              preview === workoutPlan?.data?.image
+                                ? import.meta.env.VITE_BASE_URL + preview
+                                : preview
+                            }
                             alt="Preview"
                             className="w-full h-40 object-contain border border-[#79CDFF] rounded-md"
                             onError={(e) => (e.target.src = notFoundImage)}
