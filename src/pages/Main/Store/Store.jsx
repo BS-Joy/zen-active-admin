@@ -1,20 +1,28 @@
 import React, { useState } from "react";
-import { Table } from "antd";
+import { message, Table } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import defaultBadge from "../../../assets/images/label.png";
 import badgeImg from "../../../assets/images/badge-default.png";
-import { FaPlus } from "react-icons/fa6";
-import { useGetBadgesQuery } from "../../../redux/features/badge/badgeApi";
+import { FaPlus, FaTrash } from "react-icons/fa6";
+import {
+  useDeleteBadgeMutation,
+  useGetBadgesQuery,
+} from "../../../redux/features/badge/badgeApi";
 import { MdEdit } from "react-icons/md";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Swal from "sweetalert2";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const Store = () => {
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const [modalData, setModalData] = useState({});
   const [searchTerm, setSearchTerm] = useState(""); // State to store search input
   const [query, setQuery] = useState(""); // State to trigger search
+  const [deleteId, setDeleteId] = useState(null);
+
   const navigate = useNavigate();
   const { data: badges, isLoading } = useGetBadgesQuery(query);
+  const [deleteBadge] = useDeleteBadgeMutation();
 
   // Handle search input change
   const handleSearchChange = (event) => {
@@ -24,6 +32,39 @@ const Store = () => {
   // Trigger search when button is clicked
   const handleSearch = () => {
     setQuery(searchTerm);
+  };
+
+  const handleDelete = async (badgeId) => {
+    Swal.fire({
+      text: "Are you sure you want to delete this meal? ",
+      showCancelButton: true,
+      confirmButtonText: "     Sure    ",
+      cancelButtonText: "Cancel",
+      showConfirmButton: true,
+      confirmButtonColor: "#174C6B",
+      reverseButtons: true,
+      customClass: {
+        confirmButton: "swal-confirm-btn",
+        cancelButton: "swal-cancel-btn",
+        actions: "swal-actions-container",
+        popup: "swal-popup",
+      },
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        try {
+          setDeleteId(badgeId);
+          const res = await deleteBadge(badgeId).unwrap();
+
+          if (res.success) {
+            message.success("Badge deleted successfully!");
+            setDeleteId(null);
+          }
+        } catch (error) {
+          setDeleteId(null);
+          message.error(error.data?.message || "Failed to delete badge.");
+        }
+      }
+    });
   };
 
   const columns = [
@@ -57,12 +98,25 @@ const Store = () => {
       key: "Review",
       aligen: "center",
       render: (_, data) => (
-        <div className="  items-center justify-around textcenter flex">
+        <div className=" items-center justify-center gap-4 text-center flex">
           {/* Review Icon */}
-          {/* <img src={exlamIcon} alt="" className="btn px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} /> */}
+
           <Link to={`edit-badge/${data._id}`} className="">
             <MdEdit />
           </Link>
+          <button
+            type="button"
+            className=" "
+            onClick={() => handleDelete(data?._id)}
+          >
+            <span className="text-[#1E648C] font-semibold">
+              {data?._id === deleteId ? (
+                <LoadingSpinner color="#436F88" />
+              ) : (
+                <FaTrash />
+              )}
+            </span>
+          </button>
         </div>
       ),
     },

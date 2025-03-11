@@ -3,7 +3,6 @@ import { Input, message, Table } from "antd";
 import DashboardModal from "../../../Components/DashboardModal";
 import { IoClose, IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import mealImg from "../../../assets/images/meal.png";
 import { FaPlus } from "react-icons/fa6";
 import {

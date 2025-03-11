@@ -58,8 +58,8 @@ const AddWorkoutPlan = () => {
 
     try {
       const formData = new FormData();
-      if (file) {
-        formData.append("image", file);
+      if (imageFile) {
+        formData.append("image", imageFile);
       }
       formData.append("data", JSON.stringify(formattedData));
 
@@ -69,10 +69,8 @@ const AddWorkoutPlan = () => {
         form.resetFields();
         navigate(-1);
       }
-
-      setFile(null);
-      setPreview(null);
     } catch (err) {
+      console.log(err);
       message.error("Failed to create workout plan.");
     }
   };

@@ -23,7 +23,6 @@ const EditBadge = () => {
   const { badgeId } = useParams();
   const { data: badge } = useGetSingleBadgeQuery(badgeId);
   const [editBadge, { isLoading: editLoading }] = useEditBadgeMutation();
-  const [deleteBadge, { isLoading: deleteLoading }] = useDeleteBadgeMutation();
 
   // Set the initial preview image when data loads
   // useEffect(() => {
