@@ -1,29 +1,40 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Select, Space } from "antd";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { Form, Input, Select, Space } from "antd";
 const { Option } = Select;
 import { FaAngleLeft } from "react-icons/fa6";
-import { UploadOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
+import { message } from "antd";
 import { CiCamera } from "react-icons/ci";
 import {
   useDeleteMealMutation,
   useEditMealMutation,
   useGetSingleMealQuery,
 } from "../../../redux/features/meal/mealApi";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const EditMeal = () => {
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileName, setImageFileName] = useState("Select an image");
+
   const [form] = Form.useForm();
   const { mealId } = useParams();
-  const { data: meal, refetch } = useGetSingleMealQuery(mealId);
-  const [editMeal] = useEditMealMutation();
-  const [deleteMeal] = useDeleteMealMutation();
+  const { data: meal } = useGetSingleMealQuery(mealId, {
+    skip: !mealId, // Skip fetching when mealId is deleted
+  });
+  const navigate = useNavigate();
 
-  // Handle file selection
-  const handleFileChange = ({ file }) => {
-    setFile(file.originFileObj); // Save selected file
+  const [editMeal, { isLoading: editLoading }] = useEditMealMutation();
+
+  // Handle Image Upload
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setImageFileName(file.name);
+    } else {
+      alert("You can only upload image files!");
+    }
   };
 
   // Logic for multi select input
@@ -52,6 +63,12 @@ const EditMeal = () => {
         proteins: meal.data.nutritionalInfo.proteins,
         fats: meal.data.nutritionalInfo.fats,
       });
+
+      if (meal?.data?.image) {
+        const imageUrlParts = meal?.data?.image.split("/");
+        setImageFileName(imageUrlParts[imageUrlParts.length - 1]);
+        setImageFile(meal?.data?.image);
+      }
     }
   }, [meal, form]);
 
@@ -69,44 +86,27 @@ const EditMeal = () => {
 
     // Create FormData
     const formData = new FormData();
-    if (file) {
-      formData.append("image", file);
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
     formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
 
     try {
       const response = await editMeal({ mealId, formData }).unwrap();
-      console.log(response, "response from edit meal");
+      if (response.success) {
+        message.success("Meal edited successfully!");
+        form.resetFields(); // Reset form
+        navigate(-1);
+      }
 
-      message.success("Meal edited successfully!");
-      form.resetFields(); // Reset form
-      setFile(null); // Clear file
+      // setFile(null); // Clear file
     } catch (error) {
       message.error(error.data?.message || "Failed to edit meal.");
     }
   };
-  const navigate = useNavigate();
 
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
-  };
-
-  const props = {
-    name: "file",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
   };
 
   return (
@@ -124,16 +124,15 @@ const EditMeal = () => {
             Meal Item Editing
           </h3>
           <div className="w-full px-16">
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={onFinish}
-              // style={{ maxWidth: 600, margin: '0 auto' }}
-            >
+            <Form form={form} layout="vertical" onFinish={onFinish}>
               {/* Section 1 */}
               <Space
                 direction="vertical"
-                style={{ width: "100%", borderBottom: "1px solid #79CDFF" }}
+                style={{
+                  width: "100%",
+                  borderBottom: "1px solid #79CDFF",
+                  paddingBottom: "32px",
+                }}
               >
                 <Space
                   size="large"
@@ -175,44 +174,29 @@ const EditMeal = () => {
 
                   {/* Image */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Upload Image
-                      </span>
-                    }
+                    label="Upload Image"
                     name="image"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                   >
-                    <Upload {...props} onChange={handleFileChange} maxCount={1}>
-                      <Button
-                        style={{
-                          width: "440px",
-                          height: "40px",
-                          border: "1px solid #79CDFF",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
+                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                        style={{ display: "none" }}
+                        id="imageUpload"
+                      />
+                      <label
+                        htmlFor="imageUpload"
+                        className="cursor-pointer w-full flex justify-between items-center"
                       >
-                        <span
-                          style={{
-                            color: "#525252",
-                            fontSize: "16px",
-                            fontWeight: 600,
-                          }}
-                        >
-                          Select an image
+                        <span className="text-[#525252] font-semibold">
+                          {imageFileName}
                         </span>
                         <CiCamera size={25} color="#174C6B" />
-                      </Button>
-                    </Upload>
+                      </label>
+                    </div>
                   </Form.Item>
 
                   {/* Meal Type */}
@@ -505,11 +489,17 @@ const EditMeal = () => {
               {/* Submit Button */}
               <Form.Item>
                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
-                  <button className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md ">
-                    <span className="text-[#1E648C] font-semibold">Delete</span>
-                  </button>
-                  <button className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md ">
-                    <span className="text-white font-semibold">Update</span>
+                  <button
+                    type="submit"
+                    className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
+                  >
+                    <span className="text-white font-semibold">
+                      {editLoading ? (
+                        <LoadingSpinner color="white" />
+                      ) : (
+                        "Update"
+                      )}
+                    </span>
                   </button>
                 </div>
               </Form.Item>

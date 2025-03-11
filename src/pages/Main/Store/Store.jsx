@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import { Button, DatePicker, Input, Table } from "antd";
-import { FiAlertCircle } from "react-icons/fi";
-import DashboardModal from "../../../Components/DashboardModal";
-import { IoSearch } from "react-icons/io5";
+import { Table } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import exlamIcon from "../../../assets/images/exclamation-circle.png";
+import defaultBadge from "../../../assets/images/label.png";
 import badgeImg from "../../../assets/images/badge-default.png";
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import { useGetBadgesQuery } from "../../../redux/features/badge/badgeApi";
 import { MdEdit } from "react-icons/md";
@@ -39,12 +34,8 @@ const Store = () => {
       render: (image) => (
         <div className="flex items-center justify-center">
           <img
-            src={
-              image
-                ? `${import.meta.env.VITE_BASE_URL}${image}`
-                : "https://via.placeholder.com/40"
-            }
-            onError={(e) => (e.target.src = badgeImg)}
+            src={import.meta.env.VITE_BASE_URL + image}
+            onError={(e) => (e.target.src = defaultBadge)}
             alt="badge"
             className="w- h-10 rounded-full object-contain"
           />
