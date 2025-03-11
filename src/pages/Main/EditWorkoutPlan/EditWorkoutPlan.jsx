@@ -14,7 +14,6 @@ import notFoundImage from "../../../assets/images/not-found.png";
 
 const EditWorkoutPlan = () => {
   const [file, setFile] = useState(null);
-  // const [preview, setPreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileName, setImageFileName] = useState(null);
   const fileInputRef = useRef(null); // Hidden file input reference
@@ -26,26 +25,7 @@ const EditWorkoutPlan = () => {
     useGetSingleWorkoutPlanQuery(workoutPlanId);
   const [editWorkoutPlan, { isLoading: editLoading }] =
     useEditWorkoutPlanMutation();
-  const [deleteWorkoutPlan, { isLoading: deleteLoading }] =
-    useDeleteWorkoutPlanMutation();
 
-  // Set the initial preview image when data loads
-  // useEffect(() => {
-  //   if (workoutPlan?.data?.image) {
-  //     setPreview(workoutPlan.data.image);
-  //   }
-  // }, [workoutPlan]);
-
-  // Handle Image Selection and Preview Update
-  // const handleFileChange = (event) => {
-  //   const selectedFile = event.target.files[0];
-  //   if (selectedFile) {
-  //     setFile(selectedFile);
-  //     setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
-  //   }
-  // };
-
-  // Handle Image Upload
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -85,22 +65,10 @@ const EditWorkoutPlan = () => {
       if (res.success) {
         message.success("Workout plan edited successfully!");
         form.resetFields();
-        // setFile(null);
         navigate(-1);
       }
-      message.su;
     } catch (error) {
       message.error(error.data?.message || "Failed to edit workout plan.");
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteWorkoutPlan(workoutPlanId).unwrap();
-      message.success("Workout plan deleted successfully!");
-      navigate(-1);
-    } catch (error) {
-      message.error(error.data?.message || "Failed to delete workout plan.");
     }
   };
 
@@ -151,6 +119,12 @@ const EditWorkoutPlan = () => {
                     }
                     name="name"
                     className="responsive-form-item"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the workout name!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -168,6 +142,12 @@ const EditWorkoutPlan = () => {
                     }
                     name="description"
                     className="responsive-form-item"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the workout description!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -176,61 +156,17 @@ const EditWorkoutPlan = () => {
                     />
                   </Form.Item>
 
-                  {/* Image with preview */}
-                  {/* <Form.Item
-                    label={
-                      <span className="text-lg font-semibold text-[#2D2D2D]">
-                        Upload Image
-                      </span>
-                    }
-                    name="image"
-                    className="responsive-form-item"
-                  >
-                    <div className="relative w-[440px]">
-                      {preview ? (
-                        <div className="relative">
-                          <img
-                            src={
-                              preview === workoutPlan?.data?.image
-                                ? import.meta.env.VITE_BASE_URL + preview
-                                : preview
-                            }
-                            alt="Preview"
-                            className="w-full h-40 object-contain border border-[#79CDFF] rounded-md"
-                            onError={(e) => (e.target.src = notFoundImage)}
-                          />
-                          <IoCloseCircle
-                            className="absolute top-2 right-2 text-red-600 text-2xl cursor-pointer"
-                            onClick={handleRemoveImage}
-                          />
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={handleUploadClick}
-                          className="w-full h-10 border border-[#79CDFF] flex items-center justify-between px-4 rounded-md cursor-pointer"
-                        >
-                          <span className="text-base font-semibold text-[#525252]">
-                            Select an image
-                          </span>
-                          <CiCamera size={25} color="#174C6B" />
-                        </button>
-                      )}
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        onChange={handleFileChange}
-                      />
-                    </div>
-                  </Form.Item> */}
-
                   {/* Image */}
                   <Form.Item
                     label="Upload Image"
                     name="image"
                     className="responsive-form-item"
+                    rules={[
+                      {
+                        required: !imageFileName ? true : false,
+                        message: "Please upload an image!",
+                      },
+                    ]}
                   >
                     <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
@@ -262,6 +198,9 @@ const EditWorkoutPlan = () => {
                     }
                     name="points"
                     className="responsive-form-item"
+                    rules={[
+                      { required: true, message: "Please enter the points!" },
+                    ]}
                   >
                     <Input
                       type="number"
@@ -275,19 +214,6 @@ const EditWorkoutPlan = () => {
               {/* Submit & Delete Buttons */}
               <Form.Item>
                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
-                  <button
-                    type="button"
-                    className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
-                    onClick={handleDelete}
-                  >
-                    <span className="text-[#1E648C] font-semibold">
-                      {deleteLoading ? (
-                        <LoadingSpinner color="#436F88" />
-                      ) : (
-                        "Delete"
-                      )}
-                    </span>
-                  </button>
                   <button
                     type="submit"
                     className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"

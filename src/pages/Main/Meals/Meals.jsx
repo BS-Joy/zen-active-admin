@@ -24,7 +24,7 @@ const Meals = () => {
 
   const navigate = useNavigate();
   const { data: meals, isLoading } = useGetAllMealQuery(query);
-  const [deleteMeal, { isLoading: deleteLoading }] = useDeleteMealMutation();
+  const [deleteMeal] = useDeleteMealMutation();
 
   const showModal = (data) => {
     setIsModalOpen(true);

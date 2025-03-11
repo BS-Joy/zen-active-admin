@@ -106,6 +106,12 @@ const AddWorkoutPlan = () => {
                     }
                     name="name"
                     className="responsive-form-item"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the plan name!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -123,6 +129,12 @@ const AddWorkoutPlan = () => {
                     }
                     name="description"
                     className="responsive-form-item"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the plan description!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -140,6 +152,12 @@ const AddWorkoutPlan = () => {
                     }
                     name="about"
                     className="responsive-form-item"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter details about the plan!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -208,7 +226,9 @@ const AddWorkoutPlan = () => {
                     }
                     name="image"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
+                    rules={[
+                      { required: true, message: "Please upload an image!" },
+                    ]}
                   >
                     <div className="relative border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
@@ -240,6 +260,9 @@ const AddWorkoutPlan = () => {
                     }
                     name="points"
                     className="responsive-form-item"
+                    rules={[
+                      { required: true, message: "Please enter the points!" },
+                    ]}
                   >
                     <Input
                       type="number"

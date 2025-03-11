@@ -1,22 +1,30 @@
 import React, { useState } from "react";
-import { Input, Table } from "antd";
+import { Input, message, Table } from "antd";
 import DashboardModal from "../../../Components/DashboardModal";
 import { IoClose, IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
-import { useGetWorkoutPlansQuery } from "../../../redux/features/workoutPlans/workoutPlansApi";
+import {
+  useDeleteWorkoutPlanMutation,
+  useGetWorkoutPlansQuery,
+} from "../../../redux/features/workoutPlans/workoutPlansApi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import workoutImg from "../../../assets/images/workout-image.png";
+import Swal from "sweetalert2";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const WorkoutPlans = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [searchTerm, setSearchTerm] = useState(""); // State to store search input
   const [query, setQuery] = useState(""); // State to trigger search
+  const [deleteId, setDeleteId] = useState(null);
+
   const navigate = useNavigate();
   const { data: workoutPlans, isLoading } = useGetWorkoutPlansQuery(query);
+  const [deleteWorkoutPlan] = useDeleteWorkoutPlanMutation();
 
   // Handle search input change
   const handleSearchChange = (event) => {
@@ -31,6 +39,40 @@ const WorkoutPlans = () => {
   const showModal = (data) => {
     setIsModalOpen(true);
     setModalData(data);
+  };
+
+  const handleDelete = async (planId) => {
+    Swal.fire({
+      text: "Are you sure you want to delete this meal? ",
+      showCancelButton: true,
+      confirmButtonText: "     Sure    ",
+      cancelButtonText: "Cancel",
+      showConfirmButton: true,
+      confirmButtonColor: "#174C6B",
+      reverseButtons: true,
+      customClass: {
+        confirmButton: "swal-confirm-btn",
+        cancelButton: "swal-cancel-btn",
+        actions: "swal-actions-container",
+        popup: "swal-popup",
+      },
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        try {
+          // Call your delete API
+          setDeleteId(planId);
+          const response = await deleteWorkoutPlan(planId).unwrap();
+          if (response.success) {
+            message.success("Meal deleted successfully!");
+            setDeleteId(null);
+          }
+        } catch (error) {
+          setDeleteId(null);
+          console.log(error);
+          message.error(error.data?.message || "Failed to delete meal.");
+        }
+      }
+    });
   };
 
   const columns = [
@@ -86,17 +128,30 @@ const WorkoutPlans = () => {
       key: "Review",
       aligen: "center",
       render: (_, data) => (
-        <div className="  items-center justify-around textcenter flex">
+        <div className="  items-center justify-center gap-2 text-center flex">
           {/* Review Icon */}
           <img
             src={exlamIcon}
             alt=""
-            className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer"
+            className="btn py-1 text-sm rounded-full  cursor-pointer"
             onClick={() => showModal(data)}
           />
           <Link to={`edit-workout-plan/${data._id}`} className="">
             <MdEdit />
           </Link>
+          <button
+            type="button"
+            className=" "
+            onClick={() => handleDelete(data?._id)}
+          >
+            <span className="text-[#1E648C] font-semibold">
+              {data?._id === deleteId ? (
+                <LoadingSpinner color="#436F88" />
+              ) : (
+                <FaTrash />
+              )}
+            </span>
+          </button>
         </div>
       ),
     },
