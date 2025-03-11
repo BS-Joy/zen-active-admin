@@ -74,6 +74,7 @@ const EditBadge = () => {
     if (badge?.data?.image) {
       const imageUrlParts = badge?.data?.image?.split("/");
       setImageFileName(imageUrlParts);
+      setFile(badge?.data?.image);
     }
   }, [badge, form]);
 
@@ -94,7 +95,6 @@ const EditBadge = () => {
     );
 
     const formData = new FormData();
-    console.log(file);
     if (file) {
       formData.append("image", file);
     }

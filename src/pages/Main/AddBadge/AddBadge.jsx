@@ -58,19 +58,19 @@ const AddBadge = () => {
 
     // Create FormData
     const formData = new FormData();
-    if (file) {
-      formData.append("image", file);
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
     formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
 
     try {
       const response = await createBadge(formData).unwrap();
-      console.log(response, "response from create badge");
+      if (response.success) {
+        message.success("Badge created successfully!");
 
-      message.success("Badge created successfully!");
-      navigate(-1);
-      form.resetFields(); // Reset form
-      setFile(null); // Clear file
+        form.resetFields(); // Reset form
+        navigate(-1);
+      }
     } catch (error) {
       message.error(error.data?.message || "Failed to create badge.");
     }
