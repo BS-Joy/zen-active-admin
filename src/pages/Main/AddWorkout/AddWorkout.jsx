@@ -13,8 +13,6 @@ import { IoCloseCircle } from "react-icons/io5";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const AddWorkout = () => {
-  // const [file, setFile] = useState(null);
-  // const [preview, setPreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
@@ -23,15 +21,6 @@ const AddWorkout = () => {
   const { data: workouts } = useGetAllWorkoutQuery(null);
   const [createWorkout, { isLoading: createLoading }] =
     useCreateWorkoutMutation();
-
-  // Handle Image Selection and Preview Update
-  // const handleFileChange = (event) => {
-  //   const selectedFile = event.target.files[0];
-  //   if (selectedFile) {
-  //     setFile(selectedFile);
-  //     setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
-  //   }
-  // };
 
   // Handle Image Upload
   const handleImageChange = (event) => {
@@ -46,12 +35,6 @@ const AddWorkout = () => {
   // Trigger file input on button click
   const handleUploadClick = () => {
     fileInputRef.current.click();
-  };
-
-  // Remove selected image
-  const handleRemoveImage = () => {
-    setFile(null);
-    setPreview(null);
   };
 
   // Logic for multi select input
@@ -88,7 +71,6 @@ const AddWorkout = () => {
       if (response.success) {
         message.success("Workout created successfully!");
         form.resetFields(); // Reset form
-        // setFile(null); // Clear file
         setImageFile(null);
         navigate(-1);
       }
@@ -112,12 +94,7 @@ const AddWorkout = () => {
             Adding Workout
           </h3>
           <div className="w-full px-16">
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={onFinish}
-              // style={{ maxWidth: 600, margin: '0 auto' }}
-            >
+            <Form form={form} layout="vertical" onFinish={onFinish}>
               {/* Section 1 */}
               <Space direction="vertical" style={{ width: "100%" }}>
                 <Space
@@ -127,20 +104,14 @@ const AddWorkout = () => {
                 >
                   {/* Name */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Workout Name
-                      </span>
-                    }
+                    label="Workout Name"
                     name="name"
-                    className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the workout name!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -151,29 +122,20 @@ const AddWorkout = () => {
                         fontSize: "16px",
                         fontWeight: 600,
                         color: "#525252",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
                       }}
                     />
                   </Form.Item>
 
                   {/* Description */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Workout Description
-                      </span>
-                    }
+                    label="Workout Description"
                     name="description"
-                    className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the workout description!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -184,74 +146,17 @@ const AddWorkout = () => {
                         fontSize: "16px",
                         fontWeight: 600,
                         color: "#525252",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
                       }}
                     />
                   </Form.Item>
 
-                  {/* Image with preview */}
-                  {/* <Form.Item
-                    label={
-                      <span className="text-lg font-semibold text-[#2D2D2D]">
-                        Upload Image
-                      </span>
-                    }
-                    name="image"
-                    className="responsive-form-item"
-                  >
-                    <div className="relative w-[440px]">
-                      {preview ? (
-                        <div className="relative">
-                          <img
-                            src={preview}
-                            alt="Preview"
-                            className="w-full h-40 object-contain border border-[#79CDFF] rounded-md"
-                          />
-                          <IoCloseCircle
-                            className="absolute top-2 right-2 text-red-600 text-2xl cursor-pointer"
-                            onClick={handleRemoveImage}
-                          />
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={handleUploadClick}
-                          className="w-full h-10 border border-[#79CDFF] flex items-center justify-between px-4 rounded-md cursor-pointer"
-                        >
-                          <span className="text-base font-semibold text-[#525252]">
-                            Select an image
-                          </span>
-                          <CiCamera size={25} color="#174C6B" />
-                        </button>
-                      )}
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        onChange={handleFileChange}
-                      />
-                    </div>
-                  </Form.Item> */}
-
-                  {/* image */}
+                  {/* Image */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Upload Image
-                      </span>
-                    }
+                    label="Upload Image"
                     name="image"
-                    className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
+                    rules={[
+                      { required: true, message: "Please upload an image!" },
+                    ]}
                   >
                     <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
@@ -276,20 +181,11 @@ const AddWorkout = () => {
 
                   {/* Points */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Points
-                      </span>
-                    }
+                    label="Points"
                     name="points"
-                    className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      { required: true, message: "Please enter points!" },
+                    ]}
                   >
                     <Input
                       type="number"
@@ -300,36 +196,25 @@ const AddWorkout = () => {
                         fontSize: "16px",
                         fontWeight: 600,
                         color: "#525252",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
                       }}
                     />
                   </Form.Item>
 
                   {/* Exercises */}
                   <Form.Item
-                    label={
-                      <span
-                        style={{
-                          fontSize: "18px",
-                          fontWeight: "600",
-                          color: "#2D2D2D",
-                        }}
-                      >
-                        Select Exercise
-                      </span>
-                    }
+                    label="Select Exercise"
                     name="exercises"
-                    className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a duration!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select at least one exercise!",
+                      },
+                    ]}
                   >
                     <Select
                       mode="multiple"
                       size={"middle"}
                       placeholder="Select Exercise"
-                      // defaultValue={['Vegetarian']}
-                      //   onChange={handleMultiSelectChange}
                       style={{
                         width: "100%",
                         height: "40px",
