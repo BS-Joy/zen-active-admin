@@ -5,9 +5,7 @@ import DashboardModal from "../../../Components/DashboardModal";
 import { IoClose, IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
-import mealImg from "../../../assets/images/meal.png";
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
+import defaultImage from "../../../assets/images/fit.png";
 import { FaPlus } from "react-icons/fa6";
 import { useGetAllExerciseQuery } from "../../../redux/features/exercise/exerciseApi";
 import { MdEdit } from "react-icons/md";
@@ -44,14 +42,14 @@ const Exercise = () => {
       key: "image",
       render: (image) => (
         <div className="flex items-center justify-center">
+          {console.log(import.meta.env.VITE_BASE_URL + image)}
           <img
             src={
-              image
-                ? `${import.meta.env.VITE_BASE_URL}${image}`
-                : "https://via.placeholder.com/40"
+              image ? `${import.meta.env.VITE_BASE_URL}${image}` : defaultImage
             }
             alt="badge"
-            className="w- h-10 rounded-full object-contain"
+            onError={(e) => (e.target.src = defaultImage)}
+            className="size-12 rounded-md object-fill"
           />
         </div>
       ),

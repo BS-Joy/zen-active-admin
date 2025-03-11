@@ -96,8 +96,6 @@ const EditWorkoutPlan = () => {
     }
   }, [workoutPlan, form]);
 
-  console.log(preview === workoutPlan?.data?.image);
-
   return (
     <>
       <div
