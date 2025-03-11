@@ -14,7 +14,6 @@ const AddExercise = () => {
   const [imageFile, setImageFile] = useState(null);
   const [videoResolution, setVideoResolution] = useState(null);
   const [needsConversion, setNeedsConversion] = useState(false);
-  const [convertedVideo, setConvertedVideo] = useState(null);
 
   const navigate = useNavigate();
 
@@ -46,7 +45,6 @@ const AddExercise = () => {
     }
 
     setVideoFile(file);
-    setConvertedVideo(null);
 
     // Check video resolution
     const { width, height } = await checkVideoResolution(file);

@@ -22,7 +22,6 @@ const EditExercise = () => {
 
   const [videoResolution, setVideoResolution] = useState(null);
   const [needsConversion, setNeedsConversion] = useState(false);
-  const [convertedVideo, setConvertedVideo] = useState(null);
 
   const { data: exercise } = useGetSingleExerciseQuery(exerciseId);
 
@@ -51,7 +50,6 @@ const EditExercise = () => {
       }
 
       // Set existing video filename
-      console.log(exercise.data.exercise);
       if (exercise.data.exercise.video) {
         const videoUrlParts = exercise.data.exercise.video.split("/");
         setVideoFileName(videoUrlParts[videoUrlParts.length - 1]);
@@ -86,7 +84,6 @@ const EditExercise = () => {
 
     setVideoFile(file);
     setVideoFileName(file.name);
-    setConvertedVideo(null);
 
     // Check video resolution
     const { width, height } = await checkVideoResolution(file);
@@ -599,7 +596,7 @@ const EditExercise = () => {
                     className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "
                   >
                     <span className="text-white font-semibold">
-                      {deleteLoading ? (
+                      {editLoading ? (
                         <LoadingSpinner color="white" />
                       ) : (
                         "Update"
