@@ -111,52 +111,52 @@ export const dashboardItems = [
     element: <EditSubscription />,
   },
   {
-    path: "add-meal",
+    path: "meals/add-meal",
     element: <AddMeal />,
   },
   {
-    path: "edit-meal/:mealId",
+    path: "meals/edit-meal/:mealId",
     element: <EditMeal />,
   },
   {
-    path: "add-exercise",
+    path: "exercise/add-exercise",
     element: <AddExercise />,
   },
   {
-    path: "edit-exercise/:exerciseId",
+    path: "exercise/edit-exercise/:exerciseId",
     element: <EditExercise />,
   },
   {
-    path: "add-workout-plan",
+    path: "workoutPlans/add-workout-plan",
     element: <AddWorkoutPlan />,
   },
   {
-    path: "edit-workout-plan/:workoutPlanId",
+    path: "workoutPlans/edit-workout-plan/:workoutPlanId",
     element: <EditWorkoutPlan />,
   },
   {
-    path: "add-workout",
+    path: "workouts/add-workout",
     element: <AddWorkout />,
   },
   {
-    path: "edit-workout/:workoutId",
+    path: "workouts/edit-workout/:workoutId",
     element: <EditWorkout />,
   },
   {
-    path: "add-workout-video",
+    path: "workout-videos/add-workout-video",
     element: <AddWorkoutVideoNormal />,
     // element: <AddWorkoutVideo />,
   },
   {
-    path: "edit-workout-video/:workoutId",
+    path: "workout-videos/edit-workout-video/:workoutId",
     element: <EditWorkoutVideo />,
   },
   {
-    path: "add-badge",
+    path: "store/add-badge",
     element: <AddBadge />,
   },
   {
-    path: "edit-badge/:badgeId",
+    path: "store/edit-badge/:badgeId",
     element: <EditBadge />,
   },
   // {

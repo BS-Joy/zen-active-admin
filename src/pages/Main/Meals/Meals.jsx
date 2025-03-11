@@ -6,8 +6,6 @@ import { IoClose, IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import mealImg from "../../../assets/images/meal.png";
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import { useGetAllMealQuery } from "../../../redux/features/meal/mealApi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -91,7 +89,7 @@ const Meals = () => {
             className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer"
             onClick={() => showModal(data)}
           />
-          <Link to={`/edit-meal/${data._id}`} className="">
+          <Link to={`edit-meal/${data._id}`} className="">
             <MdEdit />
           </Link>
         </div>
@@ -102,40 +100,6 @@ const Meals = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
-  const items = [
-    {
-      label: (
-        <a
-          href="https://www.antgroup.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          1st menu item
-        </a>
-      ),
-      key: "0",
-    },
-    {
-      label: (
-        <a
-          href="https://www.aliyun.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          2nd menu item
-        </a>
-      ),
-      key: "1",
-    },
-    {
-      type: "divider",
-    },
-    {
-      label: "3rd menu item",
-      key: "3",
-    },
-  ];
 
   const data =
     meals?.data?.map((meal, index) => ({
@@ -164,7 +128,7 @@ const Meals = () => {
     <div>
       <button
         className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2"
-        onClick={() => navigate("/add-meal")}
+        onClick={() => navigate("add-meal")}
       >
         <FaPlus />
         Add New Meal

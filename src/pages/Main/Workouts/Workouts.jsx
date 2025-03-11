@@ -41,7 +41,6 @@ const Workouts = () => {
       key: "image",
       render: (image) => (
         <div className="flex items-center justify-center">
-          {console.log(import.meta.env.VITE_BASE_URL + image)}
           <img
             src={import.meta.env.VITE_BASE_URL + image}
             onError={(e) => (e.target.src = workoutImg)}
@@ -86,7 +85,7 @@ const Workouts = () => {
             className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer"
             onClick={() => showModal(data)}
           />
-          <Link to={`/edit-workout/${data._id}`} className="">
+          <Link to={`edit-workout/${data._id}`} className="">
             <MdEdit />
           </Link>
         </div>
@@ -109,7 +108,7 @@ const Workouts = () => {
     <div>
       <button
         className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2"
-        onClick={() => navigate("/add-workout")}
+        onClick={() => navigate("add-workout")}
       >
         <FaPlus />
         Add Workout

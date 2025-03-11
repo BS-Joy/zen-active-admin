@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import { Button, DatePicker, Input, Table } from "antd";
-import { FiAlertCircle } from "react-icons/fi";
+import { Table } from "antd";
 import DashboardModal from "../../../Components/DashboardModal";
-import { IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import exlamIcon from "../../../assets/images/exclamation-circle.png";
-import badgeImg from "../../../assets/images/badge.png";
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
+import defaultThumb from "../../../assets/images/exclamation-circle.png";
 import { FaPlus } from "react-icons/fa6";
-import { useGetBadgesQuery } from "../../../redux/features/badge/badgeApi";
 import { MdEdit } from "react-icons/md";
 import { useGetWorkoutVideosQuery } from "../../../redux/features/workoutVideo/workoutVideoApi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -45,13 +39,10 @@ const WorkoutVideos = () => {
       render: (image) => (
         <div className="flex items-center justify-center">
           <img
-            src={
-              image
-                ? `${import.meta.env.VITE_BASE_URL}${image}`
-                : "https://via.placeholder.com/40"
-            }
+            src={import.meta.env.VITE_BASE_URL + image}
+            onError={(e) => (e.target.src = defaultThumb)}
             alt="badge"
-            className="w- h-10 rounded-full object-contain"
+            className="size-12 rounded-md object-fill"
           />
         </div>
       ),
@@ -69,7 +60,7 @@ const WorkoutVideos = () => {
         <div className="  items-center justify-around textcenter flex">
           {/* Review Icon */}
           {/* <img src={exlamIcon} alt="" className="btn px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} /> */}
-          <Link to={`/edit-workout-video/${data._id}`} className="">
+          <Link to={`edit-workout-video/${data._id}`} className="">
             <MdEdit />
           </Link>
         </div>
@@ -89,7 +80,7 @@ const WorkoutVideos = () => {
     <div>
       <button
         className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2"
-        onClick={() => navigate("/add-workout-video")}
+        onClick={() => navigate("add-workout-video")}
       >
         <FaPlus />
         Add Video

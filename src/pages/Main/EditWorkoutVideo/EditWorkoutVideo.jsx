@@ -19,6 +19,11 @@ const EditWorkoutVideo = () => {
   const [form] = Form.useForm();
   const [videoFile, setVideoFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [imageFileName, setImageFileName] = useState("Select an image");
+  const [videoFileName, setVideoFileName] = useState("Select a video");
+  const [videoResolution, setVideoResolution] = useState(null);
+  const [needsConversion, setNeedsConversion] = useState(false);
+
   const navigate = useNavigate();
   const { workoutId } = useParams();
 
@@ -29,14 +34,56 @@ const EditWorkoutVideo = () => {
   const [deleteWorkoutVideo, { isLoading: deleteLoading }] =
     useDeleteWorkoutVideoMutation();
 
+  // Check video resolution
+  const checkVideoResolution = (file) => {
+    return new Promise((resolve) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        const width = video.videoWidth;
+        const height = video.videoHeight;
+        resolve({ width, height });
+      };
+
+      video.src = URL.createObjectURL(file);
+    });
+  };
+
   // Handle Video Upload
-  const handleVideoChange = ({ file }) => {
-    setVideoFile(file.originFileObj);
+  const handleVideoChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file || !file.type.startsWith("video/")) {
+      alert("You can only upload video files!");
+      return;
+    }
+
+    setVideoFile(file);
+    setVideoFileName(file.name);
+
+    // Check video resolution
+    const { width, height } = await checkVideoResolution(file);
+    setVideoResolution({ width, height });
+
+    // Determine if conversion is needed (if resolution is higher than 720p)
+    const needsConversion = height > 720;
+    setNeedsConversion(needsConversion);
+
+    console.log(
+      `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
+    );
   };
 
   // Handle Image Upload
-  const handleImageChange = ({ file }) => {
-    setImageFile(file.originFileObj);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setImageFileName(file.name);
+    } else {
+      alert("You can only upload image files!");
+    }
   };
 
   useEffect(() => {
@@ -44,6 +91,18 @@ const EditWorkoutVideo = () => {
       form.setFieldsValue({
         name: workoutVideo.data.name,
       });
+
+      // Set existing image filename
+      if (workoutVideo?.data?.image) {
+        const imageUrlParts = workoutVideo?.data?.image.split("/");
+        setImageFileName(imageUrlParts[imageUrlParts.length - 1]);
+      }
+
+      // Set existing video filename
+      if (workoutVideo?.data?.video) {
+        const videoUrlParts = workoutVideo?.data?.video.split("/");
+        setVideoFileName(videoUrlParts[videoUrlParts.length - 1]);
+      }
     }
   }, [workoutVideo, form]);
 
@@ -63,7 +122,6 @@ const EditWorkoutVideo = () => {
       if (response.success) {
         message.success("Video edited successfully!");
         form.resetFields(); // Reset form
-        // setFile(null); // Clear file
         navigate(-1);
       }
     } catch (error) {
@@ -85,50 +143,6 @@ const EditWorkoutVideo = () => {
 
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
-  };
-
-  const videoUploadProps = {
-    name: "video",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    headers: {
-      authorization: "authorization-text",
-    },
-    beforeUpload: (file) => {
-      const isVideo = file.type.startsWith("video/");
-      if (!isVideo) {
-        message.error("You can only upload video files!");
-      }
-      return isVideo;
-    },
-    onChange(info) {
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} video uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} video upload failed.`);
-      }
-    },
-  };
-
-  const imageUploadProps = {
-    name: "image",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    headers: {
-      authorization: "authorization-text",
-    },
-    beforeUpload: (file) => {
-      const isImage = file.type.startsWith("image/");
-      if (!isImage) {
-        message.error("You can only upload image files!");
-      }
-      return isImage;
-    },
-    onChange(info) {
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} image uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} image upload failed.`);
-      }
-    },
   };
 
   return (
@@ -161,94 +175,75 @@ const EditWorkoutVideo = () => {
                   >
                     {/* Video */}
                     <Form.Item
-                      label={
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "600",
-                            color: "#2D2D2D",
-                          }}
-                        >
-                          Upload Video
-                        </span>
-                      }
+                      label="Upload Video"
                       name="media"
                       className="responsive-form-item"
-                      // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                     >
-                      <Upload
-                        {...videoUploadProps}
-                        onChange={handleVideoChange}
-                        maxCount={1}
-                      >
-                        <Button
-                          style={{
-                            width: "440px",
-                            height: "40px",
-                            border: "1px solid #79CDFF",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
+                      <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                        <input
+                          type="file"
+                          accept="video/*"
+                          onChange={handleVideoChange}
+                          className="hidden"
+                          id="videoUpload"
+                          style={{ display: "none" }}
+                        />
+                        <label
+                          htmlFor="videoUpload"
+                          className="cursor-pointer w-full flex justify-between items-center"
                         >
-                          <span
-                            style={{
-                              color: "#525252",
-                              fontSize: "16px",
-                              fontWeight: 600,
-                            }}
-                          >
-                            Select a video
+                          <span className="text-[#525252] font-semibold">
+                            {videoFileName}
                           </span>
-                          <IoVideocamOutline size={20} color="#174C6B" />
-                        </Button>
-                      </Upload>
+                          <CiCamera size={25} color="#174C6B" />
+                        </label>
+                      </div>
                     </Form.Item>
+                    {videoResolution && (
+                      <div className="mt-2 text-sm">
+                        <p>
+                          Resolution: {videoResolution.width}x
+                          {videoResolution.height}
+                        </p>
+                        {needsConversion ? (
+                          <p className="text-amber-600">
+                            This video is larger than 720p, please upload a
+                            video in 720p or lower
+                          </p>
+                        ) : (
+                          // <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
+                          <p className="text-green-600">
+                            This video is in good shape
+                          </p>
+                        )}
+                      </div>
+                    )}
 
                     {/* Thumbnail */}
                     <Form.Item
-                      label={
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "600",
-                            color: "#2D2D2D",
-                          }}
-                        >
-                          Upload Image
-                        </span>
-                      }
+                      label="Upload Image"
                       name="image"
                       className="responsive-form-item"
-                      // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                     >
-                      <Upload
-                        {...imageUploadProps}
-                        onChange={handleImageChange}
-                        maxCount={1}
-                      >
-                        <Button
-                          style={{
-                            width: "440px",
-                            height: "40px",
-                            border: "1px solid #79CDFF",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
+                      <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                          style={{ display: "none" }}
+                          id="imageUpload"
+                        />
+                        <label
+                          htmlFor="imageUpload"
+                          className="cursor-pointer w-full flex justify-between items-center"
                         >
-                          <span
-                            style={{
-                              color: "#525252",
-                              fontSize: "16px",
-                              fontWeight: 600,
-                            }}
-                          >
-                            Select an image
+                          <span className="text-[#525252] font-semibold">
+                            {imageFileName}
                           </span>
                           <CiCamera size={25} color="#174C6B" />
-                        </Button>
-                      </Upload>
+                        </label>
+                      </div>
                     </Form.Item>
 
                     {/* Title */}

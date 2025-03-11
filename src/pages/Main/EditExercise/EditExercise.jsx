@@ -17,11 +17,11 @@ const EditExercise = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageFileName, setImageFileName] = useState("Select an image");
   const [videoFileName, setVideoFileName] = useState("Select a video");
-  const { exerciseId } = useParams();
-  const navigate = useNavigate();
-
   const [videoResolution, setVideoResolution] = useState(null);
   const [needsConversion, setNeedsConversion] = useState(false);
+
+  const { exerciseId } = useParams();
+  const navigate = useNavigate();
 
   const { data: exercise } = useGetSingleExerciseQuery(exerciseId);
 

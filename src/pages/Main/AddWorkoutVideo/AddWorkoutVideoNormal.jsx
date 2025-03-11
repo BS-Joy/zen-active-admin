@@ -1,5 +1,3 @@
-"use client";
-
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { FaAngleLeft } from "react-icons/fa6";

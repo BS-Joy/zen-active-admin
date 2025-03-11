@@ -8,6 +8,7 @@ import { FaPlus } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { useGetWorkoutPlansQuery } from "../../../redux/features/workoutPlans/workoutPlansApi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import workoutImg from "../../../assets/images/workout-image.png";
 
 const WorkoutPlans = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,11 +41,8 @@ const WorkoutPlans = () => {
       render: (image) => (
         <div className="flex items-center justify-center">
           <img
-            src={
-              image
-                ? `${import.meta.env.VITE_BASE_URL}${image}`
-                : "https://via.placeholder.com/40"
-            }
+            src={import.meta.env.VITE_BASE_URL + image}
+            onError={(e) => (e.target.src = workoutImg)}
             alt="badge"
             className="size-12 rounded-md object-fill"
           />
@@ -96,7 +94,7 @@ const WorkoutPlans = () => {
             className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer"
             onClick={() => showModal(data)}
           />
-          <Link to={`/edit-workout-plan/${data._id}`} className="">
+          <Link to={`edit-workout-plan/${data._id}`} className="">
             <MdEdit />
           </Link>
         </div>
@@ -120,7 +118,7 @@ const WorkoutPlans = () => {
     <div>
       <button
         className="px-6 py-2 min-w-[100px] text-center text-white bg-[#174C6B] border border-[#174C6B] rounded-md active:text-[#174C6B] hover:bg-transparent hover:text-[#174C6B] focus:outline-none focus:ring float-end flex items-center gap-2"
-        onClick={() => navigate("/add-workout-plan")}
+        onClick={() => navigate("add-workout-plan")}
       >
         <FaPlus />
         Add Workout Plan
