@@ -158,7 +158,12 @@ const AddExercise = () => {
                     }
                     name="name"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select exercise name!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -191,7 +196,12 @@ const AddExercise = () => {
                     }
                     name="about"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please write about exercise!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -224,7 +234,12 @@ const AddExercise = () => {
                     }
                     name="description"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please write about exercise description!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -257,7 +272,9 @@ const AddExercise = () => {
                     }
                     name="image"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
+                    rules={[
+                      { required: true, message: "Please select an image!" },
+                    ]}
                   >
                     <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
@@ -295,7 +312,9 @@ const AddExercise = () => {
                     }
                     name="media"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
+                    rules={[
+                      { required: true, message: "Please select a video!" },
+                    ]}
                   >
                     <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center  px-2 py-3 rounded-md">
                       <input
@@ -366,6 +385,9 @@ const AddExercise = () => {
                       }
                       name="duration"
                       className="responsive-form-item-section-2"
+                      rules={[
+                        { required: true, message: "Please select duration!" },
+                      ]}
                     >
                       <Input
                         type="number"
@@ -398,6 +420,12 @@ const AddExercise = () => {
                       }
                       name="points"
                       className="responsive-form-item-section-2"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select exercise points!",
+                        },
+                      ]}
                     >
                       <Input
                         type="number"
@@ -430,6 +458,9 @@ const AddExercise = () => {
                       }
                       name="goal"
                       className="responsive-form-item-section-2"
+                      rules={[
+                        { required: true, message: "Please select goal!" },
+                      ]}
                     >
                       <Input
                         type="text"
@@ -462,6 +493,9 @@ const AddExercise = () => {
                       }
                       name="reps"
                       className="responsive-form-item-section-2"
+                      rules={[
+                        { required: true, message: "Please select reps!" },
+                      ]}
                     >
                       <Input
                         type="number"
@@ -494,6 +528,9 @@ const AddExercise = () => {
                       }
                       name="sets"
                       className="responsive-form-item-section-2"
+                      rules={[
+                        { required: true, message: "Please select sets!" },
+                      ]}
                     >
                       <Input
                         type="number"
@@ -526,6 +563,9 @@ const AddExercise = () => {
                       }
                       name="restTime"
                       className="responsive-form-item-section-2"
+                      rules={[
+                        { required: true, message: "Please select rest time!" },
+                      ]}
                     >
                       <Input
                         type="number"
