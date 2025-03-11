@@ -13,8 +13,9 @@ import { IoCloseCircle } from "react-icons/io5";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const AddWorkout = () => {
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  // const [file, setFile] = useState(null);
+  // const [preview, setPreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -24,11 +25,21 @@ const AddWorkout = () => {
     useCreateWorkoutMutation();
 
   // Handle Image Selection and Preview Update
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+  // const handleFileChange = (event) => {
+  //   const selectedFile = event.target.files[0];
+  //   if (selectedFile) {
+  //     setFile(selectedFile);
+  //     setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+  //   }
+  // };
+
+  // Handle Image Upload
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+    } else {
+      alert("You can only upload image files!");
     }
   };
 
@@ -66,8 +77,8 @@ const AddWorkout = () => {
 
     // Create FormData
     const formData = new FormData();
-    if (file) {
-      formData.append("image", file);
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
     formData.append("data", JSON.stringify(formattedData)); // Convert text fields to JSON
 
@@ -77,7 +88,8 @@ const AddWorkout = () => {
       if (response.success) {
         message.success("Workout created successfully!");
         form.resetFields(); // Reset form
-        setFile(null); // Clear file
+        // setFile(null); // Clear file
+        setImageFile(null);
         navigate(-1);
       }
     } catch (error) {
@@ -179,8 +191,8 @@ const AddWorkout = () => {
                     />
                   </Form.Item>
 
-                  {/* Image */}
-                  <Form.Item
+                  {/* Image with preview */}
+                  {/* <Form.Item
                     label={
                       <span className="text-lg font-semibold text-[#2D2D2D]">
                         Upload Image
@@ -221,6 +233,44 @@ const AddWorkout = () => {
                         style={{ display: "none" }}
                         onChange={handleFileChange}
                       />
+                    </div>
+                  </Form.Item> */}
+
+                  {/* image */}
+                  <Form.Item
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Upload Image
+                      </span>
+                    }
+                    name="image"
+                    className="responsive-form-item"
+                    // rules={[{ required: true, message: 'Please enter the package amount!' }]}
+                  >
+                    <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                        style={{ display: "none" }}
+                        id="imageUpload"
+                      />
+                      <label
+                        htmlFor="imageUpload"
+                        className="cursor-pointer w-full flex justify-between items-center"
+                      >
+                        <span className="text-[#525252] font-semibold">
+                          {imageFile ? imageFile.name : "Select an image"}
+                        </span>
+                        <CiCamera size={25} color="#174C6B" />
+                      </label>
                     </div>
                   </Form.Item>
 

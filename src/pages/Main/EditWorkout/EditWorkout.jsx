@@ -15,7 +15,9 @@ import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const EditWorkout = () => {
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  // const [preview, setPreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileName, setImageFileName] = useState("Select an image");
 
   const fileInputRef = useRef(null);
 
@@ -29,18 +31,29 @@ const EditWorkout = () => {
     useDeleteWorkoutMutation();
 
   // Set the initial preview image when data loads
-  useEffect(() => {
-    if (workout?.data?.image) {
-      setPreview(workout.data.image);
-    }
-  }, [workout]);
+  // useEffect(() => {
+  //   if (workout?.data?.image) {
+  //     setPreview(workout.data.image);
+  //   }
+  // }, [workout]);
 
   // Handle Image Selection and Preview Update
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+  // const handleFileChange = (event) => {
+  //   const selectedFile = event.target.files[0];
+  //   if (selectedFile) {
+  //     setFile(selectedFile);
+  //     setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+  //   }
+  // };
+
+  // Handle Image Upload
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setImageFileName(file.name);
+    } else {
+      alert("You can only upload image files!");
     }
   };
 
@@ -62,15 +75,15 @@ const EditWorkout = () => {
       label: exercise.name, // Displayed in the UI
     })) || [];
 
-  const handleMultiSelectChange = (value) => {
-    console.log(`Selected: ${value}`);
-  };
+  // const handleMultiSelectChange = (value) => {
+  //   console.log(`Selected: ${value}`);
+  // };
 
   const onFinish = async (values) => {
     // Create FormData
     const formData = new FormData();
-    if (file) {
-      formData.append("image", file);
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
     formData.append("data", JSON.stringify(values)); // Convert text fields to JSON
 
@@ -107,6 +120,12 @@ const EditWorkout = () => {
         points: workout.data.points,
         exercises: workout.data.exercises.map((exercise) => exercise._id),
       });
+    }
+
+    if (workout?.data?.image) {
+      const imageUrlParts = workout?.data?.image.split("/");
+      setImageFileName(imageUrlParts[imageUrlParts.length - 1]);
+      setImageFile(workout?.data?.image);
     }
   }, [workout, form]);
 
@@ -208,8 +227,8 @@ const EditWorkout = () => {
                     />
                   </Form.Item>
 
-                  {/* Image */}
-                  <Form.Item
+                  {/* Image with preview */}
+                  {/* <Form.Item
                     label={
                       <span className="text-lg font-semibold text-[#2D2D2D]">
                         Upload Image
@@ -255,6 +274,33 @@ const EditWorkout = () => {
                         style={{ display: "none" }}
                         onChange={handleFileChange}
                       />
+                    </div>
+                  </Form.Item> */}
+
+                  {/* Image */}
+                  <Form.Item
+                    label="Upload Image"
+                    name="image"
+                    className="responsive-form-item"
+                  >
+                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                        style={{ display: "none" }}
+                        id="imageUpload"
+                      />
+                      <label
+                        htmlFor="imageUpload"
+                        className="cursor-pointer w-full flex justify-between items-center"
+                      >
+                        <span className="text-[#525252] font-semibold">
+                          {imageFileName}
+                        </span>
+                        <CiCamera size={25} color="#174C6B" />
+                      </label>
                     </div>
                   </Form.Item>
 

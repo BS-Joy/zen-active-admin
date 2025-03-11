@@ -6,8 +6,6 @@ import { IoClose, IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import workoutImg from "../../../assets/images/workout-image.png";
-import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import { useGetAllWorkoutQuery } from "../../../redux/features/workout/workoutApi";
 import { MdEdit } from "react-icons/md";
@@ -43,14 +41,12 @@ const Workouts = () => {
       key: "image",
       render: (image) => (
         <div className="flex items-center justify-center">
+          {console.log(import.meta.env.VITE_BASE_URL + image)}
           <img
-            src={
-              image
-                ? `${import.meta.env.VITE_BASE_URL}${image}`
-                : "https://via.placeholder.com/40"
-            }
+            src={import.meta.env.VITE_BASE_URL + image}
+            onError={(e) => (e.target.src = workoutImg)}
             alt="badge"
-            className="w- h-10 rounded-full object-contain"
+            className="size-12 rounded-md object-fill"
           />
         </div>
       ),
@@ -95,40 +91,6 @@ const Workouts = () => {
           </Link>
         </div>
       ),
-    },
-  ];
-
-  const items = [
-    {
-      label: (
-        <a
-          href="https://www.antgroup.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          1st menu item
-        </a>
-      ),
-      key: "0",
-    },
-    {
-      label: (
-        <a
-          href="https://www.aliyun.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          2nd menu item
-        </a>
-      ),
-      key: "1",
-    },
-    {
-      type: "divider",
-    },
-    {
-      label: "3rd menu item",
-      key: "3",
     },
   ];
 
