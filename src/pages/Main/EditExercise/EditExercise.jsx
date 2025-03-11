@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Space } from "antd";
+import { Form, Input, Space } from "antd";
 import { FaAngleLeft } from "react-icons/fa6";
-import { message, Upload } from "antd";
+import { message } from "antd";
 import { CiCamera } from "react-icons/ci";
 import {
   useDeleteExerciseMutation,

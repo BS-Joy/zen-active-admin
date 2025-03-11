@@ -46,7 +46,7 @@ const WorkoutPlans = () => {
                 : "https://via.placeholder.com/40"
             }
             alt="badge"
-            className="w- h-10 rounded-full object-contain"
+            className="size-12 rounded-md object-fill"
           />
         </div>
       ),

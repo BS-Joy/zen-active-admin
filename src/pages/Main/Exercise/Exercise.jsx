@@ -42,7 +42,7 @@ const Exercise = () => {
       key: "image",
       render: (image) => (
         <div className="flex items-center justify-center">
-          {console.log(import.meta.env.VITE_BASE_URL + image)}
+          {/* {console.log(import.meta.env.VITE_BASE_URL + image)} */}
           <img
             src={
               image ? `${import.meta.env.VITE_BASE_URL}${image}` : defaultImage

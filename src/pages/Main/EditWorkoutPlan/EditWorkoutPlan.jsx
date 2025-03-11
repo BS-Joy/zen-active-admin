@@ -14,7 +14,9 @@ import notFoundImage from "../../../assets/images/not-found.png";
 
 const EditWorkoutPlan = () => {
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  // const [preview, setPreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileName, setImageFileName] = useState(null);
   const fileInputRef = useRef(null); // Hidden file input reference
   const [form] = Form.useForm();
   const { workoutPlanId } = useParams();
@@ -28,18 +30,29 @@ const EditWorkoutPlan = () => {
     useDeleteWorkoutPlanMutation();
 
   // Set the initial preview image when data loads
-  useEffect(() => {
-    if (workoutPlan?.data?.image) {
-      setPreview(workoutPlan.data.image);
-    }
-  }, [workoutPlan]);
+  // useEffect(() => {
+  //   if (workoutPlan?.data?.image) {
+  //     setPreview(workoutPlan.data.image);
+  //   }
+  // }, [workoutPlan]);
 
   // Handle Image Selection and Preview Update
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+  // const handleFileChange = (event) => {
+  //   const selectedFile = event.target.files[0];
+  //   if (selectedFile) {
+  //     setFile(selectedFile);
+  //     setPreview(URL.createObjectURL(selectedFile)); // Show new image preview
+  //   }
+  // };
+
+  // Handle Image Upload
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setImageFileName(file.name);
+    } else {
+      alert("You can only upload image files!");
     }
   };
 
@@ -61,16 +74,21 @@ const EditWorkoutPlan = () => {
     };
 
     const formData = new FormData();
-    if (file) {
-      formData.append("image", file);
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
     formData.append("data", JSON.stringify(formattedData));
 
     try {
-      await editWorkoutPlan({ workoutPlanId, formData }).unwrap();
-      message.success("Workout plan edited successfully!");
-      form.resetFields();
-      setFile(null);
+      const res = await editWorkoutPlan({ workoutPlanId, formData }).unwrap();
+
+      if (res.success) {
+        message.success("Workout plan edited successfully!");
+        form.resetFields();
+        // setFile(null);
+        navigate(-1);
+      }
+      message.su;
     } catch (error) {
       message.error(error.data?.message || "Failed to edit workout plan.");
     }
@@ -93,6 +111,12 @@ const EditWorkoutPlan = () => {
         description: workoutPlan.data.description,
         points: workoutPlan.data.points,
       });
+
+      if (workoutPlan?.data?.image) {
+        const imageUrlParts = workoutPlan?.data?.image.split("/");
+        setImageFileName(imageUrlParts[imageUrlParts.length - 1]);
+        setImageFile(workoutPlan?.data?.image);
+      }
     }
   }, [workoutPlan, form]);
 
@@ -152,8 +176,8 @@ const EditWorkoutPlan = () => {
                     />
                   </Form.Item>
 
-                  {/* Upload Image */}
-                  <Form.Item
+                  {/* Image with preview */}
+                  {/* <Form.Item
                     label={
                       <span className="text-lg font-semibold text-[#2D2D2D]">
                         Upload Image
@@ -199,6 +223,33 @@ const EditWorkoutPlan = () => {
                         style={{ display: "none" }}
                         onChange={handleFileChange}
                       />
+                    </div>
+                  </Form.Item> */}
+
+                  {/* Image */}
+                  <Form.Item
+                    label="Upload Image"
+                    name="image"
+                    className="responsive-form-item"
+                  >
+                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                        style={{ display: "none" }}
+                        id="imageUpload"
+                      />
+                      <label
+                        htmlFor="imageUpload"
+                        className="cursor-pointer w-full flex justify-between items-center"
+                      >
+                        <span className="text-[#525252] font-semibold">
+                          {imageFileName}
+                        </span>
+                        <CiCamera size={25} color="#174C6B" />
+                      </label>
                     </div>
                   </Form.Item>
 
