@@ -176,7 +176,12 @@ const EditWorkout = () => {
                     }
                     name="name"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select workout name!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -209,7 +214,12 @@ const EditWorkout = () => {
                     }
                     name="description"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please write a description about workout!",
+                      },
+                    ]}
                   >
                     <Input
                       type="text"
@@ -282,6 +292,12 @@ const EditWorkout = () => {
                     label="Upload Image"
                     name="image"
                     className="responsive-form-item"
+                    rules={[
+                      {
+                        required: !imageFileName ? true : false,
+                        message: "Please select an image!",
+                      },
+                    ]}
                   >
                     <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
@@ -319,7 +335,9 @@ const EditWorkout = () => {
                     }
                     name="points"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a package name!' }]}
+                    rules={[
+                      { required: true, message: "Please enter points!" },
+                    ]}
                   >
                     <Input
                       type="number"
@@ -352,7 +370,9 @@ const EditWorkout = () => {
                     }
                     name="exercises"
                     className="responsive-form-item"
-                    // rules={[{ required: true, message: 'Please select a duration!' }]}
+                    rules={[
+                      { required: true, message: "Please select a exercise!" },
+                    ]}
                   >
                     <Select
                       mode="multiple"
