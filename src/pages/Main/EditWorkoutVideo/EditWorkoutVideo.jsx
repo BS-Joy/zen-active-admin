@@ -1,18 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Select, Space } from "antd";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { Form, Input, Select, Space } from "antd";
 const { Option } = Select;
 import { FaAngleLeft } from "react-icons/fa6";
-import { UploadOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
+import { message } from "antd";
 import { CiCamera } from "react-icons/ci";
 import {
-  useDeleteWorkoutVideoMutation,
   useEditWorkoutVideoMutation,
   useGetSingleWorkoutVideoQuery,
 } from "../../../redux/features/workoutVideo/workoutVideoApi";
-import { IoVideocamOutline } from "react-icons/io5";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const EditWorkoutVideo = () => {
@@ -27,12 +23,9 @@ const EditWorkoutVideo = () => {
   const navigate = useNavigate();
   const { workoutId } = useParams();
 
-  const { data: workoutVideo, refetch } =
-    useGetSingleWorkoutVideoQuery(workoutId);
+  const { data: workoutVideo } = useGetSingleWorkoutVideoQuery(workoutId);
   const [editWorkoutVideo, { isLoading: editLoading }] =
     useEditWorkoutVideoMutation();
-  const [deleteWorkoutVideo, { isLoading: deleteLoading }] =
-    useDeleteWorkoutVideoMutation();
 
   // Check video resolution
   const checkVideoResolution = (file) => {
@@ -130,17 +123,6 @@ const EditWorkoutVideo = () => {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      // Call your delete API
-      await deleteWorkoutVideo(workoutId).unwrap();
-      message.success("Video deleted successfully!");
-      navigate(-1); // Navigate back after deletion
-    } catch (error) {
-      message.error(error.data?.message || "Failed to delete video.");
-    }
-  };
-
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
   };
@@ -155,7 +137,7 @@ const EditWorkoutVideo = () => {
         <h1 className="font-semibold">Edit Workout Video</h1>
       </div>
       <div className="rounded-lg py-4 border-[#79CDFF] border-2 shadow-lg mt-8 bg-white">
-        <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
+        <div className="space-y-[24px] min-h-[70vh] bg-light-gray rounded-2xl">
           <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
             Editing Workout Video
           </h3>
@@ -284,19 +266,6 @@ const EditWorkoutVideo = () => {
               {/* Submit Button */}
               <Form.Item>
                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
-                  <button
-                    type="button"
-                    className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
-                    onClick={() => handleDelete()}
-                  >
-                    <span className="text-[#1E648C] font-semibold">
-                      {deleteLoading ? (
-                        <LoadingSpinner color="#436F88" />
-                      ) : (
-                        "Delete"
-                      )}
-                    </span>
-                  </button>
                   <button
                     type="submit"
                     className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "

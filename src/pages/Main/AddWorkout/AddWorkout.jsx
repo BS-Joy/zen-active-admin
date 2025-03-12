@@ -1,28 +1,33 @@
 import { useNavigate } from "react-router-dom";
-import React, { useRef, useState } from "react";
-import { Form, Input, Select, Space } from "antd";
+import React, { useState } from "react";
+import { Form, Input, Button, Select, Space } from "antd";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 const { Option } = Select;
 import { FaAngleLeft } from "react-icons/fa6";
+import { UploadOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { CiCamera } from "react-icons/ci";
 import {
   useCreateWorkoutMutation,
   useGetAllWorkoutQuery,
 } from "../../../redux/features/workout/workoutApi";
-import { IoCloseCircle } from "react-icons/io5";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const AddWorkout = () => {
   const [imageFile, setImageFile] = useState(null);
-  const fileInputRef = useRef(null);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [inputMessage, setInputMessage] = useState("");
+  const [week, setWeek] = useState(1);
+  const [name, setName] = useState("");
+  const [workoutPlan, setWorkoutPlan] = useState(null);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-
   const { data: workouts } = useGetAllWorkoutQuery(null);
-  const [createWorkout, { isLoading: createLoading }] =
-    useCreateWorkoutMutation();
+  const [createWorkout, { isLoading }] = useCreateWorkoutMutation();
 
-  // Handle Image Upload
+  // Handle file selection
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -30,11 +35,6 @@ const AddWorkout = () => {
     } else {
       alert("You can only upload image files!");
     }
-  };
-
-  // Trigger file input on button click
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
   };
 
   // Logic for multi select input
@@ -67,11 +67,9 @@ const AddWorkout = () => {
 
     try {
       const response = await createWorkout(formData).unwrap();
-      console.log(response, "response from create workout");
       if (response.success) {
         message.success("Workout created successfully!");
         form.resetFields(); // Reset form
-        setImageFile(null);
         navigate(-1);
       }
     } catch (error) {
@@ -79,11 +77,15 @@ const AddWorkout = () => {
     }
   };
 
+  const handleBackButtonClick = () => {
+    navigate(-1); // This takes the user back to the previous page
+  };
+
   return (
     <>
       <div
         className="flex items-center gap-2 text-xl cursor-pointer"
-        onClick={() => navigate(-1)}
+        onClick={handleBackButtonClick}
       >
         <FaAngleLeft />
         <h1 className="font-semibold">Add Workout</h1>
@@ -94,7 +96,12 @@ const AddWorkout = () => {
             Adding Workout
           </h3>
           <div className="w-full px-16">
-            <Form form={form} layout="vertical" onFinish={onFinish}>
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={onFinish}
+              // style={{ maxWidth: 600, margin: '0 auto' }}
+            >
               {/* Section 1 */}
               <Space direction="vertical" style={{ width: "100%" }}>
                 <Space
@@ -104,13 +111,21 @@ const AddWorkout = () => {
                 >
                   {/* Name */}
                   <Form.Item
-                    label="Workout Name"
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Workout Name
+                      </span>
+                    }
                     name="name"
+                    className="responsive-form-item"
                     rules={[
-                      {
-                        required: true,
-                        message: "Please enter the workout name!",
-                      },
+                      { required: true, message: "Please enter workout name!" },
                     ]}
                   >
                     <Input
@@ -122,18 +137,32 @@ const AddWorkout = () => {
                         fontSize: "16px",
                         fontWeight: 600,
                         color: "#525252",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     />
                   </Form.Item>
 
                   {/* Description */}
                   <Form.Item
-                    label="Workout Description"
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Workout Description
+                      </span>
+                    }
                     name="description"
+                    className="responsive-form-item"
                     rules={[
                       {
                         required: true,
-                        message: "Please enter the workout description!",
+                        message: "Please enter workout description!",
                       },
                     ]}
                   >
@@ -146,16 +175,33 @@ const AddWorkout = () => {
                         fontSize: "16px",
                         fontWeight: 600,
                         color: "#525252",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     />
                   </Form.Item>
 
                   {/* Image */}
                   <Form.Item
-                    label="Upload Image"
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Upload Image
+                      </span>
+                    }
                     name="image"
+                    className="responsive-form-item"
                     rules={[
-                      { required: true, message: "Please upload an image!" },
+                      {
+                        required: !imageFile ? true : false,
+                        message: "Please select an image!",
+                      },
                     ]}
                   >
                     <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
@@ -181,10 +227,24 @@ const AddWorkout = () => {
 
                   {/* Points */}
                   <Form.Item
-                    label="Points"
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Points
+                      </span>
+                    }
                     name="points"
+                    className="responsive-form-item"
                     rules={[
-                      { required: true, message: "Please enter points!" },
+                      {
+                        required: true,
+                        message: "Please enter wokout points!",
+                      },
                     ]}
                   >
                     <Input
@@ -196,25 +256,38 @@ const AddWorkout = () => {
                         fontSize: "16px",
                         fontWeight: 600,
                         color: "#525252",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     />
                   </Form.Item>
 
                   {/* Exercises */}
                   <Form.Item
-                    label="Select Exercise"
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Select Exercise
+                      </span>
+                    }
                     name="exercises"
+                    className="responsive-form-item"
                     rules={[
-                      {
-                        required: true,
-                        message: "Please select at least one exercise!",
-                      },
+                      { required: true, message: "Please select a exercise!" },
                     ]}
                   >
                     <Select
                       mode="multiple"
                       size={"middle"}
                       placeholder="Select Exercise"
+                      // defaultValue={['Vegetarian']}
+                      // onChange={handleMultiSelectChange}
                       style={{
                         width: "100%",
                         height: "40px",
@@ -230,11 +303,7 @@ const AddWorkout = () => {
                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center">
                   <button className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md ">
                     <span className="text-white font-semibold">
-                      {createLoading ? (
-                        <LoadingSpinner color="white" />
-                      ) : (
-                        "Create"
-                      )}
+                      {isLoading ? <LoadingSpinner color="white" /> : "Create"}
                     </span>
                   </button>
                 </div>

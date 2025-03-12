@@ -1,20 +1,28 @@
 import React, { useState } from "react";
-import { Table } from "antd";
+import { message, Table } from "antd";
 import DashboardModal from "../../../Components/DashboardModal";
 import { Link, useNavigate } from "react-router-dom";
 import defaultThumb from "../../../assets/images/exclamation-circle.png";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
-import { useGetWorkoutVideosQuery } from "../../../redux/features/workoutVideo/workoutVideoApi";
+import {
+  useDeleteWorkoutVideoMutation,
+  useGetWorkoutVideosQuery,
+} from "../../../redux/features/workoutVideo/workoutVideoApi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
+import Swal from "sweetalert2";
 
 const WorkoutVideos = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [deleteId, setDeleteId] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // State to store search input
   const [query, setQuery] = useState(""); // State to trigger search
   const navigate = useNavigate();
   const { data: workoutVideos, isLoading } = useGetWorkoutVideosQuery(query);
+  const [deleteWorkoutVideo, { isLoading: deleteLoading }] =
+    useDeleteWorkoutVideoMutation();
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -29,6 +37,39 @@ const WorkoutVideos = () => {
   // Trigger search when button is clicked
   const handleSearch = () => {
     setQuery(searchTerm);
+  };
+
+  const handleDelete = async (workoutId) => {
+    Swal.fire({
+      text: "Are you sure you want to delete this meal? ",
+      showCancelButton: true,
+      confirmButtonText: "     Sure    ",
+      cancelButtonText: "Cancel",
+      showConfirmButton: true,
+      confirmButtonColor: "#174C6B",
+      reverseButtons: true,
+      customClass: {
+        confirmButton: "swal-confirm-btn",
+        cancelButton: "swal-cancel-btn",
+        actions: "swal-actions-container",
+        popup: "swal-popup",
+      },
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        try {
+          setDeleteId(workoutId);
+          // Call your delete API
+          const res = await deleteWorkoutVideo(workoutId).unwrap();
+          if (res.success) {
+            message.success("Video deleted successfully!");
+            setDeleteId(null);
+          }
+        } catch (error) {
+          setDeleteId(null);
+          message.error(error.data?.message || "Failed to delete video.");
+        }
+      }
+    });
   };
 
   const columns = [
@@ -57,12 +98,25 @@ const WorkoutVideos = () => {
       key: "Review",
       aligen: "center",
       render: (_, data) => (
-        <div className="  items-center justify-around textcenter flex">
+        <div className="items-center justify-center gap-3 text-center flex">
           {/* Review Icon */}
-          {/* <img src={exlamIcon} alt="" className="btn px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} /> */}
+
           <Link to={`edit-workout-video/${data._id}`} className="">
             <MdEdit />
           </Link>
+          <button
+            type="button"
+            className=""
+            onClick={() => handleDelete(data?._id)}
+          >
+            <span className="text-[#1E648C] font-semibold">
+              {deleteId === data?._id ? (
+                <LoadingSpinner color="#436F88" />
+              ) : (
+                <FaTrash />
+              )}
+            </span>
+          </button>
         </div>
       ),
     },

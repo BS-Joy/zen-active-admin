@@ -9,7 +9,6 @@ import { message, Upload } from "antd";
 import { CiCamera } from "react-icons/ci";
 import { useCreateBadgeMutation } from "../../../redux/features/badge/badgeApi";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
-import { IoCloseCircle } from "react-icons/io5";
 
 const AddBadge = () => {
   const [file, setFile] = useState(null);
@@ -79,24 +78,6 @@ const AddBadge = () => {
   const handleBackButtonClick = () => {
     navigate(-1); // This takes the user back to the previous page
   };
-
-  // const props = {
-  //   name: "file",
-  //   action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-  //   headers: {
-  //     authorization: "authorization-text",
-  //   },
-  //   onChange(info) {
-  //     if (info.file.status !== "uploading") {
-  //       console.log(info.file, info.fileList);
-  //     }
-  //     if (info.file.status === "done") {
-  //       message.success(`${info.file.name} file uploaded successfully`);
-  //     } else if (info.file.status === "error") {
-  //       message.error(`${info.file.name} file upload failed.`);
-  //     }
-  //   },
-  // };
 
   return (
     <>
@@ -227,7 +208,12 @@ const AddBadge = () => {
                       }
                       name="image"
                       className="responsive-form-item"
-                      // rules={[{ required: true, message: 'Please enter the package amount!' }]}
+                      rules={[
+                        {
+                          required: !imageFile ? true : false,
+                          message: "Please select an image!",
+                        },
+                      ]}
                     >
                       <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                         <input

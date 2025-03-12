@@ -175,7 +175,9 @@ const EditBadge = () => {
                       }
                       name="name"
                       className="responsive-form-item"
-                      // rules={[{ required: true, message: 'Please select a package name!' }]}
+                      rules={[
+                        { required: true, message: "Please enter badge name!" },
+                      ]}
                     >
                       <Input
                         type="text"
@@ -254,6 +256,12 @@ const EditBadge = () => {
                       label="Upload Image"
                       name="image"
                       className="responsive-form-item"
+                      rules={[
+                        {
+                          required: !imageFileName ? true : false,
+                          message: "Please select badge image!",
+                        },
+                      ]}
                     >
                       <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                         <input
@@ -291,6 +299,9 @@ const EditBadge = () => {
                       }
                       name="points"
                       className="responsive-form-item-section-2"
+                      rules={[
+                        { required: true, message: "Please enter points!" },
+                      ]}
                     >
                       <Input
                         type="number"
@@ -314,7 +325,7 @@ const EditBadge = () => {
               {/* Submit Button */}
               <Form.Item>
                 <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center gap-10">
-                  <button
+                  {/* <button
                     type="button"
                     className="w-[500px] border border-[#1E648C]/60 bg-[#EBF8FF] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
                     onClick={() => handleDelete()}
@@ -326,7 +337,7 @@ const EditBadge = () => {
                         "Delete"
                       )}
                     </span>
-                  </button>
+                  </button> */}
                   <button
                     type="submit"
                     className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md "

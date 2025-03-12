@@ -28,44 +28,44 @@ const AddWorkoutVideoNormal = () => {
   const messageRef = useRef(null);
 
   // Load FFmpeg on component mount
-  useEffect(() => {
-    loadFFmpeg();
-  }, []);
+  // useEffect(() => {
+  //   loadFFmpeg();
+  // }, []);
 
-  const loadFFmpeg = async () => {
-    try {
-      const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
-      const ffmpeg = ffmpegRef.current;
-      console.log(ffmpeg);
+  // const loadFFmpeg = async () => {
+  //   try {
+  //     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+  //     const ffmpeg = ffmpegRef.current;
+  //     console.log(ffmpeg);
 
-      ffmpeg.on("log", ({ message }) => {
-        if (messageRef.current) {
-          messageRef.current.innerHTML = message;
-        }
-        console.log(message);
-      });
+  //     ffmpeg.on("log", ({ message }) => {
+  //       if (messageRef.current) {
+  //         messageRef.current.innerHTML = message;
+  //       }
+  //       console.log(message);
+  //     });
 
-      ffmpeg.on("progress", ({ progress }) => {
-        setConversionProgress(Math.round(progress * 100));
-      });
+  //     ffmpeg.on("progress", ({ progress }) => {
+  //       setConversionProgress(Math.round(progress * 100));
+  //     });
 
-      await ffmpeg.load({
-        coreURL: await toBlobURL(
-          `${baseURL}/ffmpeg-core.js`,
-          "text/javascript"
-        ),
-        wasmURL: await toBlobURL(
-          `${baseURL}/ffmpeg-core.wasm`,
-          "application/wasm"
-        ),
-      });
+  //     await ffmpeg.load({
+  //       coreURL: await toBlobURL(
+  //         `${baseURL}/ffmpeg-core.js`,
+  //         "text/javascript"
+  //       ),
+  //       wasmURL: await toBlobURL(
+  //         `${baseURL}/ffmpeg-core.wasm`,
+  //         "application/wasm"
+  //       ),
+  //     });
 
-      setFfmpegLoaded(true);
-      console.log("FFmpeg loaded successfully");
-    } catch (error) {
-      console.error("Error loading FFmpeg:", error);
-    }
-  };
+  //     setFfmpegLoaded(true);
+  //     console.log("FFmpeg loaded successfully");
+  //   } catch (error) {
+  //     console.error("Error loading FFmpeg:", error);
+  //   }
+  // };
 
   // Check video resolution
   const checkVideoResolution = (file) => {
@@ -102,9 +102,9 @@ const AddWorkoutVideoNormal = () => {
     const needsConversion = height > 720;
     setNeedsConversion(needsConversion);
 
-    console.log(
-      `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
-    );
+    // console.log(
+    //   `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
+    // );
   };
 
   const handleImageChange = (event) => {
@@ -227,7 +227,7 @@ const AddWorkoutVideoNormal = () => {
         <h1 className="font-semibold">Add Video</h1>
       </div>
       <div className="rounded-lg py-4 border-[#79CDFF] border-2 shadow-lg mt-8 bg-white">
-        <div className="space-y-[24px] min-h-[83vh] bg-light-gray rounded-2xl">
+        <div className="space-y-[24px] min-h-[70vh] bg-light-gray rounded-2xl">
           <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
             Adding Video
           </h3>
@@ -352,7 +352,7 @@ const AddWorkoutVideoNormal = () => {
               <div className="p-4 mt-10 text-center mx-auto flex items-center justify-center">
                 <button
                   type="submit"
-                  className="w-[500px] bg-[#174C6B] text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
+                  className="w-[500px] bg-[#174C6B] disabled:bg-[#174C6B]/50 disabled:cursor-not-allowed text-white px-10 h-[45px] flex items-center justify-center gap-3 text-lg outline-none rounded-md"
                   disabled={
                     !videoFile ||
                     (needsConversion && !convertedVideo) ||
