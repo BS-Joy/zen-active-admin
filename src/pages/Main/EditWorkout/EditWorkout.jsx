@@ -7,6 +7,7 @@ import { CiCamera } from "react-icons/ci";
 import {
   useDeleteWorkoutMutation,
   useEditWorkoutMutation,
+  useGetAllWorkoutQuery,
   useGetSingleWorkoutQuery,
 } from "../../../redux/features/workout/workoutApi";
 import { IoCloseCircle } from "react-icons/io5";
@@ -29,6 +30,7 @@ const EditWorkout = () => {
   const [editWorkout, { isLoading: editLoading }] = useEditWorkoutMutation();
   const [deleteWorkout, { isLoading: deleteLoading }] =
     useDeleteWorkoutMutation();
+  const { data: workouts } = useGetAllWorkoutQuery(null);
 
   // Set the initial preview image when data loads
   // useEffect(() => {
@@ -74,6 +76,16 @@ const EditWorkout = () => {
       value: exercise._id, // Value stored in the database
       label: exercise.name, // Displayed in the UI
     })) || [];
+
+  const allExercises =
+    workouts?.data?.reduce((acc, workout) => {
+      workout.exercises.forEach((exercise) => {
+        if (!acc.some((item) => item.value === exercise._id)) {
+          acc.push({ value: exercise._id, label: exercise.name });
+        }
+      });
+      return acc;
+    }, []) || [];
 
   // const handleMultiSelectChange = (value) => {
   //   console.log(`Selected: ${value}`);
@@ -373,6 +385,7 @@ const EditWorkout = () => {
                     rules={[
                       { required: true, message: "Please select a exercise!" },
                     ]}
+                    initialValue={options}
                   >
                     <Select
                       mode="multiple"
@@ -383,7 +396,7 @@ const EditWorkout = () => {
                       style={{
                         width: "100%",
                       }}
-                      options={options}
+                      options={allExercises}
                     />
                   </Form.Item>
                 </Space>

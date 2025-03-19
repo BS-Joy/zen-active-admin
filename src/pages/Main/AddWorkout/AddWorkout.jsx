@@ -48,6 +48,8 @@ const AddWorkout = () => {
       return acc;
     }, []) || [];
 
+  console.log(options);
+
   const handleMultiSelectChange = (value) => {
     console.log(`Selected: ${value}`);
   };

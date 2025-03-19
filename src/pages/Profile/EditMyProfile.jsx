@@ -58,11 +58,15 @@ const EditMyProfile = () => {
 
     try {
       const res = await editProfile(formData).unwrap();
-      dispatch(setUser({ user: res?.data, token }));
-      message.success("Profile update successful!");
-      form.resetFields();
-      setFile(null);
-      setPreview(null);
+
+      if (res.success) {
+        dispatch(setUser({ user: res?.data, token }));
+        message.success("Profile update successful!");
+        form.resetFields();
+        setFile(null);
+        setPreview(null);
+        navigate(-1);
+      }
     } catch (error) {
       message.error(error.data?.message || "Failed to edit profile.");
     }
