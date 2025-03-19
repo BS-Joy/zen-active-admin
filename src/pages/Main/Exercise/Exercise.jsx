@@ -193,7 +193,7 @@ const Exercise = () => {
                 return originalElement;
               },
             }}
-            className="rounded-lg"
+            className="rounded-lg overflow-x-auto"
           />
 
           {/* Dashboard Modal */}

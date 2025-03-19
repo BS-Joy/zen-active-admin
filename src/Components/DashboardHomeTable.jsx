@@ -11,7 +11,8 @@ const DashboardHomeTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [query, setQuery] = useState({ searchTerm: "", purchaseDate: "" });
-  const { data: recentTransactions, isLoading } = useGetRecentTransactionsQuery(query)
+  const { data: recentTransactions, isLoading } =
+    useGetRecentTransactionsQuery(query);
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -48,11 +49,16 @@ const DashboardHomeTable = () => {
     {
       title: "Action",
       key: "Review",
-      aligen: 'center',
+      aligen: "center",
       render: (_, data) => (
         <div className="  items-center justify-around textcenter flex">
           {/* Review Icon */}
-          <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
+          <img
+            src={exlamIcon}
+            alt=""
+            className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer"
+            onClick={() => showModal(data)}
+          />
           {/* <Link to={'/reviews'} className="btn bg-black text-white px-3 py-1 text-sm rounded-full">
            
             View
@@ -62,17 +68,17 @@ const DashboardHomeTable = () => {
     },
   ];
 
-
   // Map API response to table data
-  const data = recentTransactions?.data?.map((transaction, index) => ({
-    key: index,
-    transIs: transaction.purchaseId,
-    name: transaction.userId.name.firstName,
-    subscription: transaction.packageName,
-    amount: `$${transaction.packagePrice}`,
-    date: moment(transaction.purchaseDate).format("DD MMM YYYY"),
-    ...transaction,
-  })) || [];
+  const data =
+    recentTransactions?.data?.map((transaction, index) => ({
+      key: index,
+      transIs: transaction.purchaseId,
+      name: transaction.userId.name.firstName,
+      subscription: transaction.packageName,
+      amount: `$${transaction.packagePrice}`,
+      date: moment(transaction.purchaseDate).format("DD MMM YYYY"),
+      ...transaction,
+    })) || [];
 
   return (
     <div className="rounded-lg border-2 py-4 border-[#37B5FF] mt-8 recent-users-table">
@@ -83,7 +89,7 @@ const DashboardHomeTable = () => {
         dataSource={data}
         loading={isLoading}
         pagination={{ position: ["bottomCenter"] }}
-        className="rounded-lg"
+        className="rounded-lg overflow-x-auto"
       />
       {/* Dashboard Modal */}
       <DashboardModal
@@ -100,7 +106,7 @@ const DashboardHomeTable = () => {
           </div>
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>Date :</p>
-            <p>{moment(modalData.purchaseDate).format('DD MM YYYY')}</p>
+            <p>{moment(modalData.purchaseDate).format("DD MM YYYY")}</p>
           </div>
           <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
             <p>User Name :</p>

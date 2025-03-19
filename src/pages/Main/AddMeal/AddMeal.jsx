@@ -128,7 +128,7 @@ const AddMeal = () => {
                       </span>
                     }
                     name="mealName"
-                    className="responsive-form-item"
+                    className=""
                     // rules={[{ required: true, message: 'Please select a package name!' }]}
                   >
                     <Input
@@ -161,10 +161,10 @@ const AddMeal = () => {
                       </span>
                     }
                     name="image"
-                    className="responsive-form-item"
+                    className=""
                     // rules={[{ required: true, message: 'Please enter the package amount!' }]}
                   >
-                    <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                    <div className="relative lg:w-[482px] w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
                         type="file"
                         accept="image/*"
@@ -199,7 +199,7 @@ const AddMeal = () => {
                       </span>
                     }
                     name="mealTime"
-                    className="responsive-form-item"
+                    className=""
                     // rules={[{ required: true, message: 'Please select a duration!' }]}
                   >
                     <Select
@@ -239,7 +239,7 @@ const AddMeal = () => {
                       </span>
                     }
                     name="category"
-                    className="responsive-form-item"
+                    className=""
                     // rules={[{ required: true, message: 'Please select a duration!' }]}
                   >
                     <Select
@@ -279,7 +279,7 @@ const AddMeal = () => {
                       </span>
                     }
                     name="suitableFor"
-                    className="responsive-form-item"
+                    className=""
                     // rules={[{ required: true, message: 'Please select a duration!' }]}
                   >
                     <Select
@@ -310,7 +310,7 @@ const AddMeal = () => {
                       </span>
                     }
                     name="amount"
-                    className="responsive-form-item"
+                    className=""
                     // rules={[{ required: true, message: 'Please select a duration!' }]}
                   >
                     <Input
@@ -332,7 +332,7 @@ const AddMeal = () => {
               </Space>
 
               {/* Section 2 */}
-              <div className="grid grid-cols-2 gap-8 mt-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                 <div>
                   <h1 className="text-[18px] font-semibold pb-3">
                     Nutritional Info
@@ -355,7 +355,7 @@ const AddMeal = () => {
                         </span>
                       }
                       name="calories"
-                      className="responsive-form-item-section-2"
+                      className="-section-2"
                     >
                       <Input
                         type="number"
@@ -385,7 +385,7 @@ const AddMeal = () => {
                         </span>
                       }
                       name="carbs"
-                      className="responsive-form-item-section-2"
+                      className="-section-2"
                     >
                       <Input
                         type="number"
@@ -415,7 +415,7 @@ const AddMeal = () => {
                         </span>
                       }
                       name="proteins"
-                      className="responsive-form-item-section-2"
+                      className="-section-2"
                     >
                       <Input
                         type="number"
@@ -445,7 +445,7 @@ const AddMeal = () => {
                         </span>
                       }
                       name="fats"
-                      className="responsive-form-item-section-2"
+                      className="-section-2"
                     >
                       <Input
                         type="number"

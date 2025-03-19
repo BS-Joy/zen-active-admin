@@ -62,7 +62,7 @@ const Header = () => {
 
   const items = [
     {
-      label: <Link to="/dashboard">Dashboard</Link>,
+      label: <Link to="/">Dashboard</Link>,
       key: "dashboard",
       icon: <DashboardOutlined />,
     },

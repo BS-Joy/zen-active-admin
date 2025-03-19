@@ -7,13 +7,11 @@ const StudioPost = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
 
-  
   const showModal = (data) => {
     setIsModalOpen(true);
     setModalData(data);
   };
 
- 
   const columns = [
     {
       title: "#SI No.",
@@ -52,14 +50,12 @@ const StudioPost = () => {
     },
   ];
 
-
   const data = Array.from({ length: 3 }, (_, index) => ({
     key: index,
     transIs: `#${index + 1}`,
     Company: "Adamos Studio",
     Neighborhood: "Hollywood",
     City: "LA",
-
   }));
 
   return (
@@ -71,7 +67,6 @@ const StudioPost = () => {
           </h3>
         </div>
 
-     
         <Table
           columns={columns}
           dataSource={data}
@@ -79,17 +74,12 @@ const StudioPost = () => {
             position: ["bottomCenter"],
             showQuickJumper: true,
           }}
+          className="overflow-x-auto"
         />
       </div>
 
-      
-      <DashboardModal
-        setIsModalOpen={setIsModalOpen}
-        isModalOpen={isModalOpen}
-      >
+      <DashboardModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}>
         <div className=" flex flex-col justify-between">
-
-
           {/* Action Buttons */}
           <div className="flex items-center flex-col gap-6 ">
             <Button
