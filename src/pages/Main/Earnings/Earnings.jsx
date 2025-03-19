@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, DatePicker, Input, Table } from "antd";
 import { FiAlertCircle } from "react-icons/fi";
 import DashboardModal from "../../../Components/DashboardModal";
-import { IoSearch } from "react-icons/io5";
+import { IoClose, IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -12,6 +12,8 @@ import {
 } from "../../../redux/features/transaction/transactionApi";
 import moment from "moment";
 import DownloadButton from "../../../Components/React-PDF/DownloadButton";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
+import { useGetAllUserQuery } from "../../../redux/features/auth/authApi";
 
 const Earnings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +24,9 @@ const Earnings = () => {
   // State to trigger search
   const { data: recentTransactions, isLoading } =
     useGetRecentTransactionsQuery(query);
-  const { data: totalEarnings } = useGetTotalEarningsQuery();
+  const { data: totalEarnings, isLoading: earnLoading } =
+    useGetTotalEarningsQuery();
+  const { data: allUsers, isLoading: usersLoading } = useGetAllUserQuery(query);
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -32,13 +36,13 @@ const Earnings = () => {
   // Handle search input change
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    console.log(searchTerm);
+    // console.log(searchTerm);
   };
 
   // Handle date input change
   const handleDateChange = (date, dateString) => {
     setPurchaseDate(dateString); // Use the formatted date string
-    console.log(dateString);
+    // console.log(dateString);
   };
 
   // Trigger search when button is clicked
@@ -118,7 +122,12 @@ const Earnings = () => {
           <div className="">
             <h3 className="text-[20px] text-white">{"Total Earnings"}</h3>
             <h3 className="text-[30px] text-white font-extralight">
-              ${totalEarnings.data?.totalEarn || 0}
+              $
+              {earnLoading ? (
+                <LoadingSpinner color="white" size={15} />
+              ) : (
+                totalEarnings?.data?.totalEarn || 0
+              )}
             </h3>
           </div>
         </div>
@@ -128,7 +137,9 @@ const Earnings = () => {
             <h3 className="text-[20px] text-gray font-semibold">
               {"Total Users"}
             </h3>
-            <h3 className="text-[30px] font-extralight text-[#2683EB]">6500</h3>
+            <h3 className="text-[30px] font-extralight text-[#2683EB]">
+              {usersLoading ? <LoadingSpinner /> : allUsers?.meta?.total || 0}
+            </h3>
           </div>
         </div>
       </div>
@@ -159,9 +170,28 @@ const Earnings = () => {
                 borderRadius: "50%",
                 padding: "6px",
               }}
+              onClick={handleSearch}
             >
-              <IoSearch size={18} onClick={handleSearch} />
+              <IoSearch size={18} />
             </button>
+            {(searchTerm || purchaseDate) && (
+              <button
+                style={{
+                  border: "none",
+                  backgroundColor: "#caf0f8",
+                  color: "#174C6B",
+                  borderRadius: "50%",
+                  padding: "7px",
+                }}
+                onClick={() => {
+                  setSearchTerm("");
+                  setQuery({});
+                  setPurchaseDate("");
+                }}
+              >
+                <IoClose size={20} />
+              </button>
+            )}
           </div>
         </div>
 
