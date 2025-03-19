@@ -417,7 +417,14 @@
 
 .responsive-form-item {
   flex: 1;
-  min-width: 440px;
+  width: 440px;
+  /* background-color: red; */
+}
+
+@media (max-width: 768px) {
+  .responsive-form-item {
+    width: fit-content;
+  }
 }
 
 .responsive-form-item-section-2 {}

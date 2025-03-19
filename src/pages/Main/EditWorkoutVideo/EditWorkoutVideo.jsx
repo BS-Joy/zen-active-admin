@@ -154,12 +154,8 @@ const EditWorkoutVideo = () => {
                 className="responsive-space-section-2"
               >
                 {/* Video */}
-                <Form.Item
-                  label="Upload Video"
-                  name="media"
-                  className="responsive-form-item"
-                >
-                  <div className="relative w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                <Form.Item label="Upload Video" name="media" className="">
+                  <div className="relative lg:w-[482px] w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                     <input
                       type="file"
                       accept="video/*"
@@ -200,12 +196,8 @@ const EditWorkoutVideo = () => {
                 )}
 
                 {/* Thumbnail */}
-                <Form.Item
-                  label="Upload Image"
-                  name="image"
-                  className="responsive-form-item"
-                >
-                  <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                <Form.Item label="Upload Image" name="image" className="">
+                  <div className="relative lg:w-[482px] w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                     <input
                       type="file"
                       accept="image/*"
