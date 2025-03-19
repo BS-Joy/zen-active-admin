@@ -93,7 +93,7 @@ const AddBadge = () => {
           <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
             Adding Badge
           </h3>
-          <div className="w-full px-16">
+          <div className="w-full px-5 lg:px-16">
             <Form
               form={form}
               layout="vertical"
@@ -103,53 +103,51 @@ const AddBadge = () => {
               {/* Section 1 */}
               {/* <Space direction="vertical" style={{ width: '100%' }}> */}
               {/* <Space size="large" direction="horizontal" className="responsive-space"> */}
-              <div className="grid grid-cols-2 gap-8 mt-8">
-                <div>
-                  <Space
-                    size="large"
-                    direction="horizontal"
-                    className="responsive-space-section-2"
-                  >
-                    <Form.Item
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please enter badge name!",
-                        },
-                      ]}
-                      label={
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "600",
-                            color: "#2D2D2D",
-                          }}
-                        >
-                          Badge Name
-                        </span>
-                      }
-                      name="name"
-                      className="responsive-form-item"
-                      // rules={[{ required: true, message: 'Please select a package name!' }]}
+              <Space
+                size="large"
+                direction="horizontal"
+                className="responsive-space-section-2"
+              >
+                <Form.Item
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter badge name!",
+                    },
+                  ]}
+                  label={
+                    <span
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        color: "#2D2D2D",
+                      }}
                     >
-                      <Input
-                        type="text"
-                        placeholder="Enter Badge Name"
-                        style={{
-                          height: "40px",
-                          border: "1px solid #79CDFF",
-                          fontSize: "16px",
-                          fontWeight: 600,
-                          color: "#525252",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      />
-                    </Form.Item>
+                      Badge Name
+                    </span>
+                  }
+                  name="name"
+                  className="lg:w-[482px] w-full"
+                  // rules={[{ required: true, message: 'Please select a package name!' }]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Enter Badge Name"
+                    style={{
+                      height: "40px",
+                      border: "1px solid #79CDFF",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      color: "#525252",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  />
+                </Form.Item>
 
-                    {/* image with preview */}
-                    {/* <Form.Item
+                {/* image with preview */}
+                {/* <Form.Item
                       label={
                         <span className="text-lg font-semibold text-[#2D2D2D]">
                           Upload Image
@@ -193,89 +191,87 @@ const AddBadge = () => {
                       </div>
                     </Form.Item> */}
 
-                    {/* Image */}
-                    <Form.Item
-                      label={
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "600",
-                            color: "#2D2D2D",
-                          }}
-                        >
-                          Upload Image
-                        </span>
-                      }
-                      name="image"
-                      className="responsive-form-item"
-                      rules={[
-                        {
-                          required: !imageFile ? true : false,
-                          message: "Please select an image!",
-                        },
-                      ]}
+                {/* Image */}
+                <Form.Item
+                  label={
+                    <span
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        color: "#2D2D2D",
+                      }}
                     >
-                      <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          className="hidden"
-                          style={{ display: "none" }}
-                          id="imageUpload"
-                        />
-                        <label
-                          htmlFor="imageUpload"
-                          className="cursor-pointer w-full flex justify-between items-center"
-                        >
-                          <span className="text-[#525252] font-semibold">
-                            {imageFile ? imageFile.name : "Select an image"}
-                          </span>
-                          <CiCamera size={25} color="#174C6B" />
-                        </label>
-                      </div>
-                    </Form.Item>
+                      Upload Image
+                    </span>
+                  }
+                  name="image"
+                  className=""
+                  rules={[
+                    {
+                      required: !imageFile ? true : false,
+                      message: "Please select an image!",
+                    },
+                  ]}
+                >
+                  <div className="relative lg:w-[482px] w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      style={{ display: "none" }}
+                      id="imageUpload"
+                    />
+                    <label
+                      htmlFor="imageUpload"
+                      className="cursor-pointer w-full flex justify-between items-center"
+                    >
+                      <span className="text-[#525252] font-semibold">
+                        {imageFile ? imageFile.name : "Select an image"}
+                      </span>
+                      <CiCamera size={25} color="#174C6B" />
+                    </label>
+                  </div>
+                </Form.Item>
 
-                    {/* points */}
-                    <Form.Item
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please add point!",
-                        },
-                      ]}
-                      label={
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "600",
-                            color: "#2D2D2D",
-                          }}
-                        >
-                          Points To Achieve
-                        </span>
-                      }
-                      name="points"
-                      className="responsive-form-item-section-2"
+                {/* points */}
+                <Form.Item
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please add point!",
+                    },
+                  ]}
+                  label={
+                    <span
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        color: "#2D2D2D",
+                      }}
                     >
-                      <Input
-                        type="number"
-                        placeholder="Enter Points"
-                        style={{
-                          height: "40px",
-                          border: "1px solid #79CDFF",
-                          fontSize: "16px",
-                          fontWeight: 600,
-                          color: "#525252",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      />
-                    </Form.Item>
-                  </Space>
-                </div>
-              </div>
+                      Points To Achieve
+                    </span>
+                  }
+                  name="points"
+                  className=""
+                >
+                  <Input
+                    type="number"
+                    placeholder="Enter Points"
+                    style={{
+                      height: "40px",
+                      border: "1px solid #79CDFF",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      color: "#525252",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  />
+                </Form.Item>
+              </Space>
 
               {/* </Space> */}
 
