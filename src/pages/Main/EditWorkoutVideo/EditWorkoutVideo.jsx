@@ -141,127 +141,123 @@ const EditWorkoutVideo = () => {
           <h3 className="text-2xl text-[#174C6B] mb-4 border-b border-[#79CDFF]/50 pb-3 pl-16 font-semibold">
             Editing Workout Video
           </h3>
-          <div className="w-full px-16">
+          <div className="w-full px-5 lg:px-16">
             <Form
               form={form}
               layout="vertical"
               onFinish={onFinish}
               // style={{ maxWidth: 600, margin: '0 auto' }}
             >
-              <div className="grid grid-cols-2 gap-8 mt-8">
-                <div>
-                  <Space
-                    size="large"
-                    direction="horizontal"
-                    className="responsive-space-section-2"
-                  >
-                    {/* Video */}
-                    <Form.Item
-                      label="Upload Video"
-                      name="media"
-                      className="responsive-form-item"
+              <Space
+                size="large"
+                direction="horizontal"
+                className="responsive-space-section-2"
+              >
+                {/* Video */}
+                <Form.Item
+                  label="Upload Video"
+                  name="media"
+                  className="responsive-form-item"
+                >
+                  <div className="relative w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={handleVideoChange}
+                      className="hidden"
+                      id="videoUpload"
+                      style={{ display: "none" }}
+                    />
+                    <label
+                      htmlFor="videoUpload"
+                      className="cursor-pointer w-full flex justify-between items-center"
                     >
-                      <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
-                        <input
-                          type="file"
-                          accept="video/*"
-                          onChange={handleVideoChange}
-                          className="hidden"
-                          id="videoUpload"
-                          style={{ display: "none" }}
-                        />
-                        <label
-                          htmlFor="videoUpload"
-                          className="cursor-pointer w-full flex justify-between items-center"
-                        >
-                          <span className="text-[#525252] font-semibold">
-                            {videoFileName}
-                          </span>
-                          <CiCamera size={25} color="#174C6B" />
-                        </label>
-                      </div>
-                    </Form.Item>
-                    {videoResolution && (
-                      <div className="mt-2 text-sm">
-                        <p>
-                          Resolution: {videoResolution.width}x
-                          {videoResolution.height}
-                        </p>
-                        {needsConversion ? (
-                          <p className="text-amber-600">
-                            This video is larger than 720p, please upload a
-                            video in 720p or lower
-                          </p>
-                        ) : (
-                          // <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
-                          <p className="text-green-600">
-                            This video is in good shape
-                          </p>
-                        )}
-                      </div>
+                      <span className="text-[#525252] font-semibold">
+                        {videoFileName}
+                      </span>
+                      <CiCamera size={25} color="#174C6B" />
+                    </label>
+                  </div>
+                </Form.Item>
+                {videoResolution && (
+                  <div className="mt-2 text-sm">
+                    <p>
+                      Resolution: {videoResolution.width}x
+                      {videoResolution.height}
+                    </p>
+                    {needsConversion ? (
+                      <p className="text-amber-600">
+                        This video is larger than 720p, please upload a video in
+                        720p or lower
+                      </p>
+                    ) : (
+                      // <p className="text-amber-600">This video is larger than 720p and needs to be converted</p>
+                      <p className="text-green-600">
+                        This video is in good shape
+                      </p>
                     )}
+                  </div>
+                )}
 
-                    {/* Thumbnail */}
-                    <Form.Item
-                      label="Upload Image"
-                      name="image"
-                      className="responsive-form-item"
+                {/* Thumbnail */}
+                <Form.Item
+                  label="Upload Image"
+                  name="image"
+                  className="responsive-form-item"
+                >
+                  <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      style={{ display: "none" }}
+                      id="imageUpload"
+                    />
+                    <label
+                      htmlFor="imageUpload"
+                      className="cursor-pointer w-full flex justify-between items-center"
                     >
-                      <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          className="hidden"
-                          style={{ display: "none" }}
-                          id="imageUpload"
-                        />
-                        <label
-                          htmlFor="imageUpload"
-                          className="cursor-pointer w-full flex justify-between items-center"
-                        >
-                          <span className="text-[#525252] font-semibold">
-                            {imageFileName}
-                          </span>
-                          <CiCamera size={25} color="#174C6B" />
-                        </label>
-                      </div>
-                    </Form.Item>
+                      <span className="text-[#525252] font-semibold">
+                        {imageFileName}
+                      </span>
+                      <CiCamera size={25} color="#174C6B" />
+                    </label>
+                  </div>
+                </Form.Item>
 
-                    {/* Title */}
-                    <Form.Item
-                      label={
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "600",
-                            color: "#2D2D2D",
-                          }}
-                        >
-                          Video Title
-                        </span>
-                      }
-                      name="name"
-                      className="responsive-form-item-section-2"
+                {/* Title */}
+                <Form.Item
+                  label={
+                    <span
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        color: "#2D2D2D",
+                      }}
                     >
-                      <Input
-                        type="text"
-                        placeholder="Enter video title"
-                        style={{
-                          height: "40px",
-                          border: "1px solid #79CDFF",
-                          fontSize: "16px",
-                          fontWeight: 600,
-                          color: "#525252",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      />
-                    </Form.Item>
-                  </Space>
-                </div>
-              </div>
+                      Video Title
+                    </span>
+                  }
+                  name="name"
+                  className="responsive-form-item-section-2"
+                >
+                  <Input
+                    type="text"
+                    placeholder="Enter video title"
+                    style={{
+                      height: "40px",
+                      border: "1px solid #79CDFF",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      color: "#525252",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  />
+                </Form.Item>
+              </Space>
 
               {/* Submit Button */}
               <Form.Item>

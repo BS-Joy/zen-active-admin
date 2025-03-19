@@ -53,7 +53,7 @@ const Sidebar = () => {
           <ul className="mt-10 max-h-[650px] overflow-y-auto space-y-1 xl:space-y-2 px-4">
             {routeLinkGenerators(dashboardItems).map(
               ({ name, icon, path, children, rootPath }, indx) =>
-                children?.length ? null
+                children?.length ? null : (
                   // (
                   //     <li key={indx} className="overflow-hidden">
                   //       <button
@@ -115,31 +115,30 @@ const Sidebar = () => {
                   //         ))}
                   //       </div>
                   //     </li>
-                  //   ) 
-                  : (
-                    <li
-                      onClick={() => {
-                        setOpenNome((c) => ({
-                          name: c?.name === name ? null : name,
-                        }));
-                      }}
-                      key={indx}
+                  //   )
+                  <li
+                    onClick={() => {
+                      setOpenNome((c) => ({
+                        name: c?.name === name ? null : name,
+                      }));
+                    }}
+                    key={indx}
+                  >
+                    <NavLink
+                      to={path}
+                      className={({ isActive }) =>
+                        isActive
+                          ? "bg-[#EBF8FF] text-[#174C6B]" +
+                            " w-full px-4 py-3 flex items-center justify-start gap-[24px]  transition-all rounded-xl"
+                          : " hover:text-[#174C6B]  hover:bg-[#EBF8FF] text-[#EBF8FF]" +
+                            " w-full px-4 py-3 flex items-center justify-start gap-[24px]  transition-all rounded-xl"
+                      }
                     >
-                      <NavLink
-                        to={path}
-                        className={({ isActive }) =>
-                          isActive
-                            ? "bg-[#EBF8FF] text-[#174C6B]" +
-                            " w-full px-4 py-3 flex items-center justify-start gap-[24px]  transition-all rounded-xl"
-                            : " hover:text-[#174C6B]  hover:bg-[#EBF8FF] text-[#EBF8FF]" +
-                            " w-full px-4 py-3 flex items-center justify-start gap-[24px]  transition-all rounded-xl"
-                        }
-                      >
-                        <div>{createElement(icon, { size: "24" })}</div>
-                        <span className="text-[18px]"> {name}</span>
-                      </NavLink>
-                    </li>
-                  )
+                      <div>{createElement(icon, { size: "24" })}</div>
+                      <span className="text-[18px]"> {name}</span>
+                    </NavLink>
+                  </li>
+                )
             )}
           </ul>
         </div>

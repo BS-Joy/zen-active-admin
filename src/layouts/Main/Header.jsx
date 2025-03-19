@@ -1,13 +1,32 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Badge } from "antd";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Badge, Dropdown } from "antd";
 import profileImage from "../../assets/images/dash-profile.png";
 import { HiOutlineBell } from "react-icons/hi2";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import {
+  MdManageHistory,
+  MdMenu,
+  MdOutlineKeyboardArrowDown,
+} from "react-icons/md";
 import { Select } from "antd";
 import { useSelector } from "react-redux";
 import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import defaultAvatar from "../../assets/images/avatar.png";
+import {
+  DashboardOutlined,
+  DollarOutlined,
+  UserOutlined,
+  CrownOutlined,
+  CoffeeOutlined,
+  // BicycleOutlined,
+  // DumbbellOutlined,
+  SettingOutlined,
+  VideoCameraOutlined,
+  ShoppingOutlined,
+  FileOutlined,
+} from "@ant-design/icons";
+import { PiPersonSimpleBikeBold } from "react-icons/pi";
+import { CiDumbbell } from "react-icons/ci";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -41,6 +60,64 @@ const Header = () => {
     setNotificationPopup(false);
   }, [loacatin.pathname]);
 
+  const items = [
+    {
+      label: <Link to="/dashboard">Dashboard</Link>,
+      key: "dashboard",
+      icon: <DashboardOutlined />,
+    },
+    {
+      label: <Link to="/earnings">Earnings</Link>,
+      key: "earnings",
+      icon: <DollarOutlined />,
+    },
+    {
+      label: <Link to="/users">Users</Link>,
+      key: "users",
+      icon: <UserOutlined />,
+    },
+    {
+      label: <Link to="/subscription">Subscription</Link>,
+      key: "subscription",
+      icon: <CrownOutlined />,
+    },
+    {
+      label: <Link to="/meals">Meals</Link>,
+      key: "meals",
+      icon: <CoffeeOutlined />,
+    },
+    {
+      label: <Link to="/exercise">Exercise</Link>,
+      key: "exercise",
+      icon: <PiPersonSimpleBikeBold />,
+    },
+    {
+      label: <Link to="/workouts">Workouts</Link>,
+      key: "workouts",
+      icon: <CiDumbbell />,
+    },
+    {
+      label: <Link to="/workout-plans">Workout Plans</Link>,
+      key: "workout-plans",
+      icon: <MdManageHistory />,
+    },
+    {
+      label: <Link to="/workout-videos">Workout Videos</Link>,
+      key: "workout-videos",
+      icon: <VideoCameraOutlined />,
+    },
+    {
+      label: <Link to="/store">Store</Link>,
+      key: "store",
+      icon: <ShoppingOutlined />,
+    },
+    {
+      label: <Link to="/settings">Settings</Link>,
+      key: "settings",
+      icon: <SettingOutlined />,
+    },
+  ];
+
   return (
     <div className="w-full h-[88px] flex justify-between items-center rounded-sm py-[16px] px-[32px] shadow-lg bg-[#174C6B]">
       <div className="text-start space-y-0.5">
@@ -48,6 +125,17 @@ const Header = () => {
           {"Welcome, Jane Cooper"}
         </p>
         <p className="text-sm md:text-xl">{"Have a nice day!"}</p> */}
+        <Dropdown
+          menu={{
+            items,
+          }}
+          trigger={["click"]}
+        >
+          <MdMenu color="white" size={30} />
+        </Dropdown>
+        {/* <button className="lg:hidden block">
+          
+        </button> */}
       </div>
       <div className="flex gap-x-[41px]">
         {/* <div
