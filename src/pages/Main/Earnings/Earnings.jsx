@@ -6,7 +6,10 @@ import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import exlamIcon from "../../../assets/images/exclamation-circle.png";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { useGetRecentTransactionsQuery } from "../../../redux/features/transaction/transactionApi";
+import {
+  useGetRecentTransactionsQuery,
+  useGetTotalEarningsQuery,
+} from "../../../redux/features/transaction/transactionApi";
 import moment from "moment";
 import DownloadButton from "../../../Components/React-PDF/DownloadButton";
 
@@ -17,7 +20,9 @@ const Earnings = () => {
   const [purchaseDate, setPurchaseDate] = useState(""); // State to store search input
   const [query, setQuery] = useState({ searchTerm: "", purchaseDate: "" });
   // State to trigger search
-  const { data: recentTransactions, isLoading } = useGetRecentTransactionsQuery(query)
+  const { data: recentTransactions, isLoading } =
+    useGetRecentTransactionsQuery(query);
+  const { data: totalEarnings } = useGetTotalEarningsQuery();
 
   const showModal = (data) => {
     setIsModalOpen(true);
@@ -28,7 +33,6 @@ const Earnings = () => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     console.log(searchTerm);
-
   };
 
   // Handle date input change
@@ -37,15 +41,13 @@ const Earnings = () => {
     console.log(dateString);
   };
 
-
   // Trigger search when button is clicked
   const handleSearch = () => {
     setQuery({
       searchTerm,
-      purchaseDate
+      purchaseDate,
     });
   };
-
 
   const columns = [
     {
@@ -77,11 +79,16 @@ const Earnings = () => {
     {
       title: "Action",
       key: "Review",
-      aligen: 'center',
+      aligen: "center",
       render: (_, data) => (
         <div className="  items-center justify-around textcenter flex">
           {/* Review Icon */}
-          <img src={exlamIcon} alt="" className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer" onClick={() => showModal(data)} />
+          <img
+            src={exlamIcon}
+            alt=""
+            className="btn  px-3 py-1 text-sm rounded-full  cursor-pointer"
+            onClick={() => showModal(data)}
+          />
           {/* <Link to={'/reviews'} className="btn bg-black text-white px-3 py-1 text-sm rounded-full">
              
               View
@@ -92,15 +99,16 @@ const Earnings = () => {
   ];
 
   // Map API response to table data
-  const data = recentTransactions?.data?.map((transaction, index) => ({
-    key: index,
-    transIs: transaction.purchaseId,
-    name: transaction.userId.name.firstName,
-    subscription: transaction.packageName,
-    amount: `$${transaction.packagePrice}`,
-    date: moment(transaction.purchaseDate).format("DD MMM YYYY"),
-    ...transaction,
-  })) || [];
+  const data =
+    recentTransactions?.data?.map((transaction, index) => ({
+      key: index,
+      transIs: transaction.purchaseId,
+      name: transaction.userId.name.firstName,
+      subscription: transaction.packageName,
+      amount: `$${transaction.packagePrice}`,
+      date: moment(transaction.purchaseDate).format("DD MMM YYYY"),
+      ...transaction,
+    })) || [];
 
   return (
     <div>
@@ -109,13 +117,17 @@ const Earnings = () => {
         <div className="flex items-center gap-6 px-[24px] bg-[#174C6B] border border-black  py-[20px] rounded-lg space-y-3  w-80">
           <div className="">
             <h3 className="text-[20px] text-white">{"Total Earnings"}</h3>
-            <h3 className="text-[30px] text-white font-extralight">$254.99</h3>
+            <h3 className="text-[30px] text-white font-extralight">
+              ${totalEarnings.data?.totalEarn || 0}
+            </h3>
           </div>
         </div>
 
         <div className="flex items-center gap-6 border border-lightBlue px-[24px] py-[20px] rounded-lg space-y-3 bg-white w-80 text-[#174C6B]">
           <div className="">
-            <h3 className="text-[20px] text-gray font-semibold">{"Total Users"}</h3>
+            <h3 className="text-[20px] text-gray font-semibold">
+              {"Total Users"}
+            </h3>
             <h3 className="text-[30px] font-extralight text-[#2683EB]">6500</h3>
           </div>
         </div>
@@ -131,17 +143,27 @@ const Earnings = () => {
               onChange={handleDateChange}
             />
 
-            <Input placeholder="Search..." className="w-48 placeholder:text-lightblue border border-lightBlue" style={{ border: '1px solid #37B5FF' }}
-              value={searchTerm || ''}
+            <Input
+              placeholder="Search..."
+              className="w-48 placeholder:text-lightblue border border-lightBlue"
+              style={{ border: "1px solid #37B5FF" }}
+              value={searchTerm || ""}
               onChange={handleSearchChange}
             />
 
-            <button style={{ border: 'none', backgroundColor: '#EBF8FF', color: '#174C6B', borderRadius: '50%', padding: '6px' }}><IoSearch size={18}
-              onClick={handleSearch}
-            /></button>
+            <button
+              style={{
+                border: "none",
+                backgroundColor: "#EBF8FF",
+                color: "#174C6B",
+                borderRadius: "50%",
+                padding: "6px",
+              }}
+            >
+              <IoSearch size={18} onClick={handleSearch} />
+            </button>
           </div>
         </div>
-
 
         {/* Ant Design Table */}
         <Table
@@ -152,14 +174,20 @@ const Earnings = () => {
             position: ["bottomCenter"],
             itemRender: (current, type, originalElement) => {
               if (type === "prev") {
-                return <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue">
-                  <IoIosArrowBack className="" />
-                  Back</button>;
+                return (
+                  <button className="custom-pagination flex items-center gap-2 border border-[#79CDFF] rounded-md px-2 text-darkBlue">
+                    <IoIosArrowBack className="" />
+                    Back
+                  </button>
+                );
               }
               if (type === "next") {
-                return <button className="custom-pagination flex items-center gap-2 border border-darkBlue bg-darkBlue rounded-md px-2 text-white">Next
-                  <IoIosArrowForward />
-                </button>;
+                return (
+                  <button className="custom-pagination flex items-center gap-2 border border-darkBlue bg-darkBlue rounded-md px-2 text-white">
+                    Next
+                    <IoIosArrowForward />
+                  </button>
+                );
               }
               return originalElement;
             },
@@ -182,7 +210,7 @@ const Earnings = () => {
             </div>
             <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
               <p>Date :</p>
-              <p>{moment(modalData.purchaseDate).format('DD MM YYYY')}</p>
+              <p>{moment(modalData.purchaseDate).format("DD MM YYYY")}</p>
             </div>
             <div className="flex justify-between mb-6 text-gray-600  border-b border-[#79CDFF] pb-1">
               <p>User Name :</p>
@@ -224,7 +252,7 @@ const Earnings = () => {
         </DashboardModal>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Earnings
+export default Earnings;
