@@ -160,7 +160,7 @@ const EditWorkoutPlan = () => {
                   <Form.Item
                     label="Upload Image"
                     name="image"
-                    className="responsive-form-item"
+                    className=""
                     rules={[
                       {
                         required: !imageFileName ? true : false,
@@ -168,7 +168,7 @@ const EditWorkoutPlan = () => {
                       },
                     ]}
                   >
-                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                    <div className="relative https://github.com/Joint-Venture-AI/ZenActive_Backend border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
                         type="file"
                         accept="image/*"

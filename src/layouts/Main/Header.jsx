@@ -97,7 +97,7 @@ const Header = () => {
       icon: <CiDumbbell />,
     },
     {
-      label: <Link to="/workout-plans">Workout Plans</Link>,
+      label: <Link to="/workoutPlans">Workout Plans</Link>,
       key: "workout-plans",
       icon: <MdManageHistory />,
     },
