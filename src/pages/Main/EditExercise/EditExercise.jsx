@@ -209,7 +209,7 @@ const EditExercise = () => {
                       </span>
                     }
                     name="name"
-                    className="responsive-form-item"
+                    className=""
                     // rules={[{ required: true, message: 'Please select a package name!' }]}
                   >
                     <Input
@@ -295,12 +295,8 @@ const EditExercise = () => {
                   </Form.Item>
 
                   {/* Image */}
-                  <Form.Item
-                    label="Upload Image"
-                    name="image"
-                    className="responsive-form-item"
-                  >
-                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                  <Form.Item label="Upload Image" name="image" className="">
+                    <div className="relative lg:w-[440px] w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
                         type="file"
                         accept="image/*"
@@ -322,12 +318,8 @@ const EditExercise = () => {
                   </Form.Item>
 
                   {/* Video */}
-                  <Form.Item
-                    label="Upload Video"
-                    name="media"
-                    className="responsive-form-item"
-                  >
-                    <div className="relative w-[440px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                  <Form.Item label="Upload Video" name="media" className="">
+                    <div className="relative lg:w-[440px] w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
                         type="file"
                         accept="video/*"
@@ -370,7 +362,7 @@ const EditExercise = () => {
               </Space>
 
               {/* Section 2 */}
-              <div className="grid grid-cols-2 gap-8 mt-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                 <div>
                   <h1 className="text-[18px] font-semibold pb-3">
                     Information

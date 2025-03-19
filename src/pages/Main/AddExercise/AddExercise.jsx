@@ -270,12 +270,12 @@ const AddExercise = () => {
                       </span>
                     }
                     name="image"
-                    className="responsive-form-item"
+                    className=""
                     rules={[
                       { required: true, message: "Please select an image!" },
                     ]}
                   >
-                    <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
+                    <div className="relative lg:w-[482px] w-full border border-[#79CDFF] flex justify-between items-center px-2 py-3 rounded-md">
                       <input
                         type="file"
                         accept="image/*"
@@ -310,12 +310,12 @@ const AddExercise = () => {
                       </span>
                     }
                     name="media"
-                    className="responsive-form-item"
+                    className=""
                     rules={[
                       { required: true, message: "Please select a video!" },
                     ]}
                   >
-                    <div className="relative w-[482px] border border-[#79CDFF] flex justify-between items-center  px-2 py-3 rounded-md">
+                    <div className="relative lg:w-[482px] w-full border border-[#79CDFF] flex justify-between items-center  px-2 py-3 rounded-md">
                       <input
                         type="file"
                         accept="video/*"
@@ -359,7 +359,7 @@ const AddExercise = () => {
               </Space>
 
               {/* Section 2 */}
-              <div className="grid grid-cols-2 gap-8 mt-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                 <div>
                   <h1 className="text-[18px] font-semibold pb-3">
                     Information
