@@ -91,7 +91,6 @@ const AddExercise = () => {
     try {
       const response = await createExercise(formData).unwrap();
 
-      console.log(response);
       if (response.success) {
         message.success("exercise added successfully!");
         form.resetFields(); // Reset form
