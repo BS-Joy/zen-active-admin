@@ -105,7 +105,7 @@ const TransactionAreaChart = () => {
 
   return (
     <div className="space-y-3">
-      <div className="w-[414px] border border-[#37B5FF] rounded-lg flex items-center justify-between px-2">
+      <div className="lg:w-[414px] border border-[#37B5FF] rounded-lg flex items-center justify-between px-2">
         <h1 className="text-xl">Your Transactions</h1>
         <div className="flex justify-center">
           <select
@@ -118,7 +118,7 @@ const TransactionAreaChart = () => {
           </select>
         </div>
       </div>
-      <div className="w-[414px] border border-[#37B5FF] rounded-lg">
+      <div className="lg:w-[414px] border border-[#37B5FF] rounded-lg">
         <ResponsiveContainer width="100%" height={172}>
           <AreaChart data={data}>
             <defs>
