@@ -130,6 +130,7 @@ const Header = () => {
             items,
           }}
           trigger={["click"]}
+          className="block lg:hidden"
         >
           <MdMenu color="white" size={30} />
         </Dropdown>
