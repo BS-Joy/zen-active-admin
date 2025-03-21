@@ -12,6 +12,7 @@ export const exerciseApi = baseApi
             method: "GET",
           };
         },
+        transformResponse: (result) => console.log(result),
         providesTags: ["Exercises"],
       }),
       getSingleExercise: builder.query({

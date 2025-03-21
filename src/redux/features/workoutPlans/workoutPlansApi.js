@@ -12,6 +12,16 @@ export const workoutPlansApi = baseApi
             method: "GET",
           };
         },
+        transformResponse: (res) => {
+          let result = {
+            ...res,
+            data: res?.data?.sort((a, b) => {
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            }),
+          };
+
+          return result;
+        },
         providesTags: ["WorkoutPlans"],
       }),
       getSingleWorkoutPlan: builder.query({

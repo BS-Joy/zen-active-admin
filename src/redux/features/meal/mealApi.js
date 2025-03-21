@@ -1,48 +1,59 @@
 import { baseApi } from "../../api/baseApi";
 
-export const mealApi = baseApi.enhanceEndpoints({ addTagTypes: ['Meals'] }).injectEndpoints({
+export const mealApi = baseApi
+  .enhanceEndpoints({ addTagTypes: ["Meals"] })
+  .injectEndpoints({
     endpoints: (builder) => ({
-        getAllMeal: builder.query({
-            query: (searchTerm) => {
-                const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : '';
-                return {
-                    url: `/meal${queryParam}`,
-                    method: 'GET',
-                };
-            },
-            providesTags: ['Meals']
+      getAllMeal: builder.query({
+        query: (searchTerm) => {
+          const queryParam = searchTerm ? `?searchTerm=${searchTerm}` : "";
+          return {
+            url: `/meal${queryParam}`,
+            method: "GET",
+          };
+        },
+        transformResponse: (result) => {
+          console.log(result);
+        },
+        providesTags: ["Meals"],
+      }),
+      getSingleMeal: builder.query({
+        query: (mealId) => ({
+          url: `/meal/${mealId}`,
+          method: "GET",
         }),
-        getSingleMeal: builder.query({
-            query: (mealId) => ({
-                url: `/meal/${mealId}`,
-                method: 'GET',
-            }),
-            providesTags: ["Meals"]
+        providesTags: ["Meals"],
+      }),
+      createMeal: builder.mutation({
+        query: (meal) => ({
+          url: "/meal/create-meal",
+          method: "POST",
+          body: meal,
         }),
-        createMeal: builder.mutation({
-            query: (meal) => ({
-                url: '/meal/create-meal',
-                method: 'POST',
-                body: meal,
-            }),
-            invalidatesTags: ['Meals']
+        invalidatesTags: ["Meals"],
+      }),
+      editMeal: builder.mutation({
+        query: ({ mealId, formData }) => ({
+          url: `/meal/${mealId}`,
+          method: "PATCH",
+          body: formData,
         }),
-        editMeal: builder.mutation({
-            query: ({ mealId, formData }) => ({
-                url: `/meal/${mealId}`,
-                method: 'PATCH',
-                body: formData
-            }),
-            invalidatesTags: ["Meals"]
+        invalidatesTags: ["Meals"],
+      }),
+      deleteMeal: builder.mutation({
+        query: (mealId) => ({
+          url: `/meal/${mealId}`,
+          method: "DELETE",
         }),
-        deleteMeal: builder.mutation({
-            query: (mealId) => ({
-                url: `/meal/${mealId}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ["Meals"]
-        }),
-    })
-})
+        invalidatesTags: ["Meals"],
+      }),
+    }),
+  });
 
-export const { useGetAllMealQuery, useCreateMealMutation, useGetSingleMealQuery, useDeleteMealMutation, useEditMealMutation } = mealApi
+export const {
+  useGetAllMealQuery,
+  useCreateMealMutation,
+  useGetSingleMealQuery,
+  useDeleteMealMutation,
+  useEditMealMutation,
+} = mealApi;
