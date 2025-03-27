@@ -112,7 +112,7 @@ const AddMeal = () => {
                 <Space
                   size="large"
                   direction="horizontal"
-                  className="responsive-space"
+                  className="grid grid-cols-1 sm:grid-cols-2"
                 >
                   {/* Name */}
                   <Form.Item
@@ -372,6 +372,8 @@ const AddMeal = () => {
                         }}
                       />
                     </Form.Item>
+
+                    {/* carbs */}
                     <Form.Item
                       label={
                         <span
@@ -402,6 +404,8 @@ const AddMeal = () => {
                         }}
                       />
                     </Form.Item>
+
+                    {/* proteins */}
                     <Form.Item
                       label={
                         <span
@@ -432,6 +436,8 @@ const AddMeal = () => {
                         }}
                       />
                     </Form.Item>
+
+                    {/* fats */}
                     <Form.Item
                       label={
                         <span

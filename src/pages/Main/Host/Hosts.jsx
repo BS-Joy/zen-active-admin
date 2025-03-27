@@ -20,7 +20,7 @@ const Hosts = () => {
     setModalData(data);
   };
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
+    // console.log(date, dateString);
   };
   const columns = [
     {
@@ -75,7 +75,8 @@ const Hosts = () => {
             {
               "bg-green-playground text-white border-none":
                 data.verification === "Verifiy",
-              "bg-[#f7e6bf] text-red-400 border-none": data.verification === "Rejected",
+              "bg-[#f7e6bf] text-red-400 border-none":
+                data.verification === "Rejected",
             }
           )}
         >

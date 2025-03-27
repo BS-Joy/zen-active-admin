@@ -37,7 +37,7 @@ const Header = () => {
   const user = useSelector(useCurrentUser);
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
   };
 
   useEffect(() => {

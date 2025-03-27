@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const PasswordChangeModalForm = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
   const handleChangePassword = (values) => {
-    console.log(values);
+    // console.log(values);
   };
   return (
     <Modal

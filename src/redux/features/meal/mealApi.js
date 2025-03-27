@@ -12,8 +12,15 @@ export const mealApi = baseApi
             method: "GET",
           };
         },
-        transformResponse: (result) => {
-          console.log(result);
+        transformResponse: (res) => {
+          let result = {
+            ...res,
+            data: res?.data?.some((item) => !item.createdAt)
+              ? res?.data // If any item lacks `createdAt`, return data as is (no sorting)
+              : res?.data?.sort(
+                  (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                ),
+          };
           return result;
         },
         providesTags: ["Meals"],

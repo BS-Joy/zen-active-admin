@@ -9,7 +9,7 @@ const EditAboutUs = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
   const placeholder = "Enter your update about us...";
-  console.log(content);
+  // console.log(content);
   return (
     <div className="min-h-[75vh] flex flex-col justify-between gap-6">
       <div className="space-y-6">

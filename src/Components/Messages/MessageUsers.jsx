@@ -78,7 +78,9 @@ const users = [
 ];
 
 const MessageUsers = ({ className }) => {
-    const onSearch = (value, _e, info) => console.log(info?.source, value);
+  const onSearch = (value, _e, info) => {
+    // console.log(info?.source, value);
+  };
   return (
     <div className={cn("pt-4", className)}>
       <ConfigProvider

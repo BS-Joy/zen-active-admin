@@ -4,9 +4,9 @@ import { Badge } from "antd";
 import profileImage from "../../assets/images/dash-profile.png";
 import { TbBellRinging } from "react-icons/tb";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { Select } from 'antd';
-import logoImg from '../../assets/images/logo1.png';
-import bellImg from '../../assets/images/bell.png';
+import { Select } from "antd";
+import logoImg from "../../assets/images/logo1.png";
+import bellImg from "../../assets/images/bell.png";
 
 const SupportChatHeader = () => {
   const navigate = useNavigate();
@@ -15,9 +15,8 @@ const SupportChatHeader = () => {
   const [notificationPopup, setNotificationPopup] = useState(false);
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
   };
-  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -40,7 +39,6 @@ const SupportChatHeader = () => {
   }, [loacatin.pathname]);
 
   return (
-
     <div className="w-full h-[88px] flex justify-between items-center rounded-sm py-[16px] px-[32px]">
       <div className="text-start space-y-0.5">
         {/* <p className="text-sm md:text-xl font-light">
@@ -54,17 +52,33 @@ const SupportChatHeader = () => {
           onClick={(e) => navigate("/notifications")}
           className="relative flex items-center "
         >
-          <Badge style={{ backgroundColor: "#000000", width: '20px', height: '20px', objectFit: 'contain' }} count={1}>
+          <Badge
+            style={{
+              backgroundColor: "#000000",
+              width: "20px",
+              height: "20px",
+              objectFit: "contain",
+            }}
+            count={1}
+          >
             {/* <TbBellRinging
               style={{ cursor: "pointer" }}
               className={` w-6 h-6 rounded-full shadow-sm  font-bold transition-all`}
             /> */}
-            <img src={bellImg} alt="" className="bg-lightGray p-2 rounded-full" />
+            <img
+              src={bellImg}
+              alt=""
+              className="bg-lightGray p-2 rounded-full"
+            />
           </Badge>
         </div>
         <div className="flex items-center">
           <div>
-            <img src={profileImage} alt="" className="rounded-full h-[42px] w-[42px]" />
+            <img
+              src={profileImage}
+              alt=""
+              className="rounded-full h-[42px] w-[42px]"
+            />
           </div>
           <Select
             defaultValue=""
@@ -72,17 +86,19 @@ const SupportChatHeader = () => {
               width: 40,
             }}
             bordered={false}
-            suffixIcon={<MdOutlineKeyboardArrowDown color="black" fontSize={20} />}
+            suffixIcon={
+              <MdOutlineKeyboardArrowDown color="black" fontSize={20} />
+            }
             onChange={handleChange}
             options={[
               {
-                value: 'Jane Cooper',
-                label: '',
+                value: "Jane Cooper",
+                label: "",
               },
               {
-                value: 'lucy',
-                label: '',
-              }
+                value: "lucy",
+                label: "",
+              },
             ]}
           />
         </div>

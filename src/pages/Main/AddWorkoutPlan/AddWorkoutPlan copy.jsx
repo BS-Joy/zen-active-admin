@@ -94,7 +94,7 @@ const AddWorkoutPlan = () => {
       formData.append("data", JSON.stringify(formattedData));
 
       const createResponse = await createWorkoutPlan(formData).unwrap();
-      console.log(createResponse, "Workout plan created successfully!");
+      // console.log(createResponse, "Workout plan created successfully!");
       message.success("Workout plan created successfully!");
       form.resetFields();
       setFile(null);

@@ -13,7 +13,7 @@ const localStorageUtil = {
   // Get an item from localStorage
   getItem: (key) => {
     try {
-      console.log(key);
+      // console.log(key);
       const value = localStorage.getItem(key);
       return value ? JSON.parse(value) : null;
     } catch (error) {

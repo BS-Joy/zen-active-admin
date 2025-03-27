@@ -165,7 +165,7 @@ const AddWorkoutVideoNormal = () => {
       );
 
       setConvertedVideo(convertedFile);
-      console.log("Video converted successfully");
+      // console.log("Video converted successfully");
     } catch (error) {
       console.error("Error converting video:", error);
       alert("Error converting video: " + error.message);

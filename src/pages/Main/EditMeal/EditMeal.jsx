@@ -47,7 +47,7 @@ const EditMeal = () => {
   ];
 
   const handleMultiSelectChange = (value) => {
-    console.log(`Selected: ${value}`);
+    // console.log(`Selected: ${value}`);
   };
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const EditMeal = () => {
                 <Space
                   size="large"
                   direction="horizontal"
-                  className="responsive-space"
+                  className="grid grid-cols-1 sm:grid-cols-2"
                 >
                   {/* Name */}
                   <Form.Item

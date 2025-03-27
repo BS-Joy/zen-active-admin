@@ -30,7 +30,7 @@ const Exercise = () => {
 
   // Trigger search when button is clicked
   const handleSearch = () => {
-    console.log(searchTerm);
+    // console.log(searchTerm);
     setQuery(searchTerm);
   };
 

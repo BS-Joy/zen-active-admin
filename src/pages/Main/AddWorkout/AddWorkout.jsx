@@ -49,7 +49,7 @@ const AddWorkout = () => {
     }, []) || [];
 
   const handleMultiSelectChange = (value) => {
-    console.log(`Selected: ${value}`);
+    // console.log(`Selected: ${value}`);
   };
 
   const onFinish = async (values) => {
