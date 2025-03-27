@@ -12,7 +12,16 @@ export const exerciseApi = baseApi
             method: "GET",
           };
         },
-        transformResponse: (result) => console.log(result),
+        transformResponse: (res) => {
+          let result = {
+            ...res,
+            data: res?.data?.sort((a, b) => {
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            }),
+          };
+
+          return result;
+        },
         providesTags: ["Exercises"],
       }),
       getSingleExercise: builder.query({

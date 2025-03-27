@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Form, Input, Space } from "antd";
+import { Checkbox, Form, Input, Space } from "antd";
 import { FaAngleLeft } from "react-icons/fa6";
 import { message } from "antd";
 import { CiCamera } from "react-icons/ci";
@@ -41,6 +41,7 @@ const EditExercise = () => {
         reps: exercise.data.exercise.reps,
         sets: exercise.data.exercise.sets,
         restTime: exercise.data.exercise.restTime,
+        isPremium: exercise.data.exercise.isPremium,
       });
 
       // Set existing image filename
@@ -564,6 +565,37 @@ const EditExercise = () => {
                       />
                     </Form.Item>
                   </Space>
+
+                  {/* is premium */}
+                  <Form.Item
+                    name="isPremium"
+                    valuePropName="checked"
+                    required={true}
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Is Premium
+                      </span>
+                    }
+                    className="mt-10"
+                  >
+                    <Checkbox>
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Premium
+                      </span>
+                    </Checkbox>
+                  </Form.Item>
                 </div>
               </div>
 

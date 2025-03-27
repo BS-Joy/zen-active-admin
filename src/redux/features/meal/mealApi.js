@@ -14,6 +14,7 @@ export const mealApi = baseApi
         },
         transformResponse: (result) => {
           console.log(result);
+          return result;
         },
         providesTags: ["Meals"],
       }),

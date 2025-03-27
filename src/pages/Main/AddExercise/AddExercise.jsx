@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { Form, Input, Button, Space } from "antd";
+import { Form, Input, Button, Space, Checkbox } from "antd";
 import { FaAngleLeft } from "react-icons/fa6";
 import { message } from "antd";
 import { CiCamera } from "react-icons/ci";
@@ -14,6 +14,7 @@ const AddExercise = () => {
   const [imageFile, setImageFile] = useState(null);
   const [videoResolution, setVideoResolution] = useState(null);
   const [needsConversion, setNeedsConversion] = useState(false);
+  // const [isPremium, setIsPremium] = useState(false)
 
   const navigate = useNavigate();
 
@@ -54,9 +55,9 @@ const AddExercise = () => {
     const needsConversion = height > 720;
     setNeedsConversion(needsConversion);
 
-    console.log(
-      `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
-    );
+    // console.log(
+    //   `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
+    // );
   };
 
   // Handle Image Upload
@@ -90,7 +91,6 @@ const AddExercise = () => {
 
     try {
       const response = await createExercise(formData).unwrap();
-
       if (response.success) {
         message.success("exercise added successfully!");
         form.resetFields(); // Reset form
@@ -582,6 +582,37 @@ const AddExercise = () => {
                       />
                     </Form.Item>
                   </Space>
+
+                  {/* is premium */}
+                  <Form.Item
+                    name="isPremium"
+                    valuePropName="checked"
+                    required={true}
+                    label={
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Is Premium
+                      </span>
+                    }
+                    className="mt-10"
+                  >
+                    <Checkbox>
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "#2D2D2D",
+                        }}
+                      >
+                        Premium
+                      </span>
+                    </Checkbox>
+                  </Form.Item>
                 </div>
               </div>
 
