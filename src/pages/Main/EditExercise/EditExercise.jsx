@@ -94,9 +94,9 @@ const EditExercise = () => {
     const needsConversion = height > 720;
     setNeedsConversion(needsConversion);
 
-    console.log(
-      `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
-    );
+    // console.log(
+    //   `Video resolution: ${width}x${height}, needs conversion: ${needsConversion}`
+    // );
   };
 
   // Handle Image Upload

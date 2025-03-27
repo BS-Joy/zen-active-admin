@@ -16,7 +16,7 @@ import {
 const DashboardChart = () => {
   const [cartYear, setCartYear] = useState("Select Year");
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
+    // console.log(date, dateString);
   };
   const chart = [
     {
